@@ -1,0 +1,11 @@
+--- vector operator_brackets begin --- 
+42
+42
+1
+42.4242
+42.4242
+1
+10 42 test
+10 42 test
+1
+--- vector operator_brackets end --- 

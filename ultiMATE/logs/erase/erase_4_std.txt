@@ -1,0 +1,11 @@
+the following tests are from file: vector/erase.cpp
+test on line: 80
+size: 4
+capacity: 5
+empty: 0
+10
+10
+10
+10
+10
+1
