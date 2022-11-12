@@ -62,9 +62,19 @@ execute ()
 	./std_$1 &>$redir
 }
 
+mutex ()
+{
+	if mkdir /tmp/mylock &>/dev/null
+	then
+		echo -en $filename:
+	else
+  		mutex
+	fi
+}
+
 diff_outfiles() 
 {
-	echo -en $filename: 
+	mutex
 	index=1;
 	check_if_file_exists $index;
 	while (( "$?" == "0" ))
@@ -95,6 +105,7 @@ diff_outfiles()
 
 	clean_path
 	echo
+	rm -rf /tmp/mylock
 }
 
 check_if_file_exists() 
@@ -143,10 +154,11 @@ main ()
 			do
 				# echo file: $file
 				filename=$(echo $file | cut -c$(echo ${container}/ | wc -c)- | sed 's/.cpp//g')
-				run "${filename}" "${file}"
+				run "${filename}" "${file}" &
 			done
 		done
 	fi
+	wait
 }
 
 main "$@"
