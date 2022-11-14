@@ -1,7 +1,6 @@
 #include "../common.cpp"
 
 std::string testName("pop_back");
-std::ofstream ofs;
 
 template <typename T>
 void test_for_type(const T& value);
@@ -18,9 +17,7 @@ template <typename T>
 void test_for_type(const T& value)
 {
 	{ // Pop back with filled vector
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 
 		vector<T> vector(20, value);
 		const int SIZE = vector.size();
@@ -33,9 +30,7 @@ void test_for_type(const T& value)
 		write_result(ofs, vector);
 	}
 	{ // Pop back with empty vector
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 
 		vector<T> vector;
 		vector.clear();
@@ -49,9 +44,7 @@ void test_for_type(const T& value)
 		write_result(ofs, vector);
 	}
 	{ // Pop back with reserved space
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 
 		vector<T> vector;
 		vector.reserve(100);

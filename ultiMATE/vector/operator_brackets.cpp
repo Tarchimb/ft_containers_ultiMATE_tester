@@ -1,15 +1,12 @@
 #include "../common.cpp"
 
 std::string testName("operator_brackets");
-std::ofstream ofs;
 
 template <typename T>
 void test(std::ofstream& ofs, vector<T>& vector1);
 
 int main(int argc, char** argv)
 {
-	open_file(ofs, "operator_brackets");
-
 	vector<int> v1(10, 42);
 	v1[3] = 420;
 	test<int>(ofs, v1);
@@ -28,6 +25,8 @@ int main(int argc, char** argv)
 template <typename T>
 void test(std::ofstream& ofs, vector<T>& vector1)
 {
+	TEST_INIT();
+
 	typename vector<T>::const_reverse_iterator it = vector1.rend();
 	write_result<T>(ofs, *--it);
 	typename vector<T>::reverse_iterator it2 = vector1.rend();
