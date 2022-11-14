@@ -3,6 +3,7 @@
 RED="\033[1;31m";
 GREEN="\033[1;32m";
 END="\033[1;0m";
+YELLOW="\033[0;33m" 
 
 # $1 = $@
 declare_variables ()
@@ -10,6 +11,7 @@ declare_variables ()
 	LOGS_FOLDER="logs"
 	std="0" ft="1" flags="-Werror"
 	diff_success="true" compilation_ft_error="false" compilation_std_error="false"
+	NULL="&>/dev/null"
 	
 	if echo $* | grep -e "-d" -q
 	then
@@ -34,27 +36,27 @@ declare_variables ()
 main ()
 {
 	print_title
-	trap end_program SIGINT
+	trap end_program SIGINT &>/dev/null
 	declare_variables "$@"
 	containers=(vector) # map stack set)
 	unit_files=$(echo $* | grep -o "\w*.cpp\w*")
 
-	if [ "$unit_files" != "" ]
-	then
-		update_container_path "vector"
-		unit_function "$containers" "$unit_files"
-	else
-		for container in ${containers[@]}
-		do
-			update_container_path $container
+	for container in ${containers[@]}
+	do
+		update_container_path "$container"
+		echo -e "${YELLOW}Start compiling... $END"
+		if [ "$unit_files" != "" ]
+		then
+			unit_function "$containers" "$unit_files"
+		else
 			test_files=$(find "$container" -type f -name '*.cpp' | sort)
 			for file in ${test_files[@]}
 			do
 				filename=$(echo $file | cut -c$(echo ${container}/ | wc -c)- | sed 's/.cpp//g')
 				run "${filename}" "${file}" &
 			done
-		done
-	fi
+		fi
+	done
 	wait
 	find $LOGS_FOLDER/ -empty -type d -delete
 	rm *.txt &>/dev/null
@@ -87,19 +89,18 @@ update_container_path ()
 	then
 		return;
 	fi
-	echo "Searching for your $1 file "
+	echo -e "${YELLOW}Searching for your $1 file ${END}"
 	path="$(find ~ -name vector.hpp -print -quit 2>/dev/null)"
 
-	echo Path found: $path
 	if test -z "$path" 
 	then
-		echo "${1}.hpp not found. Please include manually in common.cpp"
+		echo -e "${YELLOW}${1}.hpp not found. Please include manually in common.cpp${END}"
 		exit
 	fi
 
 	include_name="$(cat common.cpp | grep vector.hpp)"
 	sed -i '' "s|${include_name}|#include \"${path}\"|" common.cpp
-	echo "Update path done"
+	echo -e "${YELLOW}Updated path with : ${path}${END}"
 }
 
 # $1 = filename; $2 = container/file.cpp;
@@ -249,7 +250,7 @@ init_leaks_linux () {
 }
 
 init_leaks_macos () {
-	leaks -h &>/dev/null;
+	leaks -h $NULL;
 	if [ $? -eq 0 ]
 	then
 		echo "Leaks check: ON";
