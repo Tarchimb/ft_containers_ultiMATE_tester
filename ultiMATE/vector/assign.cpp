@@ -76,7 +76,7 @@ void test_assign_range_version(vector<T>& v)
 	{ // Assign with vector const iterator 
 		TEST_INIT();
 		vector<T> vector;
-		vector.assign(v.cbegin(), v.cend());
+		vector.assign(v.begin(), v.end());
 		write_result(ofs, vector);
 	}
 	{ // Assign with vector iterators and modified range

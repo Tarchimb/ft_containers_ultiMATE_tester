@@ -24,37 +24,37 @@ template <typename T>
 void test_for_type(vector<T>& vector1, const T& value)
 {
 	{ // clear empty vector
-		TEST_TYPE();
+		TEST_INIT();
 		v.clear();
 		write_result(ofs, v);
 	}
 	{ // clear filled vector
-		TEST_TYPE();
+		TEST_INIT();
 		v.clear();
 		write_result(ofs, v);
 	}
 	{ // clear filled vector then re-assign it
-		TEST_TYPE();
+		TEST_INIT();
 		v.clear();
 		v.assign(vector1.begin(), vector1.end());
 		write_result(ofs, v);
 	}
 	{ // clear vector multiple times
-		TEST_TYPE();
+		TEST_INIT();
 		v.clear();
 		v.clear();
 		v.clear();
 		write_result(ofs, v);
 	}
 	{ // clear vector, reserve then re-clear
-		TEST_TYPE();
+		TEST_INIT();
 		v.clear();
 		v.reserve(20);
 		v.clear();
 		write_result(ofs, v);
 	}
 	{ // checking iterators validity
-		TEST_TYPE();
+		TEST_INIT();
 		typedef typename vector<T>::iterator iterator;
 		iterator it1 = v.begin();
 		iterator it2 = v.end();

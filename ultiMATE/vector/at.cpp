@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(vector<T>& vector1)
 {
-	INIT_TEST();
+	TEST_INIT();
 
 	for (int i = -1; i < (int)vector1.size(); i++)
 	{
