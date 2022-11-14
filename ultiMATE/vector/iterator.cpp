@@ -1,382 +1,229 @@
 #include "../common.cpp"
 
-int test = 1;
 std::string testName("iterator");
+std::ofstream ofs;
 
-void test_input_iterator(std::ofstream& ofs);
-void test_forward_iterator(std::ofstream& ofs);
-void test_bidirectional_iterator(std::ofstream& ofs);
-void test_random_access_iterator(std::ofstream& ofs);
+template <typename T>
+void test_for_type(T* array);
 
-void change_ofs_to_next_test(std::ofstream& ofs)
-{
-	if (ofs.is_open())
-		ofs.close();
-	open_file(ofs, testName + "_" + std::to_string(test));
-	ofs << "the following tests are from file: " << __FILE__ << std::endl;
-	test++;
-}
+template <typename T>
+void test_input_iterator(T* array);
+template <typename T>
+void test_forward_iterator(T* array);
+template <typename T>
+void test_bidirectional_iterator(T* array);
+template <typename T>
+void test_random_access_iterator(T* array);
 
 int main(int argc, char** argv)
 {
-	std::ofstream ofs;
+	int array_int[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; 
+	test_for_type<int>(array_int);
 
-	test_input_iterator(ofs);
-	test_forward_iterator(ofs);
-	test_bidirectional_iterator(ofs);
-	test_random_access_iterator(ofs);
+	TestStruct array_struct[10];
+	for (int i = 0; i < 10; i++)
+		array_struct[i] = TestStruct(i, i, std::to_string(i));
+	test_for_type<TestStruct>(array_struct);
 
-	ofs << "--- vector iterator end --- " << std::endl;
 	ofs.close();
 }
 
-void test_input_iterator(std::ofstream& ofs)
+template <typename T>
+void test_for_type(T* array)
 {
-	// X b(a)
-	// b = a
-	// a == b
-	// a != b
-	// *a
-	// ++a
-	// a++
-	// *a++
-	{
-		int array_int[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-		typedef typename vector<int>::iterator iterator;
-		typedef typename vector<int>::const_iterator const_iterator;
+	test_input_iterator(array);
+	test_forward_iterator(array);
+	test_bidirectional_iterator(array);
+	test_random_access_iterator(array);
+}
 
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it(array_int);
-			write_result(ofs, *it);
-			it++;
-			write_result(ofs, *it);
-			write_result(ofs, *it++);
-		}
+template <typename T>
+void test_input_iterator(T* array)
+{
+	typedef typename vector<T>::iterator iterator;
+	typedef typename vector<T>::const_iterator const_iterator;
 
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it1(array_int);
-			iterator it2 = it1;
-			write_result(ofs, *it2);
-			write_result(ofs, ++(*it2));
-			++it2;
-			++it2++;
-			write_result(ofs, *it2);
-		}
-
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it(array_int);
-			const_iterator cit1;
-			const_iterator cit2(array_int);
-			write_result(ofs, *cit2);
-			cit2++; write_result(ofs, *cit2);
-			const_iterator cit3 = cit2;
-			write_result(ofs, *cit3);
-
-			const_iterator cit4 = it;
-			write_result(ofs, *cit4);
-			const_iterator cit5(it);
-			write_result(ofs, *cit5);
-		}
+	{ // Dereferencing pointer
+		change_ofs_to_next_test(ofs, testName);
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
+		const_iterator it = array; // Be careful, this type is "const iterator" and not "const_iterator"
+		write_result(ofs, *it);
+		iterator it2(array + 4);
+		write_result(ofs, *it2);
+		write_result(ofs, *it);
 	}
-	{
-		TestStruct array_struct[10];
-		for (int i = 0; i < 10; i++)
-		{
-			array_struct[i].a = i;
-			array_struct[i].b = i;
-			array_struct[i].c = std::to_string(i);
-		}
-		typedef typename vector<TestStruct>::iterator iterator;
-		typedef typename vector<TestStruct>::const_iterator const_iterator;
-
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it(array_struct);
-			write_result(ofs, *it);
-			it++;
-			write_result(ofs, *it);
-			write_result(ofs, *it++);
-		}
-
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it1(array_struct);
-			write_result(ofs, *it1);
-			it1++;
-			write_result(ofs, *it1);
-			write_result(ofs, *it1++);
-			iterator it2 = it1;
-			write_result(ofs, *it2);
-			++it2;
-			++it2++;
-			write_result(ofs, *it2);
-		}
-
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it(array_struct);
-			const_iterator cit1;
-			const_iterator cit2(array_struct);
-			write_result(ofs, *cit2);
-			cit2++;
-			write_result(ofs, *cit2);
-			const_iterator cit3 = cit2;
-			write_result(ofs, *cit3);
-
-			const_iterator cit4 = it;
-			write_result(ofs, *cit4);
-			const_iterator cit5(it);
-			write_result(ofs, *cit5);
-		}
+	{ // Copy constructor
+		change_ofs_to_next_test(ofs, testName);
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
+		iterator it1(array + 4);
+		const_iterator it2(it1);
+		write_result(ofs, *it1);
+		write_result(ofs, *it2);
+		write_result(ofs, it2 == it1);
+		write_result(ofs, it2 != it1);
+	}
+	{ // Operator =
+		change_ofs_to_next_test(ofs, testName);
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
+		iterator it1(array + 4);
+		const_iterator it2 = it1;
+		write_result(ofs, *it1);
+		write_result(ofs, *it2);
+		write_result(ofs, it2 == it1);
+		write_result(ofs, it2 != it1);
+	}
+	{ // Post and pre increment
+		change_ofs_to_next_test(ofs, testName);
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
+		iterator it1(array + 4);
+		it1++;
+		write_result(ofs, *it1);
+		++it1;
+		write_result(ofs, *it1);
+		++it1++;
+		write_result(ofs, *it1);
+	}
+	{ // Dereferencing increment
+		change_ofs_to_next_test(ofs, testName);
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
+		iterator it1(array + 4);
+		write_result(ofs, *it1++);
 	}
 }
 
-void test_forward_iterator(std::ofstream& ofs)
+template <typename T>
+void test_forward_iterator(T* array)
 {
-	// X a
-	// *a = t
+	typedef typename vector<T>::iterator iterator;
+	typedef typename vector<T>::const_iterator const_iterator;
 
-	{
-		int array_int[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-		typedef typename vector<int>::iterator iterator;
-		typedef typename vector<int>::const_iterator const_iterator;
-
-		change_ofs_to_next_test(ofs);
+	{ // Default constructor and changing value
+		change_ofs_to_next_test(ofs, testName);
 		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
 
 		iterator it1;
 		const_iterator it2;
 
-		iterator it3(array_int + 4);
-		*it3 = 0;
+		iterator it3(array + 4);
+		T temp = array[4];
+		*it3 = T();
 		write_result(ofs, *it3);
-		write_result(ofs, array_int[4]);
-	}
-	{
-		typedef typename vector<TestStruct>::iterator iterator;
-		typedef typename vector<TestStruct>::const_iterator const_iterator;
-
-		change_ofs_to_next_test(ofs);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-
-		iterator it1;
-		const_iterator it2;
-
-		TestStruct array_struct[10];
-		for (int i = 0; i < 10; i++)
-		{
-			array_struct[i].a = i;
-			array_struct[i].b = i;
-			array_struct[i].c = std::to_string(i);
-		}
-
-		iterator it3(array_struct + 4);
-		TestStruct a;
-		it3->a = 42;
-		write_result(ofs, *it3);
-		write_result(ofs, array_struct[4]);
+		write_result(ofs, array[4]);
+		array[4] = temp; // Putting back temp to let array unmodified
 	}
 }
 
-void test_bidirectional_iterator(std::ofstream& ofs)
+template <typename T>
+void test_bidirectional_iterator(T* array)
 {
-	// --a
-	// a--
-	// *a--
-	{
-		int array_int[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-		typedef typename vector<int>::iterator iterator;
-		typedef typename vector<int>::const_iterator const_iterator;
+	typedef typename vector<T>::iterator iterator;
+	typedef typename vector<T>::const_iterator const_iterator;
 
-		change_ofs_to_next_test(ofs);
+	{ // Post decrement and pre decrement
+		change_ofs_to_next_test(ofs, testName);
 		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
 
-		iterator it2(array_int + 9);
+		iterator it(array + 9);
+		write_result(ofs, *it);
+		it--;
+		write_result(ofs, *it);
+		write_result(ofs, *it--);
+		iterator it2 = it;
 		write_result(ofs, *it2);
-		it2--;
+		--it2;
+		--it2--;
 		write_result(ofs, *it2);
-		write_result(ofs, *it2--);
-		iterator it3 = it2;
-		write_result(ofs, *it3);
-		write_result(ofs, --(*it3));
-		--it3;
-		--it3--;
-		write_result(ofs, *it3);
-
-		const_iterator cit1;
-		const_iterator cit2(array_int + 1);
-		write_result(ofs, *cit2);
-		cit2--;
-		write_result(ofs, *cit2);
-		const_iterator cit3 = cit2;
-		write_result(ofs, *cit3);
-
-		const_iterator cit4 = it3;
-		write_result(ofs, *cit4);
-		const_iterator cit5(it3);
-		write_result(ofs, *cit5);
 	}
-	{
-		TestStruct array_struct[10];
-		for (int i = 0; i < 10; i++)
-		{
-			array_struct[i].a = i;
-			array_struct[i].b = i;
-			array_struct[i].c = std::to_string(i);
-		}
-		typedef typename vector<TestStruct>::iterator iterator;
-		typedef typename vector<TestStruct>::const_iterator const_iterator;
-
-		change_ofs_to_next_test(ofs);
+	{ // Decrement with dereference
+		change_ofs_to_next_test(ofs, testName);
 		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-
-		iterator it2(array_struct + 9);
-		write_result(ofs, *it2);
-		it2--;
-		write_result(ofs, *it2);
-		write_result(ofs, *it2--);
-		iterator it3 = it2;
-		write_result(ofs, *it3);
-		--it3;
-		--it3--;
-		write_result(ofs, *it3);
+		ofs << "test on line: " << __LINE__ << std::endl;
 
 		const_iterator cit1;
-		const_iterator cit2(array_struct + 1);
-		write_result(ofs, *cit2);
-		cit2--;
+		const_iterator cit2(array + 3);
+		write_result(ofs, *cit2--);
 		write_result(ofs, *cit2);
 		const_iterator cit3 = cit2;
-		write_result(ofs, *cit3);
+		write_result(ofs, *cit3--);
 
-		const_iterator cit4 = it3;
+		const_iterator cit4 = cit3;
 		write_result(ofs, *cit4);
-		const_iterator cit5(it3);
+		const_iterator cit5(cit3);
 		write_result(ofs, *cit5);
 	}
 }
 
-void test_random_access_iterator(std::ofstream& ofs)
+
+template <typename T>
+void test_random_access_iterator(T* array)
 {
-	// a + n
-	// n + a
-	// a - n
-	// a - b
-	// a < b
-	// a > b
-	// a <= b
-	// a >= b
-	// a += n
-	// a -= n
-	// a[n]
+	typedef typename vector<T>::iterator iterator;
+	typedef typename vector<T>::const_iterator const_iterator;
 
-	{
-		int array_int[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-		typedef typename vector<int>::iterator iterator;
-		typedef typename vector<int>::const_iterator const_iterator;
-
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it(array_int);
-			ofs << "operator + :" << std::endl;
-			it = it + 2; write_result(ofs, *it);
-			it = 3 + it; write_result(ofs, *it);
-			ofs << "operator - :" << std::endl;
-			it = it - 4; write_result(ofs, *it);
-			iterator it2(it + 2); write_result(ofs, it2 - it);
-		}
-
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it(array_int);
-			iterator it2(array_int + 4);
-			ofs << "operator < & > :" << std::endl;
-			write_result(ofs, it < it2);
-			write_result(ofs, it > it2);
-			ofs << "operator <= & >= :" << std::endl;
-			write_result(ofs, it <= it2);
-			write_result(ofs, it >= it2);
-			it = it2;
-			write_result(ofs, it <= it2);
-			write_result(ofs, it >= it2);
-		}
-
-		{
-			iterator it(array_int);
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			ofs << "operator += :" << std::endl;
-			it += 6; write_result(ofs, *it);
-			it += -1; write_result(ofs, *it);
-
-			ofs << "operator -= :" << std::endl;
-			it -= 3; write_result(ofs, *it);
-			it -= -1; write_result(ofs, *it);
-		}
-
+	{ // Operator + and -
+		change_ofs_to_next_test(ofs, testName);
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
+		iterator it(array);
+		it = it + 2;
+		write_result(ofs, *it);
+		it = 3 + it;
+		write_result(ofs, *it);
+		it = it - 4;
+		write_result(ofs, *it);
+		iterator it2(it + 2);
+		write_result(ofs, it2 - it);
 	}
-	{
-		TestStruct array_struct[10];
-		for (int i = 0; i < 10; i++)
-		{
-			array_struct[i].a = i;
-			array_struct[i].b = i;
-			array_struct[i].c = std::to_string(i);
-		}
-		typedef typename vector<TestStruct>::iterator iterator;
-		typedef typename vector<TestStruct>::const_iterator const_iterator;
+	{ // Operator <, >, <= and >=
+		change_ofs_to_next_test(ofs, testName);
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
+		iterator it(array + 4);
+		iterator it2(array);
+		write_result(ofs, it < it2);
+		write_result(ofs, it > it2);
+		write_result(ofs, it <= it2);
+		write_result(ofs, it >= it2);
+		it = it2;
+		write_result(ofs, it <= it2);
+		write_result(ofs, it >= it2);
+	}
+	{ // Operator += and -=
+		iterator it(array);
+		change_ofs_to_next_test(ofs, testName);
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
+		iterator it2(array + 4);
+		it += 6;
+		write_result(ofs, *it);
+		it += -1;
+		write_result(ofs, *it);
 
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it(array_struct);
-			ofs << "operator + :" << std::endl;
-			it = it + 2; write_result(ofs, *it);
-			it = 3 + it; write_result(ofs, *it);
-			ofs << "operator - :" << std::endl;
-			it = it - 4; write_result(ofs, *it);
-			iterator it2(it + 2); write_result(ofs, it2 - it);
-		}
+		it -= 3;
+		write_result(ofs, *it);
+		it -= -1;
+		write_result(ofs, *it);
+	}
+	{ // Operator []
+		iterator it(array);
+		change_ofs_to_next_test(ofs, testName);
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl;
+		iterator it2(array + 4);
+		write_result(ofs, it[3]);
+		it += 3;
+		write_result(ofs, it[3]);
 
-		{
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			iterator it(array_struct);
-			iterator it2(array_struct + 4);
-			ofs << "operator < & > :" << std::endl;
-			write_result(ofs, it < it2);
-			write_result(ofs, it > it2);
-			ofs << "operator <= & >= :" << std::endl;
-			write_result(ofs, it <= it2);
-			write_result(ofs, it >= it2);
-			it = it2;
-			write_result(ofs, it <= it2);
-			write_result(ofs, it >= it2);
-		}
-
-		{
-			iterator it(array_struct);
-			change_ofs_to_next_test(ofs);
-			ofs << "the following tests are from file: " << __FILE__ << std::endl;
-			ofs << "operator += :" << std::endl;
-			it += 6; write_result(ofs, *it);
-			it += -1; write_result(ofs, *it);
-
-			ofs << "operator -= :" << std::endl;
-			it -= 3; write_result(ofs, *it);
-			it -= -1; write_result(ofs, *it);
-		}
-
+		it -= 1;
+		write_result(ofs, it[3]);
+		it -= 2;
+		write_result(ofs, it[3]);
 	}
 }

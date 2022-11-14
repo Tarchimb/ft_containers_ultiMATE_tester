@@ -1,4 +1,4 @@
-#include "../../ft_containers/containers/vector.hpp"
+#include "/Users/bbischof/Documents/containers/src/vector.hpp"
 #include <iostream>
 #include <exception>
 #include <vector>
@@ -19,15 +19,26 @@
 	#define FILE_NAME "_ft"
 #endif
 
+int test = 1; // Used to create indexed log
+
+/*
+ * TestStruct is a custom struct used to test containers with non-primitive types
+ *
+ * TestStuct volontary uses an int ptr to test Allocator destructing
+ * (otherwise causing leaks to the test)
+*/
 struct TestStruct {
 	int a;
 	float b;
 	std::string c;
+	int *ptr;
 
-	TestStruct(): a(0), b(0), c("") {}
-	TestStruct(const TestStruct& src) { *this = src; }
+	TestStruct(): a(0), b(0), c(""), ptr(new int(5)) {}
+	TestStruct(const TestStruct& src) : ptr(new int(5)) { *this = src; }
 	TestStruct(const int& A, const float& B, const std::string& C)
-		: a(A), b(B), c(C) {}
+		: a(A), b(B), c(C), ptr(new int(5)) {}
+	~TestStruct() { delete ptr; }
+
 	TestStruct& operator=(const TestStruct& rhs) {
 		if (this == &rhs) return *this;
 		a = rhs.a;
@@ -44,6 +55,27 @@ struct TestStruct {
 	}
 };
 
+void open_file(std::ofstream& ofs, const std::string& name)
+{
+	std::string file_name;
+	file_name += name;
+	file_name += FILE_NAME;
+	file_name += ".txt";
+	ofs.open(file_name);
+
+	if (!ofs.is_open())
+		exit (1);
+}
+
+void change_ofs_to_next_test(std::ofstream& ofs, const std::string& str)
+{
+	std::cout << test << std::endl;
+	if (ofs.is_open())
+		ofs.close();
+	open_file(ofs, str + "_" + std::to_string(test));
+	test++;
+}
+
 std::ostream& operator<<(std::ostream& o, const TestStruct& v) {
 	o << v.a << " " << v.b << " " << v.c;
 	return o;
@@ -57,18 +89,25 @@ namespace std{
 		str += v.c;
 		return str;
 	}
-}
 
-void open_file(std::ofstream& ofs, const std::string& name)
-{
-	std::string file_name;
-	file_name += name;
-	file_name += FILE_NAME;
-	file_name += ".txt";
-	ofs.open(file_name);
+	std::string to_string(const std::string& str) {
+		return str;
+	}
 
-	if (!ofs.is_open())
-		exit (1);
+	template <typename T>
+	std::string to_string(const ft::vector<T>& v) {
+		std::string str;
+		for (int i = 0; i < v.size(); i++)
+			str += std::to_string(v[i]);
+		return str;
+	}
+	template <typename T>
+	std::string to_string(const std::vector<T>& v) {
+		std::string str;
+		for (int i = 0; i < v.size(); i++)
+			str += std::to_string(v[i]);
+		return str;
+	}
 }
 
 // ADD PRINT BEGIN IF NOT EMPTY
@@ -91,5 +130,5 @@ void write_result(std::ofstream& ofs, const TestStruct& val)
 template <typename T>
 void write_result(std::ofstream& ofs, const T& val)
 {
-	ofs << val << std::endl;
+	ofs << std::to_string(val) << std::endl;
 }
