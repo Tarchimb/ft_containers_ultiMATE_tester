@@ -4,6 +4,7 @@ RED="\033[1;31m";
 GREEN="\033[1;32m";
 END="\033[1;0m";
 
+# $1 = $@
 declare_variables ()
 {
 	LOGS_FOLDER="logs"
@@ -24,6 +25,68 @@ declare_variables ()
 		redir="/dev/null"
 	fi
 
+}
+
+# -d : Print diff if any
+# -p : Print ouput programs
+# -l : Print logs compilation
+# -m : Compile with multiple 
+main ()
+{
+	print_title
+	# trap end_program SIGINT
+	declare_variables "$@"
+	containers=(vector) # map stack set)
+	unit_files=$(echo $* | grep -o "\w*.cpp\w*")
+	
+	if [ "$unit_files" != "" ]
+	then
+		unit_function "$containers" "$unit_files"
+	else
+		for container in ${containers[@]}
+		do
+			update_container_path $container
+			test_files=$(find "$container" -type f -name '*.cpp' | sort)
+			for file in ${test_files[@]}
+			do
+				filename=$(echo $file | cut -c$(echo ${container}/ | wc -c)- | sed 's/.cpp//g')
+				run "${filename}" "${file}" &
+			done
+		done
+	fi
+	wait
+	find $LOGS_FOLDER/ -empty -type d -delete
+}
+
+print_title ()
+{
+	echo -e $GREEN
+	printf '%b\n' "$(cat title/title.txt)"
+	echo -e $END
+}
+
+# $1 = container; $2 = (filename).cpp
+unit_function()
+{
+	filenames=($2)
+	for file in ${filenames[@]}
+	do
+		filename=$(echo $file | sed 's/.cpp//g')
+		path="$1/$file"
+		run "${filename}" "${path}"
+	done
+}
+
+# $1 = container_name
+update_container_path ()
+{
+	path="$(find ~ -name vector.hpp -print -quit)"
+	include_name="$(cat common.cpp | grep vector.hpp)"
+	if [[ "$include_name" == *"$path"* ]]
+	then
+		return
+	fi
+	sed -i '' "s|${include_name}|#include \"${path}\"|" common.cpp
 }
 
 # $1 = filename; $2 = container/file.cpp;
@@ -54,22 +117,11 @@ compile ()
 	c++ "$flags" -o "std_$1" "-DNAMESPACE=$std" "$2" &>$redir
 }
 
-
 # $1 = filename
 execute ()
 {
 	./ft_$1 &>$redir
 	./std_$1 &>$redir
-}
-
-mutex ()
-{
-	if mkdir /tmp/mylock &>/dev/null
-	then
-		echo -en $filename:
-	else
-  		mutex
-	fi
 }
 
 diff_outfiles() 
@@ -90,13 +142,13 @@ diff_outfiles()
 
 		if [ "$?" == "0" ]
 		then # Delete passed tests logs
-			echo -en "$index"$GREEN" OK" $END;
+			echo -en "$index"$GREEN" OK" $END
 			rm $std_file;
 			rm $ft_file;
 		else # Move failed tests logs into logs folder
 			echo -en "$index"$RED" NOT OK" $END
-			mv $std_file "$LOGS_FOLDER/$filename"
-			mv $ft_file "$LOGS_FOLDER/$filename"
+			mv $std_file "$LOGS_FOLDER/$filename/"
+			mv $ft_file "$LOGS_FOLDER/$filename/"
 		fi
 
 		index=$((index+1));
@@ -108,6 +160,16 @@ diff_outfiles()
 	rm -rf /tmp/mylock
 }
 
+mutex ()
+{
+	if mkdir /tmp/mylock &>/dev/null
+	then
+		echo -en $filename:
+	else
+  		mutex
+	fi
+}
+
 check_if_file_exists() 
 {
 	file_name="$filename"_"$1""_std.txt";
@@ -116,49 +178,19 @@ check_if_file_exists()
 
 clean_path ()
 {
-	find $LOGS_FOLDER -empty -type d -delete
 	rm ft_$filename
 	rm std_$filename
 }
 
-# $1 = container; $2 = (filename).cpp
-single_function()
+#Use to clean stop when SIGINT, but not really work for now
+end_program ()
 {
-	filenames=($2)
-	for file in ${filenames[@]}
-	do
-		filename=$(echo $file | sed 's/.cpp//g')
-		path="$1/$file"
-		run "${filename}" "${path}"
-	done
-}
-
-# -d : Print diff if any
-# -p : Print ouput programs
-# -l : Print logs compilation
-# -m : Compile with multiple 
-main ()
-{
-	declare_variables "$@"
-	containers=(vector) # map stack set)
-	single_file=$(echo $* | grep -o "\w*.cpp\w*")
-	
-	if [ "$single_file" != "" ]
-	then
-		single_function "$containers" "$single_file"
-	else
-		for container in ${containers[@]}
-		do
-			test_files=$(find "$container" -type f -name '*.cpp' | sort)
-			for file in ${test_files[@]}
-			do
-				# echo file: $file
-				filename=$(echo $file | cut -c$(echo ${container}/ | wc -c)- | sed 's/.cpp//g')
-				run "${filename}" "${file}" &
-			done
-		done
-	fi
-	wait
+	kill $(jobs -p) 2&>/dev/null
+	rm *.txt 2&>/dev/null
+	rm ft* 2&>/dev/null
+	rm std* 2&>/dev/null
+	rm -rf $LOGS_FOLDER/* 2&>/dev/null
+	exit
 }
 
 main "$@"
