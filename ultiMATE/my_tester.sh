@@ -9,7 +9,7 @@ declare_variables ()
 {
 	LOGS_FOLDER="logs"
 	std="0" ft="1" flags="-Werror"
-	diff_success="true" compilation_error="false"
+	diff_success="true" compilation_ft_error="false" compilation_std_error="false"
 	
 	if echo $* | grep -e "-d" -q
 	then
@@ -56,6 +56,7 @@ main ()
 	fi
 	wait
 	find $LOGS_FOLDER/ -empty -type d -delete
+	rm *.txt &>/dev/null
 }
 
 print_title ()
@@ -80,7 +81,12 @@ unit_function()
 # $1 = container_name
 update_container_path ()
 {
-	path="$(find ~ -name vector.hpp -print -quit)"
+	old_include_name="$(cat common.cpp | grep \"vector.hpp\")"
+	if [ "$old_include_name" == "" ]
+	then
+		return;
+	fi
+	path="$(find ~ -name vector.hpp -print -quit)" &>/dev/null
 	include_name="$(cat common.cpp | grep vector.hpp)"
 	if [[ "$include_name" == *"$path"* ]]
 	then
@@ -94,9 +100,9 @@ run ()
 {
 	mkdir -p $LOGS_FOLDER/$1
 	compile "$1" "$2" "$ft"
-	if [ "$compilation_error" == "true" ]
+	if [ "$compilation_ft_error" == "true" ] || [ "$compilation_std_error" == "true" ]
 	then
-		compilation_error="false"
+		compilation_ft_error="false" compilation_std_error="false"
 		return
 	else
 		execute $1
@@ -110,11 +116,18 @@ compile ()
 	c++ "$flags" -o "ft_$1" "-DNAMESPACE=$ft" "$2" &>$redir
 	if [ $? -eq 1 ]
 	then
-		echo -e "${RED}${1}: Compilation error$END"
-		compilation_error="true"
+		echo -e "${RED}ft_${1}: Compilation error$END"
+		compilation_ft_error="true"
 		return
 	fi
 	c++ "$flags" -o "std_$1" "-DNAMESPACE=$std" "$2" &>$redir
+	if [ $? -eq 1 ]
+	then
+		rm "ft_$1"
+		echo -e "${RED}std_${1}: Compilation error$END"
+		compilation_std_error="true"
+		return
+	fi
 }
 
 # $1 = filename
@@ -143,8 +156,8 @@ diff_outfiles()
 		if [ "$?" == "0" ]
 		then # Delete passed tests logs
 			echo -en "$index"$GREEN" OK" $END
-			rm $std_file;
-			rm $ft_file;
+			rm $std_file  &>/dev/null
+			rm $ft_file  &>/dev/null
 		else # Move failed tests logs into logs folder
 			echo -en "$index"$RED" NOT OK" $END
 			mv $std_file "$LOGS_FOLDER/$filename/"
@@ -157,7 +170,7 @@ diff_outfiles()
 
 	clean_path
 	echo
-	rm -rf /tmp/mylock
+	rm -rf /tmp/mylock &>/dev/null
 }
 
 mutex ()
@@ -178,8 +191,8 @@ check_if_file_exists()
 
 clean_path ()
 {
-	rm ft_$filename
-	rm std_$filename
+	rm ft_$filename &>/dev/null
+	rm std_$filename &>/dev/null
 }
 
 #Use to clean stop when SIGINT, but not really work for now
@@ -189,7 +202,7 @@ end_program ()
 	rm *.txt 2&>/dev/null
 	rm ft* 2&>/dev/null
 	rm std* 2&>/dev/null
-	rm -rf $LOGS_FOLDER/* 2&>/dev/null
+	rm -rf $LOGS_FOLDER/* &>/dev/null
 	exit
 }
 
