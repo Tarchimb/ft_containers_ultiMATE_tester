@@ -1,7 +1,6 @@
 #include "../common.cpp"
 
 std::string testName("value_constructor");
-std::ofstream ofs;
 
 template <typename T>
 void test_for_type(std::ofstream& ofs, const int& count, const T value);
@@ -18,9 +17,7 @@ template <typename T>
 void test_for_type(std::ofstream& ofs, const int& count, const T value)
 {
 	{ // classic count and value
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		try {
 			vector<T> vector(count, value);
 			write_result(ofs, vector);
@@ -31,9 +28,7 @@ void test_for_type(std::ofstream& ofs, const int& count, const T value)
 		}
 	}
 	{ // count = 0
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		try {
 			vector<T> vector(0, value);
 			write_result(ofs, vector);
