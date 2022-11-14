@@ -1,8 +1,6 @@
 #include "../common.cpp"
 
 std::string testName("front");
-std::ofstream ofs;
-
 
 template <typename T>
 void test_for_type(vector<T>& vector1);
@@ -31,10 +29,7 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(vector<T>& vector1)
 {
-	change_ofs_to_next_test(ofs, testName);
-	ofs << "the following tests are from file: " << __FILE__ << std::endl;
-	ofs << "test on line: " << __LINE__ << std::endl;
-
+	TEST_INIT();
 	typename vector<T>::const_reference cref = vector1.front();
 	write_result(ofs, cref);
 	typename vector<T>::reference ref = vector1.front();

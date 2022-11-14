@@ -30,7 +30,7 @@ declare_variables ()
 # -d : Print diff if any
 # -p : Print ouput programs
 # -l : Print logs compilation
-# -m : Compile with multiple 
+# -m : Compile with multiple
 main ()
 {
 	print_title
@@ -38,7 +38,7 @@ main ()
 	declare_variables "$@"
 	containers=(vector) # map stack set)
 	unit_files=$(echo $* | grep -o "\w*.cpp\w*")
-	
+
 	if [ "$unit_files" != "" ]
 	then
 		unit_function "$containers" "$unit_files"
@@ -137,7 +137,7 @@ execute ()
 	./std_$1 &>$redir
 }
 
-diff_outfiles() 
+diff_outfiles()
 {
 	mutex
 	index=1;
@@ -179,11 +179,11 @@ mutex ()
 	then
 		echo -en $filename:
 	else
-  		mutex
+		mutex
 	fi
 }
 
-check_if_file_exists() 
+check_if_file_exists()
 {
 	file_name="$filename"_"$1""_std.txt";
 	`test -e $file_name`;
@@ -204,6 +204,88 @@ end_program ()
 	rm std* 2&>/dev/null
 	rm -rf $LOGS_FOLDER/* &>/dev/null
 	exit
+}
+
+init_leaks() {
+	OS=`uname`;
+	if [ "$OS" == "Linux" ]
+	then
+		init_leaks_linux;
+	elif [ "$OS" == "Darwin" ]
+	then
+		init_leaks_macos;
+	else
+		echo "This tester does not support leaks check on this OS";
+	fi
+}
+
+init_leaks_linux () {
+	valgrind --version &>/dev/null;
+	if [ $? -eq 0 ]
+	then
+		echo "Leaks check: ON";
+		leaks="valgrind --leak-check=full";
+	else
+		echo "Valgrind not found, leaks check : OFF";
+	fi
+}
+
+init_leaks_macos () {
+	leaks -h &>/dev/null;
+	if [ $? -eq 0 ]
+	then
+		echo "Leaks check: ON";
+		leaks="leaks -atExit -q -- ";
+	else
+		echo "Leaks command not found, leaks check : OFF";
+	fi
+}
+
+start_program () {
+
+	if [ $? -eq 0 ]
+	then
+
+		if [ "$1" == "$ft" ]
+		then
+			local namespace="ft";
+		else
+			local namespace="std";
+		fi
+		outfile="$name""_$namespace""_leaks.txt";
+
+		$leaks ./$name &> $outfile;
+
+		if [ "$?" != "0" ]
+		then
+			echo -en $RED "Program crashed" $END;
+			rm $outfile;
+			return;
+		fi
+
+		if [ ! -z "$leaks" ]
+		then
+			if [ "$OS" == "Linux" ]
+			then
+				grep " 0 errors from 0 contexts " "$outfile" &> /dev/null;
+			else
+				grep " 0 leaks for 0 total leaked bytes." "$outfile" &> /dev/null;
+			fi
+			if [ "$?" == "0" ]
+			then
+				echo -en $GREEN[$namespace Leaks OK] $END;
+				rm $outfile;
+			else
+				echo -en $RED[$namespace Leaks NOT OK] $END;
+				mv $outfile "$LOGS_FOLDER/$name" &> /dev/null;
+			fi
+			else
+				rm $outfile;
+		fi
+
+	else
+		echo $name " from container: " $container " does not compile";
+	fi
 }
 
 main "$@"

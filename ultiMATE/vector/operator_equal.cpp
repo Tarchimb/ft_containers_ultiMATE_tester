@@ -2,7 +2,6 @@
 #include <fstream>
 
 std::string testName("operator_equal");
-std::ofstream ofs;
 
 template <typename T>
 void test_for_type(const vector<T>& vector1);
@@ -28,9 +27,7 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(const vector<T>& vector1)
 {
-	change_ofs_to_next_test(ofs, testName);
-	ofs << "the following tests are from file: " << __FILE__ << std::endl;
-	ofs << "test on line: " << __LINE__ << std::endl;
+	TEST_INIT();
 	vector<T> vector2;
 	vector2 = vector1;
 	write_result<T>(ofs, vector2);

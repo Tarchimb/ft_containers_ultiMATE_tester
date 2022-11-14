@@ -1,7 +1,6 @@
 #include "../common.cpp"
 
 std::string testName("iterator");
-std::ofstream ofs;
 
 template <typename T>
 void test_for_type(T* array);
@@ -44,9 +43,7 @@ void test_input_iterator(T* array)
 	typedef typename vector<T>::const_iterator const_iterator;
 
 	{ // Dereferencing pointer
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		const_iterator it = array; // Be careful, this type is "const iterator" and not "const_iterator"
 		write_result(ofs, *it);
 		iterator it2(array + 4);
@@ -54,9 +51,7 @@ void test_input_iterator(T* array)
 		write_result(ofs, *it);
 	}
 	{ // Copy constructor
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		iterator it1(array + 4);
 		const_iterator it2(it1);
 		write_result(ofs, *it1);
@@ -65,9 +60,7 @@ void test_input_iterator(T* array)
 		write_result(ofs, it2 != it1);
 	}
 	{ // Operator =
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		iterator it1(array + 4);
 		const_iterator it2 = it1;
 		write_result(ofs, *it1);
@@ -76,9 +69,7 @@ void test_input_iterator(T* array)
 		write_result(ofs, it2 != it1);
 	}
 	{ // Post and pre increment
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		iterator it1(array + 4);
 		it1++;
 		write_result(ofs, *it1);
@@ -88,9 +79,7 @@ void test_input_iterator(T* array)
 		write_result(ofs, *it1);
 	}
 	{ // Dereferencing increment
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		iterator it1(array + 4);
 		write_result(ofs, *it1++);
 	}
@@ -103,9 +92,7 @@ void test_forward_iterator(T* array)
 	typedef typename vector<T>::const_iterator const_iterator;
 
 	{ // Default constructor and changing value
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 
 		iterator it1;
 		const_iterator it2;
@@ -126,9 +113,7 @@ void test_bidirectional_iterator(T* array)
 	typedef typename vector<T>::const_iterator const_iterator;
 
 	{ // Post decrement and pre decrement
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 
 		iterator it(array + 9);
 		write_result(ofs, *it);
@@ -142,9 +127,7 @@ void test_bidirectional_iterator(T* array)
 		write_result(ofs, *it2);
 	}
 	{ // Decrement with dereference
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 
 		const_iterator cit1;
 		const_iterator cit2(array + 3);
@@ -168,9 +151,7 @@ void test_random_access_iterator(T* array)
 	typedef typename vector<T>::const_iterator const_iterator;
 
 	{ // Operator + and -
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		iterator it(array);
 		it = it + 2;
 		write_result(ofs, *it);
@@ -182,9 +163,7 @@ void test_random_access_iterator(T* array)
 		write_result(ofs, it2 - it);
 	}
 	{ // Operator <, >, <= and >=
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		iterator it(array + 4);
 		iterator it2(array);
 		write_result(ofs, it < it2);
@@ -197,9 +176,7 @@ void test_random_access_iterator(T* array)
 	}
 	{ // Operator += and -=
 		iterator it(array);
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		iterator it2(array + 4);
 		it += 6;
 		write_result(ofs, *it);
@@ -213,9 +190,7 @@ void test_random_access_iterator(T* array)
 	}
 	{ // Operator []
 		iterator it(array);
-		change_ofs_to_next_test(ofs, testName);
-		ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		ofs << "test on line: " << __LINE__ << std::endl;
+		TEST_INIT();
 		iterator it2(array + 4);
 		write_result(ofs, it[3]);
 		it += 3;

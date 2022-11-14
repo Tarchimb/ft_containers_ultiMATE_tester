@@ -6,10 +6,14 @@
 #include <string>
 #include <time.h>
 
+#define TEST_INIT() \
+		change_ofs_to_next_test(ofs, testName);\
+		ofs << "the following tests are from file: " << __FILE__ << std::endl;\
+		ofs << "test on line: " << __LINE__ << std::endl;
+
 #ifndef NAMESPACE
 # define NAMESPACE 0
 #endif
-
 
 #if NAMESPACE==0
 	using namespace std;
@@ -20,6 +24,7 @@
 #endif
 
 int test = 1; // Used to create indexed log
+std::ofstream ofs;
 
 /*
  * TestStruct is a custom struct used to test containers with non-primitive types
@@ -69,7 +74,6 @@ void open_file(std::ofstream& ofs, const std::string& name)
 
 void change_ofs_to_next_test(std::ofstream& ofs, const std::string& str)
 {
-	std::cout << test << std::endl;
 	if (ofs.is_open())
 		ofs.close();
 	open_file(ofs, str + "_" + std::to_string(test));
