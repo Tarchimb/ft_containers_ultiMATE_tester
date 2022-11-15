@@ -37,6 +37,7 @@ main ()
 {
 	print_title
 	trap end_program SIGINT &>/dev/null
+	rm -rf $LOGS_FOLDER
 	declare_variables "$@"
 	containers=(vector) # map stack set)
 	unit_files=$(echo $* | grep -o "\w*.cpp\w*")
@@ -163,9 +164,9 @@ diff_outfiles()
 
 		if [ "$print_diff" == "true" ]
 		then
-			git --no-pager diff --text --no-index $std_file $ft_file
+			git --no-pager diff --text --no-index $ft_file $std_file
 		fi
-		git --no-pager diff --text --no-index $std_file $ft_file &>$redir
+		git --no-pager diff --text --no-index $ft_file $std_file &>$redir
 
 		if [ "$?" == "0" ]
 		then # Delete passed tests logs
