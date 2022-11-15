@@ -8,22 +8,22 @@ std::string testName("max_size");
 
 int main(int argc, char** argv)
 {
-	{ // max_size vector<float>
+	{ // max_size vector<char>
 		TEST_INIT();
 		vector<char> v;
 		write_result(ofs, v.max_size());
 	}
-	{ // max_size vector<float>
+	{ // max_size vector<unsigned char>
 		TEST_INIT();
 		vector<unsigned char> v;
 		write_result(ofs, v.max_size());
 	}
-	{ // max_size vector<float>
+	{ // max_size vector<int>
 		TEST_INIT();
 		vector<int> v;
 		write_result(ofs, v.max_size());
 	}
-	{ // max_size vector<float>
+	{ // max_size vector<long>
 		TEST_INIT();
 		vector<long> v(50);
 		write_result(ofs, v.max_size());
