@@ -12,6 +12,7 @@ declare_variables ()
 	std="0" ft="1" flags="-Werror"
 	diff_success="true" compilation_ft_error="false" compilation_std_error="false"
 	NULL="&>/dev/null"
+	tester_path="$(find ~ -name ultiMATE -type d -print -quit)"
 	
 	if echo $* | grep -e "-d" -q
 	then
@@ -35,10 +36,10 @@ declare_variables ()
 # -m : Compile with multiple
 main ()
 {
+	declare_variables "$@"
 	print_title
 	trap end_program SIGINT &>/dev/null
-	rm -rf $LOGS_FOLDER
-	declare_variables "$@"
+	rm -rf ${tester_path}/$LOGS_FOLDER
 	containers=(vector) # map stack set)
 	unit_files=$(echo $* | grep -o "\w*.cpp\w*")
 
@@ -50,23 +51,23 @@ main ()
 		then
 			unit_function "$containers" "$unit_files"
 		else
-			test_files=$(find "$container" -type f -name '*.cpp' | sort)
+			test_files=$(find "${tester_path}/${container}" -type f -name '*.cpp' | sort)
 			for file in ${test_files[@]}
 			do
-				filename=$(echo $file | cut -c$(echo ${container}/ | wc -c)- | sed 's/.cpp//g')
+				filename=$(echo $file | cut -c$(echo ${tester_path}/${container}/ | wc -c)- | sed 's/.cpp//g')
 				run "${filename}" "${file}" &
 			done
 		fi
 	done
 	wait
-	find $LOGS_FOLDER/ -empty -type d -delete
+	find ${tester_path}/$LOGS_FOLDER/ -empty -type d -delete
 	rm *.txt &>/dev/null
 }
 
 print_title ()
 {
 	echo -e $GREEN
-	printf '%b\n' "$(cat title/title.txt)"
+	printf '%b\n' "$(cat ${tester_path}/title/title.txt)"
 	echo -e $END
 }
 
@@ -77,7 +78,7 @@ unit_function()
 	for file in ${filenames[@]}
 	do
 		filename=$(echo $file | sed 's/.cpp//g')
-		path="$1/$file"
+		path="${tester_path}/$1/$file"
 		run "${filename}" "${path}"
 	done
 }
@@ -85,29 +86,31 @@ unit_function()
 # $1 = container_name
 update_container_path ()
 {
-	old_include_name="$(cat common.cpp | grep \"vector.hpp\")"
+	old_include_name="$(cat ${tester_path}/common.cpp | grep \"vector.hpp\")"
 	if [ "$old_include_name" == "" ]
 	then
 		return;
 	fi
 	echo -e "${YELLOW}Searching for your $1 file ${END}"
-	path="$(find ~ -name vector.hpp -print -quit 2>/dev/null)"
+	local vector_path="$(find ~ -name vector.hpp -print -quit 2>/dev/null)"
 
-	if test -z "$path" 
+	if test -z "$vector_path" 
 	then
 		echo -e "${YELLOW}${1}.hpp not found. Please include manually in common.cpp${END}"
 		exit
 	fi
 
-	include_name="$(cat common.cpp | grep vector.hpp)"
-	sed -i '' "s|${include_name}|#include \"${path}\"|" common.cpp
-	echo -e "${YELLOW}Updated path with : ${path}${END}"
+	include_name="$(cat ${tester_path}/common.cpp | grep vector.hpp)"
+	sed -i '' "s|${include_name}|#include \"${vector_path}\"|" ${tester_path}/common.cpp
+	echo -e "${YELLOW}Updated ${1} path with : ${vector_path}${END}"
 }
 
 # $1 = filename; $2 = container/file.cpp;
 run ()
 {
-	mkdir -p $LOGS_FOLDER/$1
+	# echo "$LOGS_FOLDER/$1"
+	# exit
+	mkdir -p ${tester_path}/$LOGS_FOLDER/$1
 	compile "$1" "$2" "$ft"
 	if [ "$compilation_ft_error" == "true" ] || [ "$compilation_std_error" == "true" ]
 	then
@@ -175,8 +178,8 @@ diff_outfiles()
 			rm $ft_file  &>/dev/null
 		else # Move failed tests logs into logs folder
 			echo -en "$index"$RED" NOT OK" $END
-			mv $std_file "$LOGS_FOLDER/$filename/"
-			mv $ft_file "$LOGS_FOLDER/$filename/"
+			mv $std_file "${tester_path}/$LOGS_FOLDER/$filename/"
+			mv $ft_file "${tester_path}/$LOGS_FOLDER/$filename/"
 		fi
 
 		index=$((index+1));
@@ -219,10 +222,10 @@ clean_path ()
 end_program ()
 {
 	kill $(jobs -p) 2&>/dev/null
-	rm *.txt 2&>/dev/null
-	rm ft* 2&>/dev/null
-	rm std* 2&>/dev/null
-	rm -rf $LOGS_FOLDER &>/dev/null
+	# rm *ft*.txt 2&>/dev/null
+	# rm ft* 2&>/dev/null
+	# rm std* 2&>/dev/null
+	rm -rf ${tester_path}/$LOGS_FOLDER &>/dev/null
 	exit
 }
 
