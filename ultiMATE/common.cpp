@@ -9,7 +9,7 @@
 #define TEST_INIT() \
 		change_ofs_to_next_test(ofs, testName);\
 		ofs << "the following tests are from file: " << __FILE__ << std::endl;\
-		ofs << "test on line: " << __LINE__ << std::endl;
+		ofs << "test on line: " << __LINE__ << std::endl
 
 #ifndef NAMESPACE
 # define NAMESPACE 0
