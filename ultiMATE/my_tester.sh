@@ -63,7 +63,7 @@ main ()
 print_title ()
 {
 	echo -e $GREEN
-	printf '%b\n' "$(cat title/title.txt)"
+	echo starting test;
 	echo -e $END
 }
 
