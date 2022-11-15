@@ -41,7 +41,7 @@ void test_erase_position(const T& value)
 		//change_ofs_to_next_test(ofs, testName);
 		//ofs << "the following tests are from file: " << __FILE__ << std::endl;
 		//ofs << "test on line: " << __LINE__ << std::endl;
-		TEST_INIT(ofs, testName)
+		TEST_INIT()
 		vector<T> v(5, value);
 		iterator it = v.erase(v.begin());
 		write_result(ofs, v);
@@ -101,7 +101,7 @@ void test_erase_range(const T& value)
 	}
 	{ // erase whole vector except begin
 		TEST_INIT();
-		
+
 		vector<T> v(5, value);
 		iterator it = v.erase(v.begin() + 1, v.begin() + v.size());
 		write_result(ofs, v);

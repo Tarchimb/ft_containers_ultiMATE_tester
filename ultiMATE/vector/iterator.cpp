@@ -3,32 +3,36 @@
 std::string testName("iterator");
 
 template <typename T>
-void test_for_type(T* array);
+void test_for_type(std::vector<T> array);
 
 template <typename T>
-void test_input_iterator(T* array);
+void test_input_iterator(std::vector<T> array);
 template <typename T>
-void test_forward_iterator(T* array);
+void test_forward_iterator(std::vector<T> array);
 template <typename T>
-void test_bidirectional_iterator(T* array);
+void test_bidirectional_iterator(std::vector<T> array);
 template <typename T>
-void test_random_access_iterator(T* array);
+void test_random_access_iterator(std::vector<T> array);
 
 int main(int argc, char** argv)
 {
-	int array_int[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; 
+
+	std::vector<int> array_int;
+	for (int i = 0; i < 10; i++)
+		array_int.push_back(i);
+
 	test_for_type<int>(array_int);
 
-	TestStruct array_struct[10];
+	std::vector<TestStruct> array_struct;
 	for (int i = 0; i < 10; i++)
-		array_struct[i] = TestStruct(i, i, std::to_string(i));
+		array_struct.push_back(TestStruct(i, i, std::to_string(i)));
 	test_for_type<TestStruct>(array_struct);
 
 	ofs.close();
 }
 
 template <typename T>
-void test_for_type(T* array)
+void test_for_type(std::vector<T> array)
 {
 	test_input_iterator(array);
 	test_forward_iterator(array);
@@ -37,22 +41,22 @@ void test_for_type(T* array)
 }
 
 template <typename T>
-void test_input_iterator(T* array)
+void test_input_iterator(std::vector<T> array)
 {
-	typedef typename vector<T>::iterator iterator;
-	typedef typename vector<T>::const_iterator const_iterator;
+	typedef typename std::vector<T>::iterator iterator;
+	typedef typename std::vector<T>::const_iterator const_iterator;
 
 	{ // Dereferencing pointer
 		TEST_INIT();
-		const_iterator it = array; // Be careful, this type is "const iterator" and not "const_iterator"
+		const_iterator it = array.begin(); // Be careful, this type is "const iterator" and not "const_iterator"
 		write_result(ofs, *it);
-		iterator it2(array + 4);
+		iterator it2(array.begin() + 4);
 		write_result(ofs, *it2);
 		write_result(ofs, *it);
 	}
 	{ // Copy constructor
 		TEST_INIT();
-		iterator it1(array + 4);
+		iterator it1(array.begin() + 4);
 		const_iterator it2(it1);
 		write_result(ofs, *it1);
 		write_result(ofs, *it2);
@@ -61,7 +65,7 @@ void test_input_iterator(T* array)
 	}
 	{ // Operator =
 		TEST_INIT();
-		iterator it1(array + 4);
+		iterator it1(array.begin() + 4);
 		const_iterator it2 = it1;
 		write_result(ofs, *it1);
 		write_result(ofs, *it2);
@@ -70,7 +74,7 @@ void test_input_iterator(T* array)
 	}
 	{ // Post and pre increment
 		TEST_INIT();
-		iterator it1(array + 4);
+		iterator it1(array.begin() + 4);
 		it1++;
 		write_result(ofs, *it1);
 		++it1;
@@ -80,16 +84,16 @@ void test_input_iterator(T* array)
 	}
 	{ // Dereferencing increment
 		TEST_INIT();
-		iterator it1(array + 4);
+		iterator it1(array.begin() + 4);
 		write_result(ofs, *it1++);
 	}
 }
 
 template <typename T>
-void test_forward_iterator(T* array)
+void test_forward_iterator(std::vector<T> array)
 {
-	typedef typename vector<T>::iterator iterator;
-	typedef typename vector<T>::const_iterator const_iterator;
+	typedef typename std::vector<T>::iterator iterator;
+	typedef typename std::vector<T>::const_iterator const_iterator;
 
 	{ // Default constructor and changing value
 		TEST_INIT();
@@ -97,7 +101,7 @@ void test_forward_iterator(T* array)
 		iterator it1;
 		const_iterator it2;
 
-		iterator it3(array + 4);
+		iterator it3(array.begin() + 4);
 		T temp = array[4];
 		*it3 = T();
 		write_result(ofs, *it3);
@@ -107,15 +111,15 @@ void test_forward_iterator(T* array)
 }
 
 template <typename T>
-void test_bidirectional_iterator(T* array)
+void test_bidirectional_iterator(std::vector<T> array)
 {
-	typedef typename vector<T>::iterator iterator;
-	typedef typename vector<T>::const_iterator const_iterator;
+	typedef typename std::vector<T>::iterator iterator;
+	typedef typename std::vector<T>::const_iterator const_iterator;
 
 	{ // Post decrement and pre decrement
 		TEST_INIT();
 
-		iterator it(array + 9);
+		iterator it(array.begin() + 9);
 		write_result(ofs, *it);
 		it--;
 		write_result(ofs, *it);
@@ -130,7 +134,7 @@ void test_bidirectional_iterator(T* array)
 		TEST_INIT();
 
 		const_iterator cit1;
-		const_iterator cit2(array + 3);
+		const_iterator cit2(array.begin() + 3);
 		write_result(ofs, *cit2--);
 		write_result(ofs, *cit2);
 		const_iterator cit3 = cit2;
@@ -145,14 +149,14 @@ void test_bidirectional_iterator(T* array)
 
 
 template <typename T>
-void test_random_access_iterator(T* array)
+void test_random_access_iterator(std::vector<T> array)
 {
-	typedef typename vector<T>::iterator iterator;
-	typedef typename vector<T>::const_iterator const_iterator;
+	typedef typename std::vector<T>::iterator iterator;
+	typedef typename std::vector<T>::const_iterator const_iterator;
 
 	{ // Operator + and -
 		TEST_INIT();
-		iterator it(array);
+		iterator it(array.begin());
 		it = it + 2;
 		write_result(ofs, *it);
 		it = 3 + it;
@@ -164,8 +168,8 @@ void test_random_access_iterator(T* array)
 	}
 	{ // Operator <, >, <= and >=
 		TEST_INIT();
-		iterator it(array + 4);
-		iterator it2(array);
+		iterator it(array.begin() + 4);
+		iterator it2(array.begin());
 		write_result(ofs, it < it2);
 		write_result(ofs, it > it2);
 		write_result(ofs, it <= it2);
@@ -175,9 +179,9 @@ void test_random_access_iterator(T* array)
 		write_result(ofs, it >= it2);
 	}
 	{ // Operator += and -=
-		iterator it(array);
+		iterator it(array.begin());
 		TEST_INIT();
-		iterator it2(array + 4);
+		iterator it2(array.begin() + 4);
 		it += 6;
 		write_result(ofs, *it);
 		it += -1;
@@ -189,9 +193,9 @@ void test_random_access_iterator(T* array)
 		write_result(ofs, *it);
 	}
 	{ // Operator []
-		iterator it(array);
+		iterator it(array.begin());
 		TEST_INIT();
-		iterator it2(array + 4);
+		iterator it2(array.begin() + 4);
 		write_result(ofs, it[3]);
 		it += 3;
 		write_result(ofs, it[3]);
