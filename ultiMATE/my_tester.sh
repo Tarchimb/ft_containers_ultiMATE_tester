@@ -65,7 +65,7 @@ main ()
 print_title ()
 {
 	echo -e $GREEN
-	echo '%b\n' "$(cat title/title.txt)"
+	printf '%b\n' "$(cat title/title.txt)"
 	echo -e $END
 }
 
