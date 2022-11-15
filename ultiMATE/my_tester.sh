@@ -61,7 +61,13 @@ main ()
 	done
 	wait
 	find ${tester_path}/$LOGS_FOLDER/ -empty -type d -delete
-	rm *.txt &>/dev/null
+	if [[ -d ${tester_path}/$LOGS_FOLDER ]]
+	then
+		echo -e "${YELLOW}Go check your logs! $END"
+	else
+		echo -e "${YELLOW}Everything seems to be good..!$END"
+	fi
+
 }
 
 print_title ()
@@ -110,7 +116,8 @@ run ()
 {
 	# echo "$LOGS_FOLDER/$1"
 	# exit
-	mkdir -p ${tester_path}/$LOGS_FOLDER/$1
+	mkdir -p ${tester_path}/$LOGS_FOLDER/$1/logs
+	mkdir -p ${tester_path}/$LOGS_FOLDER/$1/diff
 	compile "$1" "$2" "$ft"
 	if [ "$compilation_ft_error" == "true" ] || [ "$compilation_std_error" == "true" ]
 	then
@@ -169,17 +176,19 @@ diff_outfiles()
 		then
 			git --no-pager diff --text --no-index $ft_file $std_file
 		fi
-		git --no-pager diff --text --no-index $ft_file $std_file &>$redir
+		git --no-pager diff --text --no-index $ft_file $std_file --output "${filename}_${index}_diff.txt"
 
 		if [ "$?" == "0" ]
 		then # Delete passed tests logs
 			echo -en "$index"$GREEN" OK" $END
 			rm $std_file  &>/dev/null
 			rm $ft_file  &>/dev/null
+			rm "${filename}_${index}_diff.txt" &>/dev/null
 		else # Move failed tests logs into logs folder
 			echo -en "$index"$RED" NOT OK" $END
-			mv $std_file "${tester_path}/$LOGS_FOLDER/$filename/"
-			mv $ft_file "${tester_path}/$LOGS_FOLDER/$filename/"
+			mv $std_file "${tester_path}/${LOGS_FOLDER}/${filename}/logs/"
+			mv $ft_file "${tester_path}/${LOGS_FOLDER}/${filename}/logs/"
+			mv "${filename}_${index}_diff.txt" "${tester_path}/${LOGS_FOLDER}/${filename}/diff/${filename}_${index}_diff.txt"
 		fi
 
 		index=$((index+1));
