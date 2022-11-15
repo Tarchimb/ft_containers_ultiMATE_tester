@@ -17,6 +17,7 @@ template <typename T>
 void test_insert_multiple_value(const T& value); // const iterator, size_type,  const T&
 template <typename T>
 void test_insert_range(vector<T>& v); // const iterator, inputIt, inputIt
+void test_insert_range_input_iterator();
 
 int main(int argc, char** argv)
 {
@@ -33,6 +34,8 @@ int main(int argc, char** argv)
 	vector<TestStruct> v3;
 	for (int i = 0; i < 20; i++) v3.push_back(TestStruct(i, i, std::string(std::to_string(i))));
 	test_insert_range<TestStruct>(v3);
+
+	test_insert_range_input_iterator();
 
 	ofs.close();
 }
@@ -237,5 +240,21 @@ void test_insert_range(vector<T>& v)
 		iterator it = v1.begin();
 		v1.insert(it, vBegin, vEnd);
 		write_result(ofs, v1);
+	}
+}
+
+void test_insert_range_input_iterator()
+{
+	{ // insert with iterators tagged as std::input_iterator_tag
+		TEST_INIT();
+
+        std::istringstream str("1 2 3 4 5 6 7 8 9 0 A B C D E F");
+        std::istreambuf_iterator<char> it(str), end;
+		
+        vector<char> v(2, 'U');
+
+        v.insert(v.end(), it, end);
+
+		write_result(ofs, v);
 	}
 }
