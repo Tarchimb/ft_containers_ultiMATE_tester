@@ -1,5 +1,6 @@
 #include "vector.hpp"
 #include <iostream>
+#include <sstream>
 #include <exception>
 #include <vector>
 #include <fstream>

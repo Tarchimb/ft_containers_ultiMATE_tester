@@ -38,10 +38,7 @@ void test_erase_position(const T& value)
 	typedef typename vector<T>::iterator iterator;
 
 	{ // erase value at vector beginning
-		//change_ofs_to_next_test(ofs, testName);
-		//ofs << "the following tests are from file: " << __FILE__ << std::endl;
-		//ofs << "test on line: " << __LINE__ << std::endl;
-		TEST_INIT()
+		TEST_INIT();
 		vector<T> v(5, value);
 		iterator it = v.erase(v.begin());
 		write_result(ofs, v);
