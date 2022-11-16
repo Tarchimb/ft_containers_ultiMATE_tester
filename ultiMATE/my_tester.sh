@@ -12,8 +12,7 @@ declare_variables ()
 	std="0" ft="1" flags="-Werror"
 	diff_success="true" compilation_ft_error="false" compilation_std_error="false"
 	NULL="&>/dev/null"
-	tester_path="$(find ~ -name ultiMATE -type d -print -quit)"
-	
+	tester_path="$(find ~ -name ultiMATE -type d -print -quit 2>/dev/null)"
 	if echo $* | grep -e "-d" -q
 	then
 		print_diff="true"
@@ -38,7 +37,7 @@ main ()
 {
 	declare_variables "$@"
 	print_title
-	trap end_program SIGINT &>/dev/null
+	trap end_program SIGINT
 	rm -rf ${tester_path}/$LOGS_FOLDER
 	containers=(vector) # map stack set)
 	unit_files=$(echo $* | grep -o "\w*.cpp\w*")
@@ -55,12 +54,12 @@ main ()
 			for file in ${test_files[@]}
 			do
 				filename=$(echo $file | cut -c$(echo ${tester_path}/${container}/ | wc -c)- | sed 's/.cpp//g')
-				run "${filename}" "${file}" &
+				run "${filename}" "${file}"
 			done
 		fi
 	done
 	wait
-	find ${tester_path}/$LOGS_FOLDER/ -empty -type d -delete
+	find ${tester_path}/$LOGS_FOLDER/ -empty -type d -delete &>/dev/null
 	rm *.txt &>/dev/null
 }
 
@@ -221,10 +220,14 @@ clean_path ()
 #Use to clean stop when SIGINT, but not really work for now
 end_program ()
 {
-	kill $(jobs -p) 2&>/dev/null
-	# rm *ft*.txt 2&>/dev/null
-	# rm ft* 2&>/dev/null
-	# rm std* 2&>/dev/null
+	kill $(jobs -rp)
+	wait $(jobs -rp) 2>/dev/null
+	sleep 0.5
+	echo -e "${YELLOW}Killing process...${END}"
+	mutex_unlock
+	rm *.txt 2&>/dev/null
+	rm ft* 2&>/dev/null
+	rm std* 2&>/dev/null
 	rm -rf ${tester_path}/$LOGS_FOLDER &>/dev/null
 	exit
 }
