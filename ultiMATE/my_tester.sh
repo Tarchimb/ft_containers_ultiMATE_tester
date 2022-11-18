@@ -28,6 +28,12 @@ declare_variables ()
 		redir="/dev/null"
 	fi
 
+	if echo $* | grep -e "-z" -q
+	then
+		init_leaks;
+	else
+		leaks=""
+	fi
 }
 
 # -d : Print diff if any
@@ -150,7 +156,12 @@ compile ()
 # $1 = filename
 execute ()
 {
-	./ft_$1 &>$redir
+	if [ ! -z "$leaks" ]
+	then
+		$leaks ./ft_$1 &> "$filename"_ft_leaks.txt;
+	else
+		./ft_$1 &>$redir
+	fi
 	./std_$1 &>$redir
 }
 
@@ -160,6 +171,12 @@ diff_outfiles()
 	echo -en $filename:
 	index=1
 	check_if_file_exists $index
+
+	if [ ! -z "$leaks" ]
+	then
+		check_leaks
+	fi
+
 	while (( "$?" == "0" ))
 	do
 		local std_file="$filename"_"$index""_std.txt"
@@ -185,6 +202,8 @@ diff_outfiles()
 		index=$((index+1));
 		check_if_file_exists $index
 	done
+
+	rm "$filename"_ft_leaks.txt &> /dev/null
 
 	clean_path
 	echo
@@ -229,6 +248,24 @@ end_program ()
 	exit
 }
 
+check_leaks() {
+	local leaks_file="$filename"_ft_leaks.txt;
+	if [ "$OS" == "Linux" ]
+	then
+		grep " 0 errors from 0 contexts " "$leaks_file" &> /dev/null;
+	else
+		grep " 0 leaks for 0 total leaked bytes." "$leaks_file" &> /dev/null;
+	fi
+	if [ "$?" == "0" ]
+	then
+		echo -en $GREEN[Leaks OK] $END;
+		rm $leaks_file;
+	else
+		echo -en $RED[Leaks NOT OK] $END;
+		mv $leaks_file "${tester_path}/$LOGS_FOLDER/$filename/" &> /dev/null;
+	fi
+}
+
 init_leaks() {
 	OS=`uname`;
 	if [ "$OS" == "Linux" ]
@@ -254,60 +291,13 @@ init_leaks_linux () {
 }
 
 init_leaks_macos () {
-	leaks -h $NULL;
+	leaks -h &>/dev/null;
 	if [ $? -eq 0 ]
 	then
 		echo "Leaks check: ON";
 		leaks="leaks -atExit -q -- ";
 	else
 		echo "Leaks command not found, leaks check : OFF";
-	fi
-}
-
-start_program () {
-
-	if [ $? -eq 0 ]
-	then
-
-		if [ "$1" == "$ft" ]
-		then
-			local namespace="ft";
-		else
-			local namespace="std";
-		fi
-		outfile="$name""_$namespace""_leaks.txt";
-
-		$leaks ./$name &> $outfile;
-
-		if [ "$?" != "0" ]
-		then
-			echo -en $RED "Program crashed" $END;
-			rm $outfile;
-			return;
-		fi
-
-		if [ ! -z "$leaks" ]
-		then
-			if [ "$OS" == "Linux" ]
-			then
-				grep " 0 errors from 0 contexts " "$outfile" &> /dev/null;
-			else
-				grep " 0 leaks for 0 total leaked bytes." "$outfile" &> /dev/null;
-			fi
-			if [ "$?" == "0" ]
-			then
-				echo -en $GREEN[$namespace Leaks OK] $END;
-				rm $outfile;
-			else
-				echo -en $RED[$namespace Leaks NOT OK] $END;
-				mv $outfile "$LOGS_FOLDER/$name" &> /dev/null;
-			fi
-			else
-				rm $outfile;
-		fi
-
-	else
-		echo $name " from container: " $container " does not compile";
 	fi
 }
 
