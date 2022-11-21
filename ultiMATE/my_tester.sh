@@ -1,55 +1,65 @@
 #!/bin/bash
 
-RED="\033[1;31m"
-GREEN="\033[1;32m"
-END="\033[1;0m"
-YELLOW="\033[0;33m"
+VERSION=0.1
 
+# CONFIGURATION
+# =============================================================================
 SRCS_PATH=/Users/Cyril/Dev/42/ft_containers/srcs
 
-# $1 = $@
+LEXICO_COMPARE=
+EQUAL=
+IS_INTEGRAL=
+ENABLE_IF=
+ITERATOR_TRAIT=
+PAIR=
+
+# ==============================================================================
+
+LOGS_FOLDER="logs"
+STD="0"
+FT="1"
+FLAGS="-Werror"
+DIFF_SUCCESS="true"
+COMP_ERROR_FT="false"
+COMP_ERROR_STD="false"
+NULL="&>/dev/null"
+
+
 declare_variables ()
 {
-	LOGS_FOLDER="logs"
-	std="0" ft="1" flags="-Werror"
-	diff_success="true" compilation_ft_error="false" compilation_std_error="false"
-	NULL="&>/dev/null"
-	tester_path="$(find . -name ultiMATE -type d -print -quit)"
+  if echo $* | grep -e "-h" -q; then
+  		print_help
+  fi
 
-	if echo $* | grep -e "-d" -q
-	then
+	tester_path="$(find . -name ultiMATE -type d -print -quit)"
+  containers=(vector is_integral)
+  unit_files=$(echo "$@" | grep -o "\w*.cpp\w*")
+
+	if echo $* | grep -e "-d" -q; then
 		print_diff="true"
 	else
 		print_diff="false"
 	fi
 
-	if echo $* | grep -e "-l" -q
-	then
+	if echo $* | grep -e "-l" -q; then
 		redir="/dev/stdout"
 	else
 		redir="/dev/null"
 	fi
 
-	if echo $* | grep -e "-z" -q
-	then
+	if echo $* | grep -e "-z" -q;	then
 		init_leaks;
 	else
 		leaks=""
 	fi
 }
 
-# -d : Print diff if any
-# -p : Print ouput programs
-# -l : Print logs compilation
-# -m : Compile with multiple
 main ()
 {
 	declare_variables "$@"
 	print_title
 	trap end_program SIGINT &>/dev/null
 	rm -rf ${tester_path}/$LOGS_FOLDER
-	containers=(lexicographical_compare vector) # map stack set)
-	unit_files=$(echo $* | grep -o "\w*.cpp\w*")
 
 	for container in "${containers[@]}"
 	do
@@ -104,7 +114,7 @@ update_container_path ()
 		return;
 	fi
 	echo -e "${YELLOW}Searching for your $1 file ${END}"
-	local container_path="$(find $SRCS_PATH -name $1.hpp -print -quit 2>/dev/null)"
+	local container_path="$(find $SRCS_PATH -name $1.hpp -print -quit &>dev/null)"
 
 	if test -z "$container_path"
 	then
@@ -123,10 +133,10 @@ run ()
 #	 echo "$LOGS_FOLDER/$1"
 #	 exit
 	mkdir -p ${tester_path}/$LOGS_FOLDER/$1
-	compile "$1" "$2" "$ft"
-	if [ "$compilation_ft_error" == "true" ] || [ "$compilation_std_error" == "true" ]
+	compile "$1" "$2" "$FT"
+	if [ "$COMP_ERROR_FT" == "true" ] || [ "$COMP_ERROR_STD" == "true" ]
 	then
-		compilation_ft_error="false" compilation_std_error="false"
+		COMP_ERROR_FT="false" COMP_ERROR_STD="false"
 		return
 	else
 		execute $1
@@ -134,19 +144,19 @@ run ()
 	fi
 }
 
-# $1 = filename; $2 = container/file.cpp; $3 = $ft | $std
+# $1 = filename; $2 = container/file.cpp; $3 = $FT | $STD
 compile ()
 {
-	c++ "$flags" -o "ft_$1" "-DNAMESPACE=$ft" "$2" &>$redir
+	c++ "$FLAGS" -o "ft_$1" "-DNAMESPACE=$FT" "$2" &>$redir
 	if [ $? -eq 1 ]
 	then
 		mutex_lock
 		echo -e "${RED}ft_$1: Compilation error$END"
 		mutex_unlock
-		compilation_ft_error="true"
+		COMP_ERROR_FT="true"
 		return
 	fi
-	c++ "$flags" -o "std_$1" "-DNAMESPACE=$std" "$2" &>$redir
+	c++ "$FLAGS" -o "std_$1" "-DNAMESPACE=$STD" "$2" &>$redir
 	if [ $? -eq 1 ]
 	then
 
@@ -154,7 +164,7 @@ compile ()
 		mutex_lock
 		echo -e "${RED}std_$1: Compilation error$END"
 		mutex_unlock
-		compilation_std_error="true"
+		COMP_ERROR_STD="true"
 		return
 	fi
 }
@@ -209,7 +219,7 @@ diff_outfiles()
 		check_if_file_exists $index
 	done
 
-	rm "$filename"_ft_leaks.txt &> /dev/null
+	rm "$filename"_ft_leaks.txt &>/dev/null
 
 	clean_path
 	echo
@@ -247,9 +257,9 @@ clean_path ()
 end_program ()
 {
 	kill $(jobs -p) 2&>/dev/null
-	# rm *ft*.txt 2&>/dev/null
-	# rm ft* 2&>/dev/null
-	# rm std* 2&>/dev/null
+	# rm *FT*.txt 2&>/dev/null
+	# rm FT* 2&>/dev/null
+	# rm STD* 2&>/dev/null
 	rm -rf ${tester_path}/$LOGS_FOLDER &>/dev/null
 	exit
 }
@@ -306,5 +316,27 @@ init_leaks_macos () {
 		echo "Leaks command not found, leaks check : OFF";
 	fi
 }
+
+print_help() {
+  echo -e "${GREEN}ft_containers_ultiMATE_tester$END $VERSION"
+  echo -e ""
+  echo -e "${YELLOW}USAGE:$END ./my_script [option] [container] [unit_test]"
+  echo -e "  - No [container] launch all tests."
+  echo -e "  - No [unit_tests] launch all tests of the container."
+  echo -e ""
+  echo -e "${YELLOW}OPTIONS:$END"
+  echo -e "    -d  \t Print the diff if any"
+  echo -e "    -l  \t Print logs compilation"
+  echo -e "    -h  \t help"
+#  echo -e "    -m  \t Compile multiple unit tests"
+  echo -e "    -p  \t Print output programs"
+  echo -e "    -z  \t launch tests for memory leaks"
+  exit
+}
+
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+END="\033[1;0m"
+YELLOW="\033[0;33m"
 
 main "$@"
