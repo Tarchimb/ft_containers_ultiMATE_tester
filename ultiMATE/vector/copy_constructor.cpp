@@ -22,20 +22,17 @@ int main(int argc, char** argv)
 	v3[50] = TestStruct(-5, 213, "nothing");
 	test_for_type<TestStruct>(v3);
 
-	v1.clear();
-	for(int i = 0; i < 12; i++)
-		v1.push_back(i);
-	test_for_capacity<int>(v1);
+	vector<int> v11(10, 42);
+	v11.reserve(20);
+	test_for_capacity<int>(v11);
 
-	v2.clear();
-	for(double i = 0; i < 10; i++)
-		v2.push_back(i);
-	test_for_capacity<double>(v2);
+	vector<double> v22(100, 42.424242f);
+	v11.reserve(130);
+	test_for_capacity<double>(v22);
 
-	v3.clear();
-	for(double i = 0; i < 10; i++)
-		v3.push_back(TestStruct(i, i * 10, "nothing"));
-	test_for_capacity<TestStruct>(v3);
+	vector<TestStruct> v33(100, TestStruct(10, 42, "test"));
+	v33.reserve(110);
+	test_for_capacity<TestStruct>(v33);
 
 	ofs.close();
 }
@@ -52,6 +49,5 @@ template <typename T>
 void test_for_capacity(const vector<T> vector1)
 {
 	TEST_INIT();
-	vector<T> vector2(vector1);
-	write_result<T>(ofs, vector2);
+	write_result<T>(ofs, vector1);
 }
