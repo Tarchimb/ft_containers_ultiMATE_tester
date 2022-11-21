@@ -20,8 +20,8 @@ void test_for_type(const T& value)
 	{ // Classic range constructor
 		TEST_INIT();
 		try {
-			vector<T> vector1(100, value);
-			vector<T> vector2(vector1.begin(), vector1.end());
+			ft::vector<T> vector1(100, value);
+			ft::vector<T> vector2(vector1.begin(), vector1.end());
 			write_result(ofs, vector2);
 		}
 		catch (std::exception& e)
@@ -32,8 +32,8 @@ void test_for_type(const T& value)
 	{ // Range constructor with modified iterators
 		TEST_INIT();
 		try {
-			vector<T> vector1(100, value);
-			vector<T> vector2(vector1.begin() + 25, vector1.end() - 25);
+			ft::vector<T> vector1(100, value);
+			ft::vector<T> vector2(vector1.begin() + 25, vector1.end() - 25);
 			write_result(ofs, vector2);
 		}
 		catch (std::exception& e)
@@ -44,8 +44,8 @@ void test_for_type(const T& value)
 	{ // Range constructor with begin = end
 		TEST_INIT();
 		try {
-			vector<T> vector1(100, value);
-			vector<T> vector2(vector1.begin() + 50, vector1.begin() - 50);
+			ft::vector<T> vector1(100, value);
+			ft::vector<T> vector2(vector1.begin() + 50, vector1.begin() - 50);
 			write_result(ofs, vector2);
 		}
 		catch (std::exception& e)
@@ -54,4 +54,3 @@ void test_for_type(const T& value)
 		}
 	}
 }
-

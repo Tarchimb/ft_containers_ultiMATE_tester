@@ -1,11 +1,9 @@
-#include "vector.hpp"
 #include <iostream>
-#include <sstream>
 #include <exception>
-#include <vector>
 #include <fstream>
 #include <string>
 #include <time.h>
+#include <vector>
 
 #define TEST_INIT() \
 		change_ofs_to_next_test(ofs, testName);\
@@ -17,10 +15,12 @@
 #endif
 
 #if NAMESPACE==0
-	using namespace std;
 	#define FILE_NAME "_std"
+	namespace ft = std;
 #else
-	using namespace ft;
+	#include "/Users/Cyril/Dev/42/ft_containers/srcs/vector.hpp"
+	#include "/Users/Cyril/Dev/42/ft_containers/srcs/type_traits.hpp"
+	#include "/Users/Cyril/Dev/42/ft_containers/srcs/lexicographical_compare.hpp"
 	#define FILE_NAME "_ft"
 #endif
 
@@ -86,7 +86,7 @@ std::ostream& operator<<(std::ostream& o, const TestStruct& v) {
 	return o;
 }
 
-namespace std{
+namespace std {
 	std::string to_string(const TestStruct& v) {
 		std::string str;
 		str += std::to_string(v.a) + " | ";
@@ -106,19 +106,12 @@ namespace std{
 			str += std::to_string(v[i]);
 		return str;
 	}
-	template <typename T>
-	std::string to_string(const std::vector<T>& v) {
-		std::string str;
-		for (int i = 0; i < v.size(); i++)
-			str += std::to_string(v[i]);
-		return str;
-	}
 }
 
 // ADD PRINT BEGIN IF NOT EMPTY
 // ADD ITERATOR VALIDITY
 template <typename T>
-void write_result(std::ofstream& ofs, const vector<T>& vector, const bool printContent=true) {
+void write_result(std::ofstream& ofs, const ft::vector<T>& vector, const bool printContent=true) {
 	ofs << "size: " + std::to_string(vector.size()) << std::endl;
 	ofs << "capacity: " + std::to_string(vector.capacity()) << std::endl;
 	ofs << "empty: " + std::to_string(vector.empty()) << std::endl;

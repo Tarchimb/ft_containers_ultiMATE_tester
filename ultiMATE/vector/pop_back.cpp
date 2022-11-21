@@ -19,7 +19,7 @@ void test_for_type(const T& value)
 	{ // Pop back with filled vector
 		TEST_INIT();
 
-		vector<T> vector(20, value);
+		ft::vector<T> vector(20, value);
 		const int SIZE = vector.size();
 		for (int i = 0; i < SIZE; i++)
 		{
@@ -32,7 +32,7 @@ void test_for_type(const T& value)
 	{ // Pop back with empty vector
 		TEST_INIT();
 
-		vector<T> vector;
+		ft::vector<T> vector;
 		vector.clear();
 		const int SIZE = vector.size();
 		for (int i = 0; i < SIZE; i++)
@@ -46,7 +46,7 @@ void test_for_type(const T& value)
 	{ // Pop back with reserved space
 		TEST_INIT();
 
-		vector<T> vector;
+		ft::vector<T> vector;
 		vector.reserve(100);
 		const int SIZE = vector.size();
 		for (int i = 0; i < SIZE; i++)

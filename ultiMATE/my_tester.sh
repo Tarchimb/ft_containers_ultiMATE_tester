@@ -1,9 +1,11 @@
 #!/bin/bash
 
-RED="\033[1;31m";
-GREEN="\033[1;32m";
-END="\033[1;0m";
-YELLOW="\033[0;33m" 
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+END="\033[1;0m"
+YELLOW="\033[0;33m"
+
+SRCS_PATH=/Users/Cyril/Dev/42/ft_containers/srcs
 
 # $1 = $@
 declare_variables ()
@@ -12,8 +14,8 @@ declare_variables ()
 	std="0" ft="1" flags="-Werror"
 	diff_success="true" compilation_ft_error="false" compilation_std_error="false"
 	NULL="&>/dev/null"
-	tester_path="$(find ~ -name ultiMATE -type d -print -quit)"
-	
+	tester_path="$(find . -name ultiMATE -type d -print -quit)"
+
 	if echo $* | grep -e "-d" -q
 	then
 		print_diff="true"
@@ -46,11 +48,14 @@ main ()
 	print_title
 	trap end_program SIGINT &>/dev/null
 	rm -rf ${tester_path}/$LOGS_FOLDER
-	containers=(vector) # map stack set)
+	containers=(lexicographical_compare vector) # map stack set)
 	unit_files=$(echo $* | grep -o "\w*.cpp\w*")
 
-	for container in ${containers[@]}
+	for container in "${containers[@]}"
 	do
+	  echo -e "==================================================================="
+	  echo -e "Launching $container tests"
+	  echo -e "==================================================================="
 		update_container_path "$container"
 		echo -e "${YELLOW}Start compiling... $END"
 		if [ "$unit_files" != "" ]
@@ -64,6 +69,7 @@ main ()
 				run "${filename}" "${file}" &
 			done
 		fi
+	  wait
 	done
 	wait
 	find ${tester_path}/$LOGS_FOLDER/ -empty -type d -delete
@@ -81,7 +87,7 @@ print_title ()
 unit_function()
 {
 	filenames=($2)
-	for file in ${filenames[@]}
+	for file in "${filenames[@]}"
 	do
 		filename=$(echo $file | sed 's/.cpp//g')
 		path="${tester_path}/$1/$file"
@@ -92,30 +98,30 @@ unit_function()
 # $1 = container_name
 update_container_path ()
 {
-	old_include_name="$(cat ${tester_path}/common.cpp | grep \"vector.hpp\")"
+	old_include_name="$(cat ${tester_path}/common.cpp | grep \"$1.hpp\")"
 	if [ "$old_include_name" == "" ]
 	then
 		return;
 	fi
 	echo -e "${YELLOW}Searching for your $1 file ${END}"
-	local vector_path="$(find ~ -name vector.hpp -print -quit 2>/dev/null)"
+	local container_path="$(find $SRCS_PATH -name $1.hpp -print -quit 2>/dev/null)"
 
-	if test -z "$vector_path" 
+	if test -z "$container_path"
 	then
-		echo -e "${YELLOW}${1}.hpp not found. Please include manually in common.cpp${END}"
+		echo -e "${YELLOW}$1.hpp not found. Please include manually in common.cpp${END}"
 		exit
 	fi
 
-	include_name="$(cat ${tester_path}/common.cpp | grep vector.hpp)"
-	sed -i '' "s|${include_name}|#include \"${vector_path}\"|" ${tester_path}/common.cpp
-	echo -e "${YELLOW}Updated ${1} path with : ${vector_path}${END}"
+	include_name="$(cat ${tester_path}/common.cpp | grep $1.hpp)"
+	sed -i '' "s|${include_name}|\t#include \"${container_path}\"|" ${tester_path}/common.cpp
+	echo -e "${YELLOW}Updated $1 path with : ${container_path}${END}"
 }
 
 # $1 = filename; $2 = container/file.cpp;
 run ()
 {
-	# echo "$LOGS_FOLDER/$1"
-	# exit
+#	 echo "$LOGS_FOLDER/$1"
+#	 exit
 	mkdir -p ${tester_path}/$LOGS_FOLDER/$1
 	compile "$1" "$2" "$ft"
 	if [ "$compilation_ft_error" == "true" ] || [ "$compilation_std_error" == "true" ]
@@ -135,7 +141,7 @@ compile ()
 	if [ $? -eq 1 ]
 	then
 		mutex_lock
-		echo -e "${RED}ft_${1}: Compilation error$END"
+		echo -e "${RED}ft_$1: Compilation error$END"
 		mutex_unlock
 		compilation_ft_error="true"
 		return
@@ -146,7 +152,7 @@ compile ()
 
 		rm "ft_$1"
 		mutex_lock
-		echo -e "${RED}std_${1}: Compilation error$END"
+		echo -e "${RED}std_$1: Compilation error$END"
 		mutex_unlock
 		compilation_std_error="true"
 		return
