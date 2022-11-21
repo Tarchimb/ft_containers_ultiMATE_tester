@@ -6,13 +6,6 @@ VERSION=0.1
 # =============================================================================
 SRCS_PATH=/Users/Cyril/Dev/42/ft_containers/srcs
 
-LEXICO_COMPARE=
-EQUAL=
-IS_INTEGRAL=
-ENABLE_IF=
-ITERATOR_TRAIT=
-PAIR=
-
 # ==============================================================================
 
 LOGS_FOLDER="logs"
@@ -22,74 +15,93 @@ FLAGS="-Werror"
 DIFF_SUCCESS="true"
 COMP_ERROR_FT="false"
 COMP_ERROR_STD="false"
-NULL="&>/dev/null"
 
+NULL=&>/dev/null
 
-declare_variables ()
+init_script ()
 {
-  if echo $* | grep -e "-h" -q; then
-  		print_help
+  PRINT_DIFF="false"
+  REDIR="/dev/null"
+  LEAKS=""
+  CONTAINERS=()
+  UNIT_FILE=""
+	TESTER_PATH="$(find . -name ultiMATE -type d -print -quit)"
+
+  parse_argument "$@"
+  if [ -z "${CONTAINERS[0]}" ]; then
+    CONTAINERS=(vector other)
   fi
+}
 
-	tester_path="$(find . -name ultiMATE -type d -print -quit)"
-  containers=(vector is_integral)
-  unit_files=$(echo "$@" | grep -o "\w*.cpp\w*")
+parse_argument()
+{
+   OPTION=""
+   while [ $1 ]; do
+     case $1 in
+       vector|map|set|other)
+          CONTAINERS+=($1);
+          shift ;;
+       *.cpp)
+          UNIT_FILE=$1
+          shift ;;
+       *)
+          OPTION="$OPTION $1"
+          shift;;
+     esac
+   done
+   parse_option $OPTION
+}
 
-	if echo $* | grep -e "-d" -q; then
-		print_diff="true"
-	else
-		print_diff="false"
-	fi
-
-	if echo $* | grep -e "-l" -q; then
-		redir="/dev/stdout"
-	else
-		redir="/dev/null"
-	fi
-
-	if echo $* | grep -e "-z" -q;	then
-		init_leaks;
-	else
-		leaks=""
-	fi
+parse_option()
+{
+  while getopts bdlhz opt; do
+    case $opt in
+      (b) echo -e "Benchmark mode";;
+      (d) PRINT_DIFF="true";;
+      (l) REDIR="/dev/stdout";;
+      (h) print_help;;
+      (z) init_leaks;;
+      (\?) echo -e "Invalid option: -$OPTARG"; exit 1;;
+    esac
+  done
 }
 
 main ()
 {
-	declare_variables "$@"
+	init_script "$@"
 	print_title
 	trap end_program SIGINT &>/dev/null
-	rm -rf ${tester_path}/$LOGS_FOLDER
+	rm -rf ${TESTER_PATH}/$LOGS_FOLDER
 
-	for container in "${containers[@]}"
+	for container in "${CONTAINERS[@]}"
 	do
 	  echo -e "==================================================================="
 	  echo -e "Launching $container tests"
 	  echo -e "==================================================================="
 		update_container_path "$container"
 		echo -e "${YELLOW}Start compiling... $END"
-		if [ "$unit_files" != "" ]
+		if [ "$UNIT_FILE" != "" ]
 		then
-			unit_function "$containers" "$unit_files"
+			unit_function "$CONTAINERS" "$UNIT_FILE"
 		else
-			test_files=$(find "${tester_path}/${container}" -type f -name '*.cpp' | sort)
+			test_files=$(find "${TESTER_PATH}/${container}" -type f -name '*.cpp' | sort)
 			for file in ${test_files[@]}
 			do
-				filename=$(echo $file | cut -c$(echo ${tester_path}/${container}/ | wc -c)- | sed 's/.cpp//g')
+				filename=$(echo $file | cut -c$(echo ${TESTER_PATH}/${container}/ | wc -c)- | sed 's/.cpp//g')
 				run "${filename}" "${file}" &
 			done
 		fi
 	  wait
 	done
 	wait
-	find ${tester_path}/$LOGS_FOLDER/ -empty -type d -delete
+	find ${TESTER_PATH}/$LOGS_FOLDER/ -empty -type d -delete
 	rm *.txt &>/dev/null
 }
 
 print_title ()
 {
 	echo -e $GREEN
-	printf '%b\n' "$(cat ${tester_path}/title/title.txt)"
+	printf '%b\n' "$(cat ${TESTER_PATH}/title/title.txt)"
 	echo -e $END
 }
 
@@ -100,7 +112,7 @@ unit_function()
 	for file in "${filenames[@]}"
 	do
 		filename=$(echo $file | sed 's/.cpp//g')
-		path="${tester_path}/$1/$file"
+		path="${TESTER_PATH}/$1/$file"
 		run "${filename}" "${path}"
 	done
 }
@@ -108,7 +120,7 @@ unit_function()
 # $1 = container_name
 update_container_path ()
 {
-	old_include_name="$(cat ${tester_path}/common.cpp | grep \"$1.hpp\")"
+	old_include_name="$(cat ${TESTER_PATH}/common.cpp | grep \"$1.hpp\")"
 	if [ "$old_include_name" == "" ]
 	then
 		return;
@@ -122,8 +134,8 @@ update_container_path ()
 		exit
 	fi
 
-	include_name="$(cat ${tester_path}/common.cpp | grep $1.hpp)"
-	sed -i '' "s|${include_name}|\t#include \"${container_path}\"|" ${tester_path}/common.cpp
+	include_name="$(cat ${TESTER_PATH}/common.cpp | grep $1.hpp)"
+	sed -i '' "s|${include_name}|\t#include \"${container_path}\"|" ${TESTER_PATH}/common.cpp
 	echo -e "${YELLOW}Updated $1 path with : ${container_path}${END}"
 }
 
@@ -132,7 +144,7 @@ run ()
 {
 #	 echo "$LOGS_FOLDER/$1"
 #	 exit
-	mkdir -p ${tester_path}/$LOGS_FOLDER/$1
+	mkdir -p ${TESTER_PATH}/$LOGS_FOLDER/$1
 	compile "$1" "$2" "$FT"
 	if [ "$COMP_ERROR_FT" == "true" ] || [ "$COMP_ERROR_STD" == "true" ]
 	then
@@ -147,7 +159,7 @@ run ()
 # $1 = filename; $2 = container/file.cpp; $3 = $FT | $STD
 compile ()
 {
-	c++ "$FLAGS" -o "ft_$1" "-DNAMESPACE=$FT" "$2" &>$redir
+	c++ "$FLAGS" -o "ft_$1" "-DNAMESPACE=$FT" "$2" &>$REDIR
 	if [ $? -eq 1 ]
 	then
 		mutex_lock
@@ -156,7 +168,7 @@ compile ()
 		COMP_ERROR_FT="true"
 		return
 	fi
-	c++ "$FLAGS" -o "std_$1" "-DNAMESPACE=$STD" "$2" &>$redir
+	c++ "$FLAGS" -o "std_$1" "-DNAMESPACE=$STD" "$2" &>$REDIR
 	if [ $? -eq 1 ]
 	then
 
@@ -172,13 +184,13 @@ compile ()
 # $1 = filename
 execute ()
 {
-	if [ ! -z "$leaks" ]
+	if [ ! -z "$LEAKS" ]
 	then
-		$leaks ./ft_$1 &> "$filename"_ft_leaks.txt;
+		$LEAKS ./ft_$1 &> "$filename"_ft_leaks.txt;
 	else
-		./ft_$1 &>$redir
+		./ft_$1 &>$REDIR
 	fi
-	./std_$1 &>$redir
+	./std_$1 &>$REDIR
 }
 
 diff_outfiles()
@@ -188,7 +200,7 @@ diff_outfiles()
 	index=1
 	check_if_file_exists $index
 
-	if [ ! -z "$leaks" ]
+	if [ ! -z "$LEAKS" ]
 	then
 		check_leaks
 	fi
@@ -198,11 +210,11 @@ diff_outfiles()
 		local std_file="$filename"_"$index""_std.txt"
 		local ft_file="$filename"_"$index""_ft.txt"
 
-		if [ "$print_diff" == "true" ]
+		if [ "$PRINT_DIFF" == "true" ]
 		then
 			git --no-pager diff --text --no-index $ft_file $std_file
 		fi
-		git --no-pager diff --text --no-index $ft_file $std_file &>$redir
+		git --no-pager diff --text --no-index $ft_file $std_file &>$REDIR
 
 		if [ "$?" == "0" ]
 		then # Delete passed tests logs
@@ -211,8 +223,8 @@ diff_outfiles()
 			rm $ft_file  &>/dev/null
 		else # Move failed tests logs into logs folder
 			echo -en "$index"$RED" NOT OK" $END
-			mv $std_file "${tester_path}/$LOGS_FOLDER/$filename/"
-			mv $ft_file "${tester_path}/$LOGS_FOLDER/$filename/"
+			mv $std_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
+			mv $ft_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
 		fi
 
 		index=$((index+1));
@@ -260,7 +272,7 @@ end_program ()
 	# rm *FT*.txt 2&>/dev/null
 	# rm FT* 2&>/dev/null
 	# rm STD* 2&>/dev/null
-	rm -rf ${tester_path}/$LOGS_FOLDER &>/dev/null
+	rm -rf ${TESTER_PATH}/$LOGS_FOLDER &>/dev/null
 	exit
 }
 
@@ -270,7 +282,7 @@ check_leaks() {
 	then
 		grep " 0 errors from 0 contexts " "$leaks_file" &> /dev/null;
 	else
-		grep " 0 leaks for 0 total leaked bytes." "$leaks_file" &> /dev/null;
+		grep " 0 LEAKS for 0 total leaked bytes." "$leaks_file" &> /dev/null;
 	fi
 	if [ "$?" == "0" ]
 	then
@@ -278,7 +290,7 @@ check_leaks() {
 		rm $leaks_file;
 	else
 		echo -en $RED[Leaks NOT OK] $END;
-		mv $leaks_file "${tester_path}/$LOGS_FOLDER/$filename/" &> /dev/null;
+		mv $leaks_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/" &> /dev/null;
 	fi
 }
 
@@ -291,7 +303,7 @@ init_leaks() {
 	then
 		init_leaks_macos;
 	else
-		echo "This tester does not support leaks check on this OS";
+		echo "This tester does not support LEAKS check on this OS";
 	fi
 }
 
@@ -300,20 +312,20 @@ init_leaks_linux () {
 	if [ $? -eq 0 ]
 	then
 		echo "Leaks check: ON";
-		leaks="valgrind --leak-check=full";
+		LEAKS="valgrind --leak-check=full";
 	else
-		echo "Valgrind not found, leaks check : OFF";
+		echo "Valgrind not found, LEAKS check : OFF";
 	fi
 }
 
 init_leaks_macos () {
-	leaks -h &>/dev/null;
+	LEAKS -h &>/dev/null;
 	if [ $? -eq 0 ]
 	then
 		echo "Leaks check: ON";
-		leaks="leaks -atExit -q -- ";
+		LEAKS="LEAKS -atExit -q -- ";
 	else
-		echo "Leaks command not found, leaks check : OFF";
+		echo "Leaks command not found, LEAKS check : OFF";
 	fi
 }
 
@@ -330,7 +342,7 @@ print_help() {
   echo -e "    -h  \t help"
 #  echo -e "    -m  \t Compile multiple unit tests"
   echo -e "    -p  \t Print output programs"
-  echo -e "    -z  \t launch tests for memory leaks"
+  echo -e "    -z  \t launch tests for memory LEAKS"
   exit
 }
 
