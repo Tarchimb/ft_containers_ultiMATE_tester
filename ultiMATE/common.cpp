@@ -4,6 +4,7 @@
 #include <string>
 #include <time.h>
 #include <vector>
+#include <algorithm>
 
 #define TEST_INIT() \
 		change_ofs_to_next_test(ofs, testName);\
@@ -59,6 +60,23 @@ struct TestStruct {
 		tmp.b *= n;
 		tmp.c += tmp.c;
 		return tmp;
+	}
+
+	TestStruct operator++() {
+		TestStruct tmp = *this;
+		tmp.a = a + 1;
+		tmp.b = b + 1;
+		tmp.c = c + c;
+		return tmp;
+	}
+	friend bool operator<(const TestStruct &lhs, const TestStruct &rhs) {
+		if (lhs.a > rhs.a)
+			return false;
+		if (lhs.b > rhs.b)
+			return false;
+		if (lhs.c > rhs.c)
+			return false;
+		return true;
 	}
 };
 
