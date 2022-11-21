@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 	test_for_type<int>();
 	test_for_type<double>();
 	test_for_type<TestStruct>();
-	test_for_type< ft::vector<int> >();
+	test_for_type< CURRENT_NAMESPACE::vector<int> >();
 	test_for_type<std::string>();
 
 	ofs.close();
@@ -20,6 +20,6 @@ template <typename T>
 void test_for_type()
 {
 	TEST_INIT();
-	ft::vector<T> vector;
+	CURRENT_NAMESPACE::vector<T> vector;
 	write_result<T>(ofs, vector, false);
 }

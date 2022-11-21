@@ -16,12 +16,13 @@
 
 #if NAMESPACE==0
 	#define FILE_NAME "_std"
-	namespace ft = std;
+	#define CURRENT_NAMESPACE std
 #else
 	#include "/Users/Cyril/Dev/42/ft_containers/srcs/vector.hpp"
 	#include "/Users/Cyril/Dev/42/ft_containers/srcs/type_traits.hpp"
 	#include "/Users/Cyril/Dev/42/ft_containers/srcs/lexicographical_compare.hpp"
 	#define FILE_NAME "_ft"
+	#define CURRENT_NAMESPACE ft
 #endif
 
 int test = 1; // Used to create indexed log
@@ -100,7 +101,7 @@ namespace std {
 	}
 
 	template <typename T>
-	std::string to_string(const ft::vector<T>& v) {
+	std::string to_string(const CURRENT_NAMESPACE::vector<T>& v) {
 		std::string str;
 		for (int i = 0; i < v.size(); i++)
 			str += std::to_string(v[i]);
@@ -111,7 +112,7 @@ namespace std {
 // ADD PRINT BEGIN IF NOT EMPTY
 // ADD ITERATOR VALIDITY
 template <typename T>
-void write_result(std::ofstream& ofs, const ft::vector<T>& vector, const bool printContent=true) {
+void write_result(std::ofstream& ofs, const CURRENT_NAMESPACE::vector<T>& vector, const bool printContent=true) {
 	ofs << "size: " + std::to_string(vector.size()) << std::endl;
 	ofs << "capacity: " + std::to_string(vector.capacity()) << std::endl;
 	ofs << "empty: " + std::to_string(vector.empty()) << std::endl;
