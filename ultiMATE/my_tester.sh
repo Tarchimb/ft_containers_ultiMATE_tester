@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=0.1
+VERSION=0.2
 
 # CONFIGURATION
 # =============================================================================
@@ -15,22 +15,22 @@ FLAGS="-Werror"
 DIFF_SUCCESS="true"
 COMP_ERROR_FT="false"
 COMP_ERROR_STD="false"
+TESTER_PATH="$(find . -name ultiMATE -type d -print -quit)"
 
-NULL=&>/dev/null
+stty -echoctl
 
 init_script ()
 {
-  PRINT_DIFF="false"
-  REDIR="/dev/null"
-  LEAKS=""
-  CONTAINERS=()
-  UNIT_FILE=""
-	TESTER_PATH="$(find . -name ultiMATE -type d -print -quit)"
+    PRINT_DIFF="false"
+    REDIR="/dev/null"
+    LEAKS=""
+    CONTAINERS=()
+    UNIT_FILE=""
 
-  parse_argument "$@"
-  if [ -z "${CONTAINERS[0]}" ]; then
-    CONTAINERS=(vector other)
-  fi
+    parse_argument "$@"
+    if [ -z "${CONTAINERS[0]}" ]; then
+      CONTAINERS=(vector other)
+    fi
 }
 
 parse_argument()
@@ -49,21 +49,17 @@ parse_argument()
           shift;;
      esac
    done
-   parse_option $OPTION
-}
-
-parse_option()
-{
-  while getopts bdlhz opt; do
-    case $opt in
-      (b) echo -e "Benchmark mode";;
-      (d) PRINT_DIFF="true";;
-      (l) REDIR="/dev/stdout";;
-      (h) print_help;;
-      (z) init_leaks;;
-      (\?) echo -e "Invalid option: -$OPTARG"; exit 1;;
-    esac
-  done
+   # Parse option
+   while getopts bdlhz opt $OPTION; do
+       case $opt in
+         (b) echo -e "Benchmark mode";;
+         (d) PRINT_DIFF="true";;
+         (l) REDIR="/dev/stdout";;
+         (h) print_help;;
+         (z) init_leaks;;
+         (\?) echo -e "Invalid option: -$OPTARG"; exit 1;;
+       esac
+     done
 }
 
 main ()
@@ -76,9 +72,9 @@ main ()
 	for container in "${CONTAINERS[@]}"
 	do
 	  echo -e "==================================================================="
-	  echo -e "Launching $container tests"
+	  echo -e "\t\t    Launching $container tests"
 	  echo -e "==================================================================="
-		update_container_path "$container"
+	    update_container_path "$container"
 		echo -e "${YELLOW}Start compiling... $END"
 		if [ "$UNIT_FILE" != "" ]
 		then
@@ -146,8 +142,7 @@ run ()
 #	 exit
 	mkdir -p ${TESTER_PATH}/$LOGS_FOLDER/$1
 	compile "$1" "$2" "$FT"
-	if [ "$COMP_ERROR_FT" == "true" ] || [ "$COMP_ERROR_STD" == "true" ]
-	then
+	if [ "$COMP_ERROR_FT" == "true" ] || [ "$COMP_ERROR_STD" == "true" ]; then
 		COMP_ERROR_FT="false" COMP_ERROR_STD="false"
 		return
 	else
@@ -168,10 +163,9 @@ compile ()
 		COMP_ERROR_FT="true"
 		return
 	fi
-	c++ "$FLAGS" -o "std_$1" "-DNAMESPACE=$STD" "$2" &>$REDIR
-	if [ $? -eq 1 ]
-	then
 
+	c++ "$FLAGS" -o "std_$1" "-DNAMESPACE=$STD" "$2" &>$REDIR
+	if [ $? -eq 1 ]; then
 		rm "ft_$1"
 		mutex_lock
 		echo -e "${RED}std_$1: Compilation error$END"
@@ -184,8 +178,7 @@ compile ()
 # $1 = filename
 execute ()
 {
-	if [ ! -z "$LEAKS" ]
-	then
+	if [ -n "$LEAKS" ]; then
 		$LEAKS ./ft_$1 &> "$filename"_ft_leaks.txt;
 	else
 		./ft_$1 &>$REDIR
@@ -216,8 +209,7 @@ diff_outfiles()
 		fi
 		git --no-pager diff --text --no-index $ft_file $std_file &>$REDIR
 
-		if [ "$?" == "0" ]
-		then # Delete passed tests logs
+		if [ "$?" == "0" ]; then # Delete passed tests logs
 			echo -en "$index"$GREEN" OK" $END
 			rm $std_file  &>/dev/null
 			rm $ft_file  &>/dev/null
@@ -268,24 +260,28 @@ clean_path ()
 #Use to clean stop when SIGINT, but not really work for now
 end_program ()
 {
-	kill $(jobs -p) 2&>/dev/null
-	# rm *FT*.txt 2&>/dev/null
-	# rm FT* 2&>/dev/null
-	# rm STD* 2&>/dev/null
-	rm -rf ${TESTER_PATH}/$LOGS_FOLDER &>/dev/null
+	echo -e "${YELLOW}Killing process...${END}"
+	kill $(jobs -rp)
+	wait $(jobs -rp) 2>/dev/null
+	mutex_unlock
+	echo -e "${YELLOW}Cleaning...${END}"
+	sleep 2
+	rm *.txt 2&>/dev/null
+	rm ft* 2&>/dev/null
+	rm std* 2&>/dev/null
+	rm -rf ${tester_path}/$LOGS_FOLDER &>/dev/null
+	echo -e "${YELLOW}Done!${END}"
 	exit
 }
 
 check_leaks() {
 	local leaks_file="$filename"_ft_leaks.txt;
-	if [ "$OS" == "Linux" ]
-	then
+	if [ "$OS" == "Linux" ]; then
 		grep " 0 errors from 0 contexts " "$leaks_file" &> /dev/null;
 	else
 		grep " 0 LEAKS for 0 total leaked bytes." "$leaks_file" &> /dev/null;
 	fi
-	if [ "$?" == "0" ]
-	then
+	if [ "$?" == "0" ]; then
 		echo -en $GREEN[Leaks OK] $END;
 		rm $leaks_file;
 	else
@@ -296,11 +292,9 @@ check_leaks() {
 
 init_leaks() {
 	OS=`uname`;
-	if [ "$OS" == "Linux" ]
-	then
+	if [ "$OS" == "Linux" ]; then
 		init_leaks_linux;
-	elif [ "$OS" == "Darwin" ]
-	then
+	elif [ "$OS" == "Darwin" ]; then
 		init_leaks_macos;
 	else
 		echo "This tester does not support LEAKS check on this OS";
@@ -309,8 +303,7 @@ init_leaks() {
 
 init_leaks_linux () {
 	valgrind --version &>/dev/null;
-	if [ $? -eq 0 ]
-	then
+	if [ $? -eq 0 ]; then
 		echo "Leaks check: ON";
 		LEAKS="valgrind --leak-check=full";
 	else
@@ -320,8 +313,7 @@ init_leaks_linux () {
 
 init_leaks_macos () {
 	LEAKS -h &>/dev/null;
-	if [ $? -eq 0 ]
-	then
+	if [ $? -eq 0 ]; then
 		echo "Leaks check: ON";
 		LEAKS="LEAKS -atExit -q -- ";
 	else
@@ -337,6 +329,7 @@ print_help() {
   echo -e "  - No [unit_tests] launch all tests of the container."
   echo -e ""
   echo -e "${YELLOW}OPTIONS:$END"
+  echo -e "    -b \t launch benchmark tests"
   echo -e "    -d  \t Print the diff if any"
   echo -e "    -l  \t Print logs compilation"
   echo -e "    -h  \t help"
