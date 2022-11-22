@@ -6,7 +6,7 @@
 
 std::string testName("max_size");
 
-int main(int argc, char** argv)
+int main()
 {
 	{ // max_size vector<char>
 		TEST_INIT();

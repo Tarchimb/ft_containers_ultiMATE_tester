@@ -1,4 +1,4 @@
-#include "vector.hpp"
+#include "/Users/bbischof/Documents/containers/src/vector.hpp"
 #include <iostream>
 #include <sstream>
 #include <exception>
@@ -102,7 +102,7 @@ namespace std{
 	template <typename T>
 	std::string to_string(const ft::vector<T>& v) {
 		std::string str;
-		for (int i = 0; i < v.size(); i++)
+		for (int i = 0; i < static_cast<int>(v.size()); i++)
 			str += std::to_string(v[i]);
 		return str;
 	}
@@ -123,7 +123,7 @@ void write_result(std::ofstream& ofs, const vector<T>& vector, const bool printC
 	ofs << "capacity: " + std::to_string(vector.capacity()) << std::endl;
 	ofs << "empty: " + std::to_string(vector.empty()) << std::endl;
 	if (printContent)
-		for (int i = 0; i < vector.size(); i++)
+		for (int i = 0; i < static_cast<int>(vector.size()); i++)
 			ofs << std::to_string(vector[i]) << std::endl;
 }
 

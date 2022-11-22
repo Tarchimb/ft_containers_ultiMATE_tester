@@ -5,20 +5,20 @@ std::string testName("data");
 template <typename T>
 void test_for_type(vector<T>& vector1);
 
-int main(int argc, char** argv)
+int main()
 {
 	vector<int> v1(10, 0);
-	for (int i = 0; i < v1.size(); i++)
+	for (int i = 0; i < static_cast<int>(v1.size()); i++)
 		v1[i] = i + 1;
 	test_for_type<int>(v1);
 
 	vector<double> v2(1000, 42.424242f);
-	for (int i = 0; i < v2.size(); i++)
+	for (int i = 0; i < static_cast<int>(v2.size()); i++)
 		v2[i] = i + 1;
 	test_for_type<double>(v2);
 
 	vector<TestStruct> v3(100, TestStruct(10, 42, "test"));
-	for (int i = 0; i < v3.size(); i++)
+	for (int i = 0; i < static_cast<int>(v3.size()); i++)
 		v3[i] = TestStruct(i + 1, i + 1, std::string(std::to_string(i + 1)));
 	test_for_type<TestStruct>(v3);
 

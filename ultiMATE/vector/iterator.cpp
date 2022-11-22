@@ -14,7 +14,7 @@ void test_bidirectional_iterator(std::vector<T> array);
 template <typename T>
 void test_random_access_iterator(std::vector<T> array);
 
-int main(int argc, char** argv)
+int main()
 {
 
 	std::vector<int> array_int;
@@ -152,7 +152,6 @@ template <typename T>
 void test_random_access_iterator(std::vector<T> array)
 {
 	typedef typename std::vector<T>::iterator iterator;
-	typedef typename std::vector<T>::const_iterator const_iterator;
 
 	{ // Operator + and -
 		TEST_INIT();
@@ -181,7 +180,6 @@ void test_random_access_iterator(std::vector<T> array)
 	{ // Operator += and -=
 		iterator it(array.begin());
 		TEST_INIT();
-		iterator it2(array.begin() + 4);
 		it += 6;
 		write_result(ofs, *it);
 		it += -1;
@@ -195,7 +193,6 @@ void test_random_access_iterator(std::vector<T> array)
 	{ // Operator []
 		iterator it(array.begin());
 		TEST_INIT();
-		iterator it2(array.begin() + 4);
 		write_result(ofs, it[3]);
 		it += 3;
 		write_result(ofs, it[3]);

@@ -8,7 +8,7 @@ void test_for_type(std::ofstream& ofs, vector<T>& vector1);
 template <typename T>
 void test_for_type();
 
-int main(int argc, char** argv)
+int main()
 {
 
 	test_for_type<int>();

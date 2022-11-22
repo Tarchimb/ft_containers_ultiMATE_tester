@@ -5,7 +5,7 @@ std::string testName("begin");
 template <typename T>
 void test_for_type(vector<T>& vector1);
 
-int main(int argc, char** argv)
+int main()
 {
 	vector<int> v1(10, 42);
 	v1[3] = 420;

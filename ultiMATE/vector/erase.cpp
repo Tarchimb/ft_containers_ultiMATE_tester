@@ -15,7 +15,7 @@ void test_erase_position(const T& value);
 template <typename T>
 void test_erase_range(const T& value);
 
-int main(int argc, char** argv)
+int main()
 {
 	test_for_type<int>(10);
 	test_for_type<float>(10.5f);
@@ -29,7 +29,7 @@ template <typename T>
 void test_for_type(const T& value)
 {
 	test_erase_position<T>(value);
-	test_erase_range<T>(value);
+	//test_erase_range<T>(value);
 }
 
 template <typename T>

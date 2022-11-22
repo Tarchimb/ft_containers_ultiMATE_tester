@@ -11,7 +11,7 @@ void test_assign_fill_version(const T& value);
 template <typename T>
 void test_assign_range_version(vector<T>& v);
 
-int main(int argc, char** argv)
+int main()
 {
 	test_for_type<int>(10);
 	test_for_type<TestStruct>(TestStruct(42, 10, "crampon"));
@@ -64,7 +64,6 @@ void test_assign_fill_version(const T& value)
 template <typename T>
 void test_assign_range_version(vector<T>& v)
 {
-	typedef typename vector<T>::iterator iterator;
 	typedef typename vector<T>::const_iterator const_iterator;
 
 	{ // Assign with vector iterators

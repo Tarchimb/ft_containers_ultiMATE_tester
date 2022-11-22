@@ -5,7 +5,7 @@ std::string testName("range_constructor");
 template <typename T>
 void test_for_type(const T& value);
 
-int main(int argc, char** argv)
+int main()
 {
 	test_for_type<int>(42);
 	test_for_type<float>(42.4242);
@@ -26,7 +26,7 @@ void test_for_type(const T& value)
 		}
 		catch (std::exception& e)
 		{
-			write_result(ofs, e.what());
+			write_result(ofs, "exception thrown on invalid range");
 		}
 	}
 	{ // Range constructor with modified iterators
@@ -38,7 +38,7 @@ void test_for_type(const T& value)
 		}
 		catch (std::exception& e)
 		{
-			write_result(ofs, e.what());
+			write_result(ofs, "exception thrown on invalid range");
 		}
 	}
 	{ // Range constructor with begin = end
@@ -50,7 +50,7 @@ void test_for_type(const T& value)
 		}
 		catch (std::exception& e)
 		{
-			write_result(ofs, e.what());
+			write_result(ofs, "exception thrown on invalid range");
 		}
 	}
 }

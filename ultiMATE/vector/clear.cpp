@@ -5,7 +5,7 @@ std::string testName("clear");
 template <typename T>
 void test_for_type(vector<T>& vector1, const T& value);
 
-int main(int argc, char** argv)
+int main()
 {
 	vector<int> v1(10, 0);
 	test_for_type<int>(v1, 1);

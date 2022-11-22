@@ -5,7 +5,7 @@ std::string testName = "default_constructor";
 template <typename T>
 void test_for_type();
 
-int main(int argc, char** argv)
+int main()
 {
 	test_for_type<int>();
 	test_for_type<double>();

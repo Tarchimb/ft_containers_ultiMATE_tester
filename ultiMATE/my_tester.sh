@@ -40,6 +40,7 @@ declare_variables ()
 # -p : Print ouput programs
 # -l : Print logs compilation
 # -m : Compile with multiple
+# -z : Check leaks
 main ()
 {
 	declare_variables "$@"
@@ -131,7 +132,7 @@ run ()
 # $1 = filename; $2 = container/file.cpp; $3 = $ft | $std
 compile ()
 {
-	c++ "$flags" -o "ft_$1" "-DNAMESPACE=$ft" "$2" &>$redir
+	c++ "$flags" -Wall -Werror -Wextra -o "ft_$1" "-DNAMESPACE=$ft" "$2" &>$redir
 	if [ $? -eq 1 ]
 	then
 		mutex_lock
