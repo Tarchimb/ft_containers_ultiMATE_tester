@@ -5,6 +5,9 @@
 #include <time.h>
 #include <vector>
 #include <algorithm>
+#include <sstream>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #define TEST_INIT() \
 		change_ofs_to_next_test(ofs, testName);\
@@ -19,11 +22,9 @@
 	#define FILE_NAME "_std"
 	#define CURRENT_NAMESPACE std
 #else
-	#include "vector.hpp"
-	#include "type_traits.hpp"
-	#include "lexicographical_compare.hpp"
 	#define FILE_NAME "_ft"
 	#define CURRENT_NAMESPACE ft
+	// INCLUDE PATH HERE
 #endif
 
 int test = 1; // Used to create indexed log

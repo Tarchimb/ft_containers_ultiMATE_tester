@@ -4,9 +4,7 @@ VERSION=0.2
 
 # CONFIGURATION
 # =============================================================================
-SRCS_PATH=/Users/Cyril/Dev/42/ft_containers/srcs
-
-# ==============================================================================
+SRCS_PATH=.
 
 LOGS_FOLDER="logs"
 STD="0"
@@ -15,7 +13,7 @@ FLAGS="-Werror"
 DIFF_SUCCESS="true"
 COMP_ERROR_FT="false"
 COMP_ERROR_STD="false"
-TESTER_PATH="$(find . -name ultiMATE -type d -print -quit)"
+TESTER_PATH="$(find "$(pwd)" -d -name ft_containers_ultiMATE_tester -type d -print -quit)"
 
 stty -echoctl
 
@@ -27,10 +25,28 @@ init_script ()
     CONTAINERS=()
     UNIT_FILE=""
 
+    if [ "$(cat ${TESTER_PATH}/common.cpp | grep $HOME)" == "" ]; then
+        init_include
+    else
+        echo -e "${YELLOW}Includes path already setup$END"
+    fi
     parse_argument "$@"
     if [ -z "${CONTAINERS[0]}" ]; then
       CONTAINERS=(vector other)
     fi
+}
+
+init_include()
+{
+    echo -e "${YELLOW}Update include path...$END"
+
+    find . -name "*.hpp" -exec readlink -f {} \; > tmp
+    sed 's/\/Users/\t#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
+    sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
+    ed -s ${TESTER_PATH}/common.cpp <<< $'27r tmp\nw'
+    rm -f tmp
+
+    echo -e "${YELLOW}Path updated!${END}"
 }
 
 parse_argument()
@@ -38,7 +54,7 @@ parse_argument()
    OPTION=""
    while [ $1 ]; do
      case $1 in
-       vector|map|set|other)
+       vector|map|set|stack|other)
           CONTAINERS+=($1);
           shift ;;
        *.cpp)
@@ -50,9 +66,10 @@ parse_argument()
      esac
    done
    # Parse option
-   while getopts bdlhz opt $OPTION; do
+   while getopts bdlhzc opt $OPTION; do
        case $opt in
          (b) echo -e "Benchmark mode";;
+         (c) init_include;;
          (d) PRINT_DIFF="true";;
          (l) REDIR="/dev/stdout";;
          (h) print_help;;
@@ -64,20 +81,18 @@ parse_argument()
 
 main ()
 {
-	init_script "$@"
 	print_title
+	init_script "$@"
 	trap end_program SIGINT &>/dev/null
 	rm -rf ${TESTER_PATH}/$LOGS_FOLDER
 
 	for container in "${CONTAINERS[@]}"
 	do
-	  echo -e "==================================================================="
-	  echo -e "\t\t    Launching $container tests"
-	  echo -e "==================================================================="
-	    update_container_path "$container"
+        echo -e "==================================================================="
+        echo -e "\t\t    Launching $container tests"
+        echo -e "==================================================================="
 		echo -e "${YELLOW}Start compiling... $END"
-		if [ "$UNIT_FILE" != "" ]
-		then
+		if [ "$UNIT_FILE" != "" ]; then
 			unit_function "$CONTAINERS" "$UNIT_FILE"
 		else
 			test_files=$(find "${TESTER_PATH}/${container}" -type f -name '*.cpp' | sort)
@@ -111,28 +126,6 @@ unit_function()
 		path="${TESTER_PATH}/$1/$file"
 		run "${filename}" "${path}"
 	done
-}
-
-# $1 = container_name
-update_container_path ()
-{
-	old_include_name="$(cat ${TESTER_PATH}/common.cpp | grep \"$1.hpp\")"
-	if [ "$old_include_name" == "" ]
-	then
-		return;
-	fi
-	echo -e "${YELLOW}Searching for your $1 file ${END}"
-	local container_path="$(find $SRCS_PATH -name $1.hpp -print -quit &>dev/null)"
-
-	if test -z "$container_path"
-	then
-		echo -e "${YELLOW}$1.hpp not found. Please include manually in common.cpp${END}"
-		exit
-	fi
-
-	include_name="$(cat ${TESTER_PATH}/common.cpp | grep $1.hpp)"
-	sed -i '' "s|${include_name}|\t#include \"${container_path}\"|" ${TESTER_PATH}/common.cpp
-	echo -e "${YELLOW}Updated $1 path with : ${container_path}${END}"
 }
 
 # $1 = filename; $2 = container/file.cpp;
@@ -330,11 +323,12 @@ print_help() {
   echo -e ""
   echo -e "${YELLOW}OPTIONS:$END"
   echo -e "    -b \t launch benchmark tests"
+  echo -e "    -c \t relaunch initialization of include path"
   echo -e "    -d  \t Print the diff if any"
   echo -e "    -l  \t Print logs compilation"
   echo -e "    -h  \t help"
 #  echo -e "    -m  \t Compile multiple unit tests"
-  echo -e "    -p  \t Print output programs"
+#  echo -e "    -p  \t Print output programs"
   echo -e "    -z  \t launch tests for memory LEAKS"
   exit
 }
