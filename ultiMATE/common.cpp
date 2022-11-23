@@ -19,9 +19,9 @@
 	#define FILE_NAME "_std"
 	#define CURRENT_NAMESPACE std
 #else
-	#include "/Users/Cyril/Dev/42/ft_containers/srcs/vector.hpp"
-	#include "/Users/Cyril/Dev/42/ft_containers/srcs/type_traits.hpp"
-	#include "/Users/Cyril/Dev/42/ft_containers/srcs/lexicographical_compare.hpp"
+	#include "vector.hpp"
+	#include "type_traits.hpp"
+	#include "lexicographical_compare.hpp"
 	#define FILE_NAME "_ft"
 	#define CURRENT_NAMESPACE ft
 #endif
