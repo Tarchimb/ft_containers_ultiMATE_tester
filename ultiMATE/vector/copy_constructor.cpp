@@ -6,7 +6,7 @@ template <typename T>
 void test_for_type(const CURRENT_NAMESPACE::vector<T>& vector1);
 
 template <typename T>
-void test_for_capacity(const vector<T> vector1);
+void test_for_capacity(const CURRENT_NAMESPACE::vector<T> vector1);
 
 int main(int argc, char** argv)
 {
@@ -46,7 +46,7 @@ void test_for_type(const CURRENT_NAMESPACE::vector<T>& vector1)
 }
 
 template <typename T>
-void test_for_capacity(const vector<T> vector1)
+void test_for_capacity(const CURRENT_NAMESPACE::vector<T> vector1)
 {
 	TEST_INIT();
 	write_result<T>(ofs, vector1);

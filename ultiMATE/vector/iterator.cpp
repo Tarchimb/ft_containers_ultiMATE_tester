@@ -3,27 +3,29 @@
 std::string testName("iterator");
 
 template <typename T>
-void test_for_type(std::vector<T> array);
+void test_for_type(CURRENT_NAMESPACE::vector<T> array);
 
 template <typename T>
-void test_input_iterator(std::vector<T> array);
+void test_input_iterator(CURRENT_NAMESPACE::vector<T> array);
 template <typename T>
-void test_forward_iterator(std::vector<T> array);
+void test_forward_iterator(CURRENT_NAMESPACE::vector<T> array);
 template <typename T>
-void test_bidirectional_iterator(std::vector<T> array);
+void test_bidirectional_iterator(CURRENT_NAMESPACE::vector<T> array);
 template <typename T>
-void test_random_access_iterator(std::vector<T> array);
+void test_random_access_iterator(CURRENT_NAMESPACE::vector<T> array);
+
+template <typename T>
+void test_iterator_dereferencing_pointer(CURRENT_NAMESPACE::vector<T> array);
 
 int main(int argc, char** argv)
 {
-
-	std::vector<int> array_int;
+	CURRENT_NAMESPACE::vector<int> array_int;
 	for (int i = 0; i < 10; i++)
 		array_int.push_back(i);
 
 	test_for_type<int>(array_int);
 
-	std::vector<TestStruct> array_struct;
+	CURRENT_NAMESPACE::vector<TestStruct> array_struct;
 	for (int i = 0; i < 10; i++)
 		array_struct.push_back(TestStruct(i, i, std::to_string(i)));
 	test_for_type<TestStruct>(array_struct);
@@ -32,7 +34,7 @@ int main(int argc, char** argv)
 }
 
 template <typename T>
-void test_for_type(std::vector<T> array)
+void test_for_type(CURRENT_NAMESPACE::vector<T> array)
 {
 	test_input_iterator(array);
 	test_forward_iterator(array);
@@ -41,19 +43,12 @@ void test_for_type(std::vector<T> array)
 }
 
 template <typename T>
-void test_input_iterator(std::vector<T> array)
+void test_input_iterator(CURRENT_NAMESPACE::vector<T> array)
 {
-	typedef typename std::vector<T>::iterator iterator;
-	typedef typename std::vector<T>::const_iterator const_iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::const_iterator const_iterator;
 
-	{ // Dereferencing pointer
-		TEST_INIT();
-		const_iterator it = array.begin(); // Be careful, this type is "const iterator" and not "const_iterator"
-		write_result(ofs, *it);
-		iterator it2(array.begin() + 4);
-		write_result(ofs, *it2);
-		write_result(ofs, *it);
-	}
+	RUN(test_iterator_dereferencing_pointer(array));
 	{ // Copy constructor
 		TEST_INIT();
 		iterator it1(array.begin() + 4);
@@ -90,10 +85,10 @@ void test_input_iterator(std::vector<T> array)
 }
 
 template <typename T>
-void test_forward_iterator(std::vector<T> array)
+void test_forward_iterator(CURRENT_NAMESPACE::vector<T> array)
 {
-	typedef typename std::vector<T>::iterator iterator;
-	typedef typename std::vector<T>::const_iterator const_iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::const_iterator const_iterator;
 
 	{ // Default constructor and changing value
 		TEST_INIT();
@@ -111,10 +106,10 @@ void test_forward_iterator(std::vector<T> array)
 }
 
 template <typename T>
-void test_bidirectional_iterator(std::vector<T> array)
+void test_bidirectional_iterator(CURRENT_NAMESPACE::vector<T> array)
 {
-	typedef typename std::vector<T>::iterator iterator;
-	typedef typename std::vector<T>::const_iterator const_iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::const_iterator const_iterator;
 
 	{ // Post decrement and pre decrement
 		TEST_INIT();
@@ -134,7 +129,7 @@ void test_bidirectional_iterator(std::vector<T> array)
 		TEST_INIT();
 
 		const_iterator cit1;
-		const_iterator cit2(array.begin() + 3);
+		const_iterator cit2(array.end() - 3);
 		write_result(ofs, *cit2--);
 		write_result(ofs, *cit2);
 		const_iterator cit3 = cit2;
@@ -149,10 +144,10 @@ void test_bidirectional_iterator(std::vector<T> array)
 
 
 template <typename T>
-void test_random_access_iterator(std::vector<T> array)
+void test_random_access_iterator(CURRENT_NAMESPACE::vector<T> array)
 {
-	typedef typename std::vector<T>::iterator iterator;
-	typedef typename std::vector<T>::const_iterator const_iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::const_iterator const_iterator;
 
 	{ // Operator + and -
 		TEST_INIT();
@@ -205,4 +200,19 @@ void test_random_access_iterator(std::vector<T> array)
 		it -= 2;
 		write_result(ofs, it[3]);
 	}
+}
+
+template<typename T>
+void test_iterator_dereferencing_pointer(CURRENT_NAMESPACE::vector<T> array)
+{
+	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::const_iterator const_iterator;
+
+	TEST_INIT();
+	const_iterator it = array.begin(); // Be careful, this type is "const iterator" and not "const_iterator"
+	write_result(ofs, *it);
+	iterator it2(array.begin() + 4);
+	write_result(ofs, *it2);
+	write_result(ofs, *it);
+
 }

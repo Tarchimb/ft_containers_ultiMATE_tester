@@ -5,7 +5,7 @@
 std::string testName("algorithm");
 
 template <typename T>
-void test_std_algorithm(vector<T> array);
+void test_std_algorithm(CURRENT_NAMESPACE::vector<T> array);
 
 template <typename T>
 static T op_increase(T i) {return ++i;}
@@ -13,12 +13,12 @@ static T op_increase(T i) {return ++i;}
 int main(int argc, char** argv)
 {
 
-	vector<int>	v_int;
+	CURRENT_NAMESPACE::vector<int>	v_int;
 	for (int i = 0; i < 10; i++)
 		v_int.push_back(i);
 	test_std_algorithm<int>(v_int);
 
-	vector<TestStruct>	v_struct;
+	CURRENT_NAMESPACE::vector<TestStruct>	v_struct;
 	for (int i = 0; i < 10; i++)
 		v_struct.push_back(TestStruct(i, i, std::to_string(i)));
 	test_std_algorithm<TestStruct>(v_struct);
@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 
 
 template <typename T>
-void test_std_algorithm(vector<T> array)
+void test_std_algorithm(CURRENT_NAMESPACE::vector<T> array)
 {
 	{
 		TEST_INIT();
@@ -46,4 +46,3 @@ void test_std_algorithm(vector<T> array)
 		write_result(ofs, array);
 	}
 }
-
