@@ -70,6 +70,11 @@ struct TestStruct {
 		tmp.c = c + c;
 		return tmp;
 	}
+
+	friend bool operator==(const TestStruct& lhs, const TestStruct& rhs) {
+		return lhs.a == rhs.a && lhs.b == rhs.b && lhs.c == rhs.c;
+	}
+
 	friend bool operator<(const TestStruct &lhs, const TestStruct &rhs) {
 		if (lhs.a > rhs.a)
 			return false;
@@ -125,6 +130,11 @@ namespace std {
 		for (int i = 0; i < v.size(); i++)
 			str += std::to_string(v[i]);
 		return str;
+	}
+
+	template <class U, class T>
+	std::string to_string(const CURRENT_NAMESPACE::pair<U, T>& p) {
+		return (std::string(std::to_string(p.first) + std::to_string(p.second)));
 	}
 }
 
