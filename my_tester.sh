@@ -19,70 +19,70 @@ stty -echoctl
 
 init_script ()
 {
-    PRINT_DIFF="false"
-    REDIR="/dev/null"
-    LEAKS=""
-    CONTAINERS=()
-    UNIT_FILE=""
+	PRINT_DIFF="false"
+	REDIR="/dev/null"
+	LEAKS=""
+	CONTAINERS=()
+	UNIT_FILE=""
 
-    if [ "$(cat ${TESTER_PATH}/common.cpp | grep $HOME)" == "" ]; then
-        init_include
-    else
-        echo -e "${YELLOW}Includes path already setup$END"
-    fi
-    parse_argument "$@"
-    if [ -z "${CONTAINERS[0]}" ]; then
-      CONTAINERS=(vector other)
-    fi
+	if [ "$(cat ${TESTER_PATH}/common.cpp | grep $HOME)" == "" ]; then
+		init_include
+	else
+		echo -e "${YELLOW}Includes path already setup$END"
+	fi
+	parse_argument "$@"
+	if [ -z "${CONTAINERS[0]}" ]; then
+		CONTAINERS=(vector other)
+	fi
 }
 
 init_include()
 {
-    echo -e "${YELLOW}Update include path...$END"
+	echo -e "${YELLOW}Update include path...$END"
 
-    if [ "$(pwd)" == "$TESTER_PATH" ]; then
-        local abs_path="$( cd .. "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    else
-        local abs_path=$(cd -- "$(dirname -- "")" && printf '%s\n' "$(pwd -P)/$(basename -- "")")
-    fi
-    find . -name "*.hpp" > tmp
-    awk -v path=$abs_path '{ sub(/\.\//, path); print}' tmp > tmp1 && mv tmp1 tmp
-    sed 's/\/Users/#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
-    sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
-    ed -s ${TESTER_PATH}/common.cpp <<< $'27r tmp\nw'
-    rm -f tmp
+	if [ "$(pwd)" == "$TESTER_PATH" ]; then
+		local abs_path="$( cd .. "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+	else
+		local abs_path=$(cd -- "$(dirname -- "")" && printf '%s\n' "$(pwd -P)/$(basename -- "")")
+	fi
+	find . -name "*.hpp" > tmp
+	awk -v path=$abs_path '{ sub(/\.\//, path); print}' tmp > tmp1 && mv tmp1 tmp
+	sed 's/\/Users/#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
+	sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
+	ed -s ${TESTER_PATH}/common.cpp <<< $'27r tmp\nw'
+	rm -f tmp
 
-    echo -e "${YELLOW}Path updated!${END}"
+	echo -e "${YELLOW}Path updated!${END}"
 }
 
 parse_argument()
 {
-   OPTION=""
-   while [ $1 ]; do
-     case $1 in
-       vector|map|set|stack|other)
-          CONTAINERS+=($1);
-          shift ;;
-       *.cpp)
-          UNIT_FILE=$1
-          shift ;;
-       *)
-          OPTION="$OPTION $1"
-          shift;;
-     esac
-   done
-   # Parse option
-   while getopts bdlhzc opt $OPTION; do
-       case $opt in
-         (b) echo -e "Benchmark mode";;
-         (c) init_include;;
-         (d) PRINT_DIFF="true";;
-         (l) REDIR="/dev/stdout";;
-         (h) print_help;;
-         (z) init_leaks;;
-         (\?) echo -e "Invalid option: -$OPTARG"; exit 1;;
-       esac
-     done
+	OPTION=""
+	while [ $1 ]; do
+		case $1 in
+		vector|map|set|stack|other)
+			CONTAINERS+=($1);
+			shift ;;
+		*.cpp)
+			UNIT_FILE=$1
+			shift ;;
+		*)
+			OPTION="$OPTION $1"
+			shift;;
+	esac
+	done
+	# Parse option
+	while getopts bdlhzc opt $OPTION; do
+		case $opt in
+			(b) echo -e "Benchmark mode";;
+			(c) init_include;;
+			(d) PRINT_DIFF="true";;
+			(l) REDIR="/dev/stdout";;
+			(h) print_help;;
+			(z) init_leaks;;
+			(\?) echo -e "Invalid option: -$OPTARG"; exit 1;;
+		esac
+	done
 }
 
 main ()
@@ -94,9 +94,9 @@ main ()
 
 	for container in "${CONTAINERS[@]}"
 	do
-        echo -e "==================================================================="
-        echo -e "\t\t    Launching $container tests"
-        echo -e "==================================================================="
+		echo -e "==================================================================="
+		echo -e "\t\t	Launching $container tests"
+		echo -e "==================================================================="
 		echo -e "${YELLOW}Start compiling... $END"
 		if [ "$UNIT_FILE" != "" ]; then
 			unit_function "$CONTAINERS" "$UNIT_FILE"
@@ -108,7 +108,7 @@ main ()
 				run "${filename}" "${file}" &
 			done
 		fi
-	  wait
+		wait
 	done
 	wait
 	find ${TESTER_PATH}/$LOGS_FOLDER/ -empty -type d -delete
@@ -137,8 +137,8 @@ unit_function()
 # $1 = filename; $2 = container/file.cpp;
 run ()
 {
-#	 echo "$LOGS_FOLDER/$1"
-#	 exit
+#	echo "$LOGS_FOLDER/$1"
+#	exit
 	mkdir -p ${TESTER_PATH}/$LOGS_FOLDER/$1
 	compile "$1" "$2" "$FT"
 	if [ "$COMP_ERROR_FT" == "true" ] || [ "$COMP_ERROR_STD" == "true" ]; then
@@ -320,23 +320,23 @@ init_leaks_macos () {
 	fi
 }
 
-print_help() {
-  echo -e "${GREEN}ft_containers_ultiMATE_tester$END $VERSION"
-  echo -e ""
-  echo -e "${YELLOW}USAGE:$END ./my_script [option] [container] [unit_test]"
-  echo -e "  - No [container] launch all tests."
-  echo -e "  - No [unit_tests] launch all tests of the container."
-  echo -e ""
-  echo -e "${YELLOW}OPTIONS:$END"
-  echo -e "    -b \t launch benchmark tests"
-  echo -e "    -c \t relaunch initialization of include path"
-  echo -e "    -d  \t Print the diff if any"
-  echo -e "    -l  \t Print logs compilation"
-  echo -e "    -h  \t help"
-#  echo -e "    -m  \t Compile multiple unit tests"
-#  echo -e "    -p  \t Print output programs"
-  echo -e "    -z  \t launch tests for memory LEAKS"
-  exit
+int_help() {
+	echo -e "${GREEN}ft_containers_ultiMATE_tester$END $VERSION"
+	echo -e ""
+	echo -e "${YELLOW}USAGE:$END ./my_script [option] [container] [unit_test]"
+	echo -e "  - No [container] launch all tests."
+	echo -e "  - No [unit_tests] launch all tests of the container."
+	echo -e ""
+	echo -e "${YELLOW}OPTIONS:$END"
+	echo -e "	-b \t launch benchmark tests"
+	echo -e "	-c \t relaunch initialization of include path"
+	echo -e "	-d  \t Print the diff if any"
+	echo -e "	-l  \t Print logs compilation"
+	echo -e "	-h  \t help"
+#  echo -e "	-m  \t Compile multiple unit tests"
+#  echo -e "	-p  \t Print output programs"
+	echo -e "	-z  \t launch tests for memory LEAKS"
+	exit
 }
 
 RED="\033[1;31m"
