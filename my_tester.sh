@@ -45,7 +45,7 @@ init_include()
 	else
 		local abs_path=$(cd -- "$(dirname -- "")" && printf '%s\n' "$(pwd -P)/$(basename -- "")")
 	fi
-	find . -name "*.hpp" > tmp
+	find $abs_path -name "*.hpp" > tmp
 	awk -v path=$abs_path '{ sub(/\.\//, path); print}' tmp > tmp1 && mv tmp1 tmp
 	sed 's/\/Users/#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
@@ -314,7 +314,7 @@ init_leaks_macos () {
 	LEAKS -h &>/dev/null;
 	if [ $? -eq 0 ]; then
 		echo "Leaks check: ON";
-		LEAKS="LEAKS -atExit -q -- ";
+		LEAKS="leaks -atExit -q -- ";
 	else
 		echo "Leaks command not found, LEAKS check : OFF";
 	fi
