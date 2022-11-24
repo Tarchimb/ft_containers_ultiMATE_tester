@@ -40,7 +40,13 @@ init_include()
 {
     echo -e "${YELLOW}Update include path...$END"
 
-    find . -name "*.hpp" -exec readlink -f {} \; > tmp
+    if [ "$(pwd)" == "$TESTER_PATH" ]; then
+        local abs_path="$( cd .. "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    else
+        local abs_path=$(cd -- "$(dirname -- "")" && printf '%s\n' "$(pwd -P)/$(basename -- "")")
+    fi
+    find . -name "*.hpp" > tmp
+    awk -v path=$abs_path '{ sub(/\.\//, path); print}' tmp > tmp1 && mv tmp1 tmp
     sed 's/\/Users/\t#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
     sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
     ed -s ${TESTER_PATH}/common.cpp <<< $'27r tmp\nw'
