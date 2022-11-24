@@ -14,12 +14,12 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(std::ofstream& ofs, const T& value)
 {
-	typedef typename vector<T>::iterator iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
 
 	{
 		TEST_INIT();
-		vector<T> v1(5, value);
-		vector<T> v2(5, value * 2);
+		CURRENT_NAMESPACE::vector<T> v1(5, value);
+		CURRENT_NAMESPACE::vector<T> v2(5, value * 2);
 		iterator it1 = v1.begin();
 		iterator it2 = v2.begin();
 		T& ref1 = v1.front();
@@ -37,8 +37,8 @@ void test_for_type(std::ofstream& ofs, const T& value)
 	}
 	{
 		TEST_INIT();
-		vector<T> v1(2, value);
-		vector<T> v2(5, value * 2);
+		CURRENT_NAMESPACE::vector<T> v1(2, value);
+		CURRENT_NAMESPACE::vector<T> v2(5, value * 2);
 		iterator it1 = v1.begin() + 1;
 		iterator it2 = v2.begin() + 1;
 		T& ref1 = v1.front();
@@ -56,8 +56,8 @@ void test_for_type(std::ofstream& ofs, const T& value)
 	}
 	{
 		TEST_INIT();
-		vector<T> v1(200, value);
-		vector<T> v2(1000, value * 2);
+		CURRENT_NAMESPACE::vector<T> v1(200, value);
+		CURRENT_NAMESPACE::vector<T> v2(1000, value * 2);
 		iterator it1 = v1.begin() + 1;
 		iterator it2 = v2.begin() + 1;
 		T& ref1 = v1.front();

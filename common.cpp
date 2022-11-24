@@ -1,12 +1,13 @@
-#include "vector.hpp"
 #include <iostream>
-#include <sstream>
 #include <exception>
-#include <vector>
 #include <fstream>
 #include <string>
 #include <time.h>
+#include <vector>
 #include <algorithm>
+#include <sstream>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #define TEST_INIT() \
 		change_ofs_to_next_test(ofs, testName);\
@@ -18,11 +19,12 @@
 #endif
 
 #if NAMESPACE==0
-	using namespace std;
 	#define FILE_NAME "_std"
+	#define CURRENT_NAMESPACE std
 #else
-	using namespace ft;
 	#define FILE_NAME "_ft"
+	#define CURRENT_NAMESPACE ft
+	// INCLUDE PATH HERE
 #endif
 
 int test = 1; // Used to create indexed log
@@ -104,7 +106,7 @@ std::ostream& operator<<(std::ostream& o, const TestStruct& v) {
 	return o;
 }
 
-namespace std{
+namespace std {
 	std::string to_string(const TestStruct& v) {
 		std::string str;
 		str += std::to_string(v.a) + " | ";
@@ -118,14 +120,7 @@ namespace std{
 	}
 
 	template <typename T>
-	std::string to_string(const ft::vector<T>& v) {
-		std::string str;
-		for (int i = 0; i < v.size(); i++)
-			str += std::to_string(v[i]);
-		return str;
-	}
-	template <typename T>
-	std::string to_string(const std::vector<T>& v) {
+	std::string to_string(const CURRENT_NAMESPACE::vector<T>& v) {
 		std::string str;
 		for (int i = 0; i < v.size(); i++)
 			str += std::to_string(v[i]);
@@ -136,7 +131,7 @@ namespace std{
 // ADD PRINT BEGIN IF NOT EMPTY
 // ADD ITERATOR VALIDITY
 template <typename T>
-void write_result(std::ofstream& ofs, const vector<T>& vector, const bool printContent=true) {
+void write_result(std::ofstream& ofs, const CURRENT_NAMESPACE::vector<T>& vector, const bool printContent=true) {
 	ofs << "size: " + std::to_string(vector.size()) << std::endl;
 	ofs << "capacity: " + std::to_string(vector.capacity()) << std::endl;
 	ofs << "empty: " + std::to_string(vector.empty()) << std::endl;

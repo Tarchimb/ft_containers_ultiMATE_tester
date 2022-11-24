@@ -19,7 +19,7 @@ void test_for_type(std::ofstream& ofs, const int& count, const T value)
 	{ // classic count and value
 		TEST_INIT();
 		try {
-			vector<T> vector(count, value);
+			CURRENT_NAMESPACE::vector<T> vector(count, value);
 			write_result(ofs, vector);
 		}
 		catch (std::exception& e)
@@ -30,7 +30,7 @@ void test_for_type(std::ofstream& ofs, const int& count, const T value)
 	{ // count = 0
 		TEST_INIT();
 		try {
-			vector<T> vector(0, value);
+			CURRENT_NAMESPACE::vector<T> vector(0, value);
 			write_result(ofs, vector);
 		}
 		catch (std::exception& e)

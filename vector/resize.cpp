@@ -17,29 +17,29 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(std::ofstream& ofs, const T& value)
 {
-	typedef typename vector<T>::iterator iterator;
+	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
 	{ // resize normal value with empty vector
 		TEST_INIT();
-		vector<T> v;
+		CURRENT_NAMESPACE::vector<T> v;
 		v.clear();
 		v.resize(5);
 		write_result(ofs, v);
 	}
 	{ // resize less than currently reserved
 		TEST_INIT();
-		vector<T> v(50);
+		CURRENT_NAMESPACE::vector<T> v(50);
 		v.resize(5);
 		write_result(ofs, v);
 	}
 	{ // resize 0
 		TEST_INIT();
-		vector<T> v(5, value);
+		CURRENT_NAMESPACE::vector<T> v(5, value);
 		v.resize(0);
 		write_result(ofs, v);
 	}
 	{ // multiple resize
 		TEST_INIT();
-		vector<T> v(5, value);
+		CURRENT_NAMESPACE::vector<T> v(5, value);
 		v.resize(5);
 		v.resize(5);
 		v.resize(9);
@@ -50,19 +50,19 @@ void test_for_type(std::ofstream& ofs, const T& value)
 	}
 	{ // resize more than currently reserved
 		TEST_INIT();
-		vector<T> v(5, value);
+		CURRENT_NAMESPACE::vector<T> v(5, value);
 		v.resize(100);
 		write_result(ofs, v);
 	}
 	{ // resize more than currently reserved with large size
 		TEST_INIT();
-		vector<T> v(5, value);
+		CURRENT_NAMESPACE::vector<T> v(5, value);
 		v.resize(10000);
 		write_result(ofs, v);
 	}
 	{ // resize more than vector max size
 		TEST_INIT();
-		vector<T> v(5, value);
+		CURRENT_NAMESPACE::vector<T> v(5, value);
 		try {
 			v.resize(v.max_size() + 1);
 		} catch ( const std::exception& e) {
@@ -71,7 +71,7 @@ void test_for_type(std::ofstream& ofs, const T& value)
 	}
 	{ // resize with exact vector size
 		TEST_INIT();
-		vector<T> v(5, value);
+		CURRENT_NAMESPACE::vector<T> v(5, value);
 		iterator begin = v.begin();
 		iterator end = v.end();
 		v.resize(v.size());
@@ -80,4 +80,3 @@ void test_for_type(std::ofstream& ofs, const T& value)
 		write_result(ofs, end == v.end());
 	}
 }
-
