@@ -47,7 +47,7 @@ init_include()
     fi
     find . -name "*.hpp" > tmp
     awk -v path=$abs_path '{ sub(/\.\//, path); print}' tmp > tmp1 && mv tmp1 tmp
-    sed 's/\/Users/\t#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
+    sed 's/\/Users/#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
     sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
     ed -s ${TESTER_PATH}/common.cpp <<< $'27r tmp\nw'
     rm -f tmp
@@ -278,7 +278,7 @@ check_leaks() {
 	if [ "$OS" == "Linux" ]; then
 		grep " 0 errors from 0 contexts " "$leaks_file" &> /dev/null;
 	else
-		grep " 0 LEAKS for 0 total leaked bytes." "$leaks_file" &> /dev/null;
+		grep " 0 leaks for 0 total leaked bytes." "$leaks_file" &> /dev/null;
 	fi
 	if [ "$?" == "0" ]; then
 		echo -en $GREEN[Leaks OK] $END;
