@@ -27,8 +27,6 @@ init_script ()
 
 	if [ "$(cat ${TESTER_PATH}/common.cpp | grep $HOME)" == "" ]; then
 		init_include
-	else
-		echo -e "${YELLOW}Includes path already setup$END"
 	fi
 	parse_argument "$@"
 	if [ -z "${CONTAINERS[0]}" ]; then
@@ -137,8 +135,6 @@ unit_function()
 # $1 = filename; $2 = container/file.cpp;
 run ()
 {
-#	echo "$LOGS_FOLDER/$1"
-#	exit
 	mkdir -p ${TESTER_PATH}/$LOGS_FOLDER/$1
 	compile "$1" "$2" "$FT"
 	if [ "$COMP_ERROR_FT" == "true" ] || [ "$COMP_ERROR_STD" == "true" ]; then
@@ -320,7 +316,7 @@ init_leaks_macos () {
 	fi
 }
 
-int_help() {
+print_help() {
 	echo -e "${GREEN}ft_containers_ultiMATE_tester$END $VERSION"
 	echo -e ""
 	echo -e "${YELLOW}USAGE:$END ./my_script [option] [container] [unit_test]"
@@ -329,13 +325,13 @@ int_help() {
 	echo -e ""
 	echo -e "${YELLOW}OPTIONS:$END"
 	echo -e "	-b \t launch benchmark tests"
-	echo -e "	-c \t relaunch initialization of include path"
-	echo -e "	-d  \t Print the diff if any"
-	echo -e "	-l  \t Print logs compilation"
-	echo -e "	-h  \t help"
-#  echo -e "	-m  \t Compile multiple unit tests"
-#  echo -e "	-p  \t Print output programs"
-	echo -e "	-z  \t launch tests for memory LEAKS"
+#	echo -e "	-c \t relaunch initialization of include path"
+	echo -e "	-d \t Print the diff if any"
+	echo -e "	-l \t Print logs compilation"
+	echo -e "	-h \t help"
+#  echo -e "	-m \t Compile multiple unit tests"
+#  echo -e "	-p \t Print output programs"
+	echo -e "	-z \t launch tests for memory LEAKS"
 	exit
 }
 
