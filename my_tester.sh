@@ -25,6 +25,8 @@ init_script ()
 	CONTAINERS=()
 	UNIT_FILE=""
 
+	LEAKS_ON="0"
+
 	if [ "$(cat ${TESTER_PATH}/common.cpp | grep $HOME)" == "" ]; then
 		init_include
 	fi
@@ -32,6 +34,7 @@ init_script ()
 	if [ -z "${CONTAINERS[0]}" ]; then
 		CONTAINERS=(vector other)
 	fi
+	init_leaks
 }
 
 init_include()
@@ -46,6 +49,7 @@ init_include()
 	find $abs_path -name "*.hpp" > tmp
 	awk -v path=$abs_path '{ sub(/\.\//, path); print}' tmp > tmp1 && mv tmp1 tmp
 	sed 's/\/Users/#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
+	sed 's/\/\//\//g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
 	ed -s ${TESTER_PATH}/common.cpp <<< $'27r tmp\nw'
 	rm -f tmp
@@ -77,7 +81,7 @@ parse_argument()
 			(d) PRINT_DIFF="true";;
 			(l) REDIR="/dev/stdout";;
 			(h) print_help;;
-			(z) init_leaks;;
+			(z) LEAKS_ON="1";;
 			(\?) echo -e "Invalid option: -$OPTARG"; exit 1;;
 		esac
 	done
@@ -286,13 +290,18 @@ check_leaks() {
 }
 
 init_leaks() {
+
+    if [ $LEAKS_ON == "1" ]
+    then
+        return ;
+    fi
 	OS=`uname`;
 	if [ "$OS" == "Linux" ]; then
 		init_leaks_linux;
 	elif [ "$OS" == "Darwin" ]; then
 		init_leaks_macos;
 	else
-		echo "This tester does not support LEAKS check on this OS";
+		echo "This tester does not support leaks check on this OS";
 	fi
 }
 
@@ -302,7 +311,7 @@ init_leaks_linux () {
 		echo "Leaks check: ON";
 		LEAKS="valgrind --leak-check=full";
 	else
-		echo "Valgrind not found, LEAKS check : OFF";
+		echo "Valgrind not found, leaks check : OFF";
 	fi
 }
 
@@ -312,7 +321,7 @@ init_leaks_macos () {
 		echo "Leaks check: ON";
 		LEAKS="leaks -atExit -q -- ";
 	else
-		echo "Leaks command not found, LEAKS check : OFF";
+		echo "Leaks command not found, leaks check : OFF";
 	fi
 }
 
@@ -331,7 +340,7 @@ print_help() {
 	echo -e "	-h \t help"
 #  echo -e "	-m \t Compile multiple unit tests"
 #  echo -e "	-p \t Print output programs"
-	echo -e "	-z \t launch tests for memory LEAKS"
+	echo -e "	-z \t deactivate tests for memory leaks"
 	exit
 }
 
