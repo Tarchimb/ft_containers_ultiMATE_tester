@@ -141,7 +141,6 @@ void test_bidirectional_iterator(CURRENT_NAMESPACE::vector<T> array)
 	}
 }
 
-
 template <typename T>
 void test_random_access_iterator(CURRENT_NAMESPACE::vector<T> array)
 {
@@ -208,7 +207,7 @@ void test_iterator_dereferencing_pointer(CURRENT_NAMESPACE::vector<T> array)
 	typedef typename CURRENT_NAMESPACE::vector<T>::const_iterator const_iterator;
 
 	TEST_INIT();
-	const_iterator it = array.begin(); // Be careful, this type is "const iterator" and not "const_iterator"
+	const_iterator it = array.begin();
 	write_result(ofs, *it);
 	iterator it2(array.begin() + 4);
 	write_result(ofs, *it2);
