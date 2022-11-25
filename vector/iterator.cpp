@@ -48,7 +48,6 @@ void test_input_iterator(CURRENT_NAMESPACE::vector<T> array)
 	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
 	typedef typename CURRENT_NAMESPACE::vector<T>::const_iterator const_iterator;
 
-	RUN(test_iterator_dereferencing_pointer(array));
 	{ // Copy constructor
 		TEST_INIT();
 		iterator it1(array.begin() + 4);
