@@ -14,6 +14,9 @@ void test_pair_equal(const T& valT, const U& valU);
 template <class T, class U>
 void test_pair_operator(const T& valT, const U& valU);
 
+template <class T, class U>
+void test_make_pair(const T& valT, const U& valU);
+
 int main(void)
 {
 	test_pair<int, int>(1, 2);
@@ -29,6 +32,7 @@ void test_pair(const T& valT, const U& valU)
 	test_pair_constructor(valT, valU);
 	test_pair_equal(valT, valU);
 	test_pair_operator(valT, valU);
+	test_make_pair(valT, valU);
 }
 
 template <class T, class U>
@@ -100,5 +104,31 @@ void test_pair_operator(const T& valT, const U& valU)
 		write_result(ofs, (low > low));
 		write_result(ofs, (low >= mid));
 		write_result(ofs, (low >= low));
+	}
+}
+
+template <class T, class U>
+void test_make_pair(const T& valT, const U& valU)
+{
+	{ // Make pair with defaults values
+		TEST_INIT();
+		CURRENT_NAMESPACE::pair<T, U> p;
+		p = CURRENT_NAMESPACE::make_pair(T(), U());
+		write_result(ofs, p);
+	}
+	{ // Make pair with specifics values
+		TEST_INIT();
+		CURRENT_NAMESPACE::pair<T, U> p;
+		p = CURRENT_NAMESPACE::make_pair(valT, valU);
+		write_result(ofs, p);
+	}
+	{ // Make pair with values of another pair
+		TEST_INIT();
+		CURRENT_NAMESPACE::pair<T, U> p0;
+		p0 = CURRENT_NAMESPACE::make_pair(valT, valU);
+		CURRENT_NAMESPACE::pair<T, U> p1;
+		p1 = CURRENT_NAMESPACE::make_pair(p0.first, p0.second);
+		write_result(ofs, p0);
+		write_result(ofs, p1);
 	}
 }
