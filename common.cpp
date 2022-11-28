@@ -4,6 +4,7 @@
 #include <string>
 #include <time.h>
 #include <vector>
+#include <map>
 #include <algorithm>
 #include <sstream>
 #include <sys/wait.h>
@@ -136,6 +137,21 @@ namespace std {
 	std::string to_string(const CURRENT_NAMESPACE::pair<U, T>& p) {
 		return (std::string(std::to_string(p.first) + std::to_string(p.second)));
 	}
+
+	template <class U, class T>
+	std::string to_string(const CURRENT_NAMESPACE::map<U, T>& m) {
+		std::string str;
+		typename CURRENT_NAMESPACE::map<U, T>::const_iterator it;
+		for (it = m.begin(); it != m.end(); it++)
+		{
+			str += std::to_string(it->first);
+			str += ":";
+			str += std::to_string(it->second);
+			str += "\n";
+		}
+		return str;
+	}
+
 }
 
 // ADD PRINT BEGIN IF NOT EMPTY
@@ -148,6 +164,14 @@ void write_result(std::ofstream& ofs, const CURRENT_NAMESPACE::vector<T>& vector
 	if (printContent)
 		for (int i = 0; i < vector.size(); i++)
 			ofs << std::to_string(vector[i]) << std::endl;
+}
+
+template <class U, class T>
+void write_result(std::ofstream& ofs, const CURRENT_NAMESPACE::map<U, T>& map, const bool printContent=true) {
+	ofs << "size: " + std::to_string(map.size()) << std::endl;
+	ofs << "empty: " + std::to_string(map.empty()) << std::endl;
+	if (printContent)
+		ofs << std::to_string(map);
 }
 
 void write_result(std::ofstream& ofs, const TestStruct& val)
