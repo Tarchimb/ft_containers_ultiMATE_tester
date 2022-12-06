@@ -1,6 +1,6 @@
-#include "../common.cpp"
+#include "../map_common.cpp"
 
-std::string testName = "default_constructor.cpp";
+std::string testName = "default_constructor";
 
 template <class T, class U>
 void test_for_type();
