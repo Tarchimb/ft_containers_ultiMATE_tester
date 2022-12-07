@@ -72,9 +72,9 @@ struct TestStruct {
 
 	TestStruct operator++() {
 		TestStruct tmp = *this;
-		tmp.a = a + 1;
-		tmp.b = b + 1;
-		tmp.c = c + c;
+		a = a + 1;
+		b = b + 1;
+		c = c + c;
 		return tmp;
 	}
 
@@ -83,11 +83,11 @@ struct TestStruct {
 	}
 
 	friend bool operator<(const TestStruct &lhs, const TestStruct &rhs) {
-		if (lhs.a > rhs.a)
+		if (lhs.a >= rhs.a)
 			return false;
-		if (lhs.b > rhs.b)
+		if (lhs.b >= rhs.b)
 			return false;
-		if (lhs.c > rhs.c)
+		if (lhs.c >= rhs.c)
 			return false;
 		return true;
 	}
