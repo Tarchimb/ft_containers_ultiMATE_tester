@@ -25,12 +25,6 @@
 #else
 	#define FILE_NAME "_ft"
 	#define CURRENT_NAMESPACE ft
-#include "/Users/bbischof/Documents/containers/src/utils.hpp"
-#include "/Users/bbischof/Documents/containers/src/map_iterator.hpp"
-#include "/Users/bbischof/Documents/containers/src/map.hpp"
-#include "/Users/bbischof/Documents/containers/src/random_access_iterator.hpp"
-#include "/Users/bbischof/Documents/containers/src/rb_tree.hpp"
-#include "/Users/bbischof/Documents/containers/src/vector.hpp"
 	// INCLUDE PATH HERE
 #endif
 
@@ -141,7 +135,7 @@ namespace std {
 
 	template <class U, class T>
 	std::string to_string(const CURRENT_NAMESPACE::pair<U, T>& p) {
-		return (std::string(std::to_string(p.first) + std::to_string(p.second)));
+		return (std::string(std::to_string(p.first) + " " + std::to_string(p.second)));
 	}
 }
 
