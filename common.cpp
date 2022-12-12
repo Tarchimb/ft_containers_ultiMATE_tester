@@ -4,6 +4,7 @@
 #include <string>
 #include <time.h>
 #include <vector>
+#include <map>
 #include <algorithm>
 #include <sstream>
 #include <sys/wait.h>
@@ -134,7 +135,7 @@ namespace std {
 
 	template <class U, class T>
 	std::string to_string(const CURRENT_NAMESPACE::pair<U, T>& p) {
-		return (std::string(std::to_string(p.first) + std::to_string(p.second)));
+		return (std::string(std::to_string(p.first) + " " + std::to_string(p.second)));
 	}
 }
 

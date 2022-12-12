@@ -45,7 +45,7 @@ void test_for_type(const T& value)
 		TEST_INIT();
 		try {
 			CURRENT_NAMESPACE::vector<T> vector1(100, value);
-			CURRENT_NAMESPACE::vector<T> vector2(vector1.begin() + 50, vector1.begin() - 50);
+			CURRENT_NAMESPACE::vector<T> vector2(vector1.begin() + 50, vector1.begin() + 50);
 			write_result(ofs, vector2);
 		}
 		catch (std::exception& e)
