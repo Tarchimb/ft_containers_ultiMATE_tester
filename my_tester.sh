@@ -9,6 +9,7 @@ SRCS_PATH=.
 LOGS_FOLDER="logs"
 STD="0"
 FT="1"
+VERSION="-std=c++11"
 FLAGS="-Werror"
 DIFF_SUCCESS="true"
 COMP_ERROR_FT="false"
@@ -153,7 +154,7 @@ run ()
 # $1 = filename; $2 = container/file.cpp; $3 = $FT | $STD
 compile ()
 {
-	c++ "$FLAGS" -o "ft_$1" "-DNAMESPACE=$FT" "$2" &>$REDIR
+	c++ $VERSION "$FLAGS" -o "ft_$1" "-DNAMESPACE=$FT" "$2" &>$REDIR
 	if [ $? -eq 1 ]
 	then
 		mutex_lock
@@ -163,7 +164,7 @@ compile ()
 		return
 	fi
 
-	c++ "$FLAGS" -o "std_$1" "-DNAMESPACE=$STD" "$2" &>$REDIR
+	c++ $VERSION "$FLAGS" -o "std_$1" "-DNAMESPACE=$STD" "$2" &>$REDIR
 	if [ $? -eq 1 ]; then
 		rm "ft_$1"
 		mutex_lock
