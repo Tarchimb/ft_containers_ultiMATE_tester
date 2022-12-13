@@ -52,11 +52,8 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U, C> &map)
     CURRENT_NAMESPACE::map<T, U, C> m(map);
     CURRENT_NAMESPACE::map<T, U, C> m1(map);
     CURRENT_NAMESPACE::map<T, U, C> m2(m1);
-    for (typename CURRENT_NAMESPACE::map<T, U, C>::iterator it = m.begin(); it != m.end(); it++)
-    {
-        write_result(ofs, m, true);
-        write_result(ofs, m1, true);
-        write_result(ofs, m2, true);
-    }
+	write_result(ofs, m, true);
+	write_result(ofs, m1, true);
+	write_result(ofs, m2, true);
 
 }

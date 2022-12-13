@@ -30,7 +30,7 @@ void test_for_type()
 	T key = T();
 	U value = U();
 	for (int i = 0; i < 15; i++)
-		m.insert(CURRENT_NAMESPACE::pair<T, U>(key, value));
+		m.insert(CURRENT_NAMESPACE::pair<T, U>(++key, ++value));
 	const_map<T, U>(m);
 }
 
