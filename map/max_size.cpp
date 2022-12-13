@@ -2,43 +2,34 @@
 
 std::string testName("max_size");
 
+template <class T, class U>
+void test_for_type();
+
 int main(int argc, char** argv)
 {
-	{ // max_size map<char, char>
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<char, char> m;
-		write_result(ofs, m.max_size());
-	}
-	{ // max_size map<unsigned char, unsigned char>
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<unsigned char, unsigned char> m;
-		write_result(ofs, m.max_size());
-	}
-	{ // max_size map<int, int>
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<int, int> m;
-		write_result(ofs, m.max_size());
-	}
-	{ // max_size map<long, long>
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<long, long> m;
-		write_result(ofs, m.max_size());
-	}
-	{ // max_size map<float, float>
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<float,float> m;
-		write_result(ofs, m.max_size());
-	}
-	{ // max_size map<std::string, std::string>
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<std::string, std::string> m;
-		write_result(ofs, m.max_size());
-	}
-	{ // max_size map<TestStruct, TestStruct>
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<TestStruct, TestStruct> m;
-		write_result(ofs, m.max_size());
-	}
+	test_for_type<char, char>();
+	test_for_type<unsigned char, unsigned char>();
+	test_for_type<int, int>();
+	test_for_type<long, long>();
+	test_for_type<float, float>();
+	test_for_type<std::string, std::string>();
+	test_for_type<TestStruct, TestStruct>();
+
+	test_for_type<char, int>();
+	test_for_type<unsigned char, char>();
+	test_for_type<int, long>();
+	test_for_type<long, TestStruct>();
+	test_for_type<float, int>();
+	test_for_type<std::string, long>();
+	test_for_type<TestStruct, unsigned char>();
 
 	ofs.close();
+}
+
+template <class T, class U>
+void test_for_type()
+{// Test maxsize with different type
+	TEST_INIT();
+	CURRENT_NAMESPACE::map<T, U> m;
+	write_result(ofs, m.max_size());
 }
