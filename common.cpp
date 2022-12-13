@@ -79,10 +79,6 @@ struct TestStruct {
 	friend bool operator<(const TestStruct &lhs, const TestStruct &rhs) {
 		if (lhs.a >= rhs.a)
 			return false;
-		if (lhs.b >= rhs.b)
-			return false;
-		if (lhs.c >= rhs.c)
-			return false;
 		return true;
 	}
 };
