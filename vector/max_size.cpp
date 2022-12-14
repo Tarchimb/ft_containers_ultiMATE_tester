@@ -1,8 +1,4 @@
-//
-// Created by Cyril Battistolo on 11/15/22.
-//
-
-#include "../common.cpp"
+#include "../common/vector_common.cpp"
 
 std::string testName("max_size");
 

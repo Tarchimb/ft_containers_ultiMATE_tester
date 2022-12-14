@@ -1,11 +1,11 @@
-#include "common.cpp"
+#include "../common.cpp"
 
 template <class T>
 struct ft_greater {
-    bool operator()(const T lhs, const T rhs) const
-    {
-        return rhs < lhs;
-    }
+	bool operator()(const T lhs, const T rhs) const
+	{
+		return rhs < lhs;
+	}
 };
 
 namespace std {
@@ -31,4 +31,10 @@ void write_result(std::ofstream& ofs, const CURRENT_NAMESPACE::map<T, U, C>& map
 	ofs << "empty: " + std::to_string(map.empty()) << std::endl;
 	if (printContent)
 		ofs << std::to_string(map);
+}
+
+template <typename T>
+void write_result(std::ofstream& ofs, const T& val)
+{
+	ofs << std::to_string(val) << std::endl;
 }

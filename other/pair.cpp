@@ -1,4 +1,4 @@
-#include "../common.cpp"
+#include "../common/other_common.cpp"
 
 std::string testName("pair");
 

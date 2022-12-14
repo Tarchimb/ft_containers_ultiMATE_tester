@@ -25,6 +25,12 @@
 #else
 	#define FILE_NAME "_ft"
 	#define CURRENT_NAMESPACE ft
+#include "/Users/bbischof/Documents/containers/src/map.hpp"
+#include "/Users/bbischof/Documents/containers/src/map_iterator.hpp"
+#include "/Users/bbischof/Documents/containers/src/random_access_iterator.hpp"
+#include "/Users/bbischof/Documents/containers/src/rb_tree.hpp"
+#include "/Users/bbischof/Documents/containers/src/utils.hpp"
+#include "/Users/bbischof/Documents/containers/src/vector.hpp"
 	// INCLUDE PATH HERE
 #endif
 
@@ -83,6 +89,11 @@ struct TestStruct {
 	}
 };
 
+std::ostream& operator<<(std::ostream& o, const TestStruct& v) {
+	o << v.a << " " << v.b << " " << v.c;
+	return o;
+}
+
 void open_file(std::ofstream& ofs, const std::string& name)
 {
 	std::string file_name;
@@ -103,11 +114,6 @@ void change_ofs_to_next_test(std::ofstream& ofs, const std::string& str)
 	test++;
 }
 
-std::ostream& operator<<(std::ostream& o, const TestStruct& v) {
-	o << v.a << " " << v.b << " " << v.c;
-	return o;
-}
-
 namespace std {
 	std::string to_string(const TestStruct& v) {
 		std::string str;
@@ -120,31 +126,6 @@ namespace std {
 	std::string to_string(const std::string& str) {
 		return str;
 	}
-
-	template <typename T>
-	std::string to_string(const CURRENT_NAMESPACE::vector<T>& v) {
-		std::string str;
-		for (int i = 0; i < v.size(); i++)
-			str += std::to_string(v[i]);
-		return str;
-	}
-
-	template <class U, class T>
-	std::string to_string(const CURRENT_NAMESPACE::pair<U, T>& p) {
-		return (std::string(std::to_string(p.first) + " " + std::to_string(p.second)));
-	}
-}
-
-// ADD PRINT BEGIN IF NOT EMPTY
-// ADD ITERATOR VALIDITY
-template <typename T>
-void write_result(std::ofstream& ofs, const CURRENT_NAMESPACE::vector<T>& vector, const bool printContent=true) {
-	ofs << "size: " + std::to_string(vector.size()) << std::endl;
-	ofs << "capacity: " + std::to_string(vector.capacity()) << std::endl;
-	ofs << "empty: " + std::to_string(vector.empty()) << std::endl;
-	if (printContent)
-		for (int i = 0; i < vector.size(); i++)
-			ofs << std::to_string(vector[i]) << std::endl;
 }
 
 void write_result(std::ofstream& ofs, const TestStruct& val)
@@ -152,8 +133,3 @@ void write_result(std::ofstream& ofs, const TestStruct& val)
 	ofs << std::to_string(val) << std::endl;
 }
 
-template <typename T>
-void write_result(std::ofstream& ofs, const T& val)
-{
-	ofs << std::to_string(val) << std::endl;
-}
