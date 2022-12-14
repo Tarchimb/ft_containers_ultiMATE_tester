@@ -1,4 +1,5 @@
 #include "../common.cpp"
+#include "./other_common.cpp"
 
 template <class T>
 struct ft_greater {
@@ -31,10 +32,4 @@ void write_result(std::ofstream& ofs, const CURRENT_NAMESPACE::map<T, U, C>& map
 	ofs << "empty: " + std::to_string(map.empty()) << std::endl;
 	if (printContent)
 		ofs << std::to_string(map);
-}
-
-template <typename T>
-void write_result(std::ofstream& ofs, const T& val)
-{
-	ofs << std::to_string(val) << std::endl;
 }

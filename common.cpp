@@ -1,3 +1,5 @@
+#ifndef COMMON_CPP
+#define COMMON_CPP
 #include <iostream>
 #include <exception>
 #include <fstream>
@@ -25,6 +27,12 @@
 #else
 	#define FILE_NAME "_ft"
 	#define CURRENT_NAMESPACE ft
+#include "/Users/bbischof/Documents/containers/src/map.hpp"
+#include "/Users/bbischof/Documents/containers/src/map_iterator.hpp"
+#include "/Users/bbischof/Documents/containers/src/random_access_iterator.hpp"
+#include "/Users/bbischof/Documents/containers/src/rb_tree.hpp"
+#include "/Users/bbischof/Documents/containers/src/utils.hpp"
+#include "/Users/bbischof/Documents/containers/src/vector.hpp"
 	// INCLUDE PATH HERE
 #endif
 
@@ -127,3 +135,4 @@ void write_result(std::ofstream& ofs, const TestStruct& val)
 	ofs << std::to_string(val) << std::endl;
 }
 
+#endif
