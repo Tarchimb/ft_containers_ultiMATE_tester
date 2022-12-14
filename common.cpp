@@ -13,7 +13,26 @@
 #define TEST_INIT() \
 		change_ofs_to_next_test(ofs, testName);\
 		ofs << "the following tests are from file: " << __FILE__ << std::endl;\
-		ofs << "test on line: " << __LINE__ << std::endl
+		ofs << "test on line: " << __LINE__ << std::endl;                     \
+		FORK()
+
+#define FORK() \
+		int status; \
+		pid_t w, c_pid = fork(); \
+		if (c_pid == -1)  \
+			exit(0);         \
+		else if (c_pid > 0) { \
+        w = waitpid(c_pid, &status, WUNTRACED | WCONTINUED); \
+        if (w == -1) {  \
+        perror("waitpid"); \
+        exit(EXIT_FAILURE); \
+        } \
+         \
+        if (WIFSIGNALED(status)) { \
+        	write_result(ofs, "CRASH"); \
+        }           \
+        }\
+        else
 
 #ifndef NAMESPACE
 # define NAMESPACE 0
@@ -25,6 +44,23 @@
 #else
 	#define FILE_NAME "_ft"
 	#define CURRENT_NAMESPACE ft
+#include "/Users/tarchimb/42/ft_containers/includes/pair.hpp"
+#include "/Users/tarchimb/42/ft_containers/includes/equal.hpp"
+#include "/Users/tarchimb/42/ft_containers/includes/is_integral.hpp"
+#include "/Users/tarchimb/42/ft_containers/includes/lexicographical_compare.hpp"
+#include "/Users/tarchimb/42/ft_containers/includes/enable_if.hpp"
+#include "/Users/tarchimb/42/ft_containers/containers/vector.hpp"
+#include "/Users/tarchimb/42/ft_containers/containers/map/chooseConst.hpp"
+#include "/Users/tarchimb/42/ft_containers/containers/map/map.hpp"
+#include "/Users/tarchimb/42/ft_containers/containers/map/tree_iterator.hpp"
+#include "/Users/tarchimb/42/ft_containers/containers/map/reverse_bidirectional_iterator.hpp"
+#include "/Users/tarchimb/42/ft_containers/containers/map/Node.hpp"
+#include "/Users/tarchimb/42/ft_containers/containers/map/tree.hpp"
+#include "/Users/tarchimb/42/ft_containers/containers/stack.hpp"
+#include "/Users/tarchimb/42/ft_containers/iterators/random_access_iterator.hpp"
+#include "/Users/tarchimb/42/ft_containers/iterators/reverse_random_access_iterator.hpp"
+#include "/Users/tarchimb/42/ft_containers/iterators/iterator_traits.hpp"
+#include "/Users/tarchimb/42/ft_containers/iterators/iterator.hpp"
 	// INCLUDE PATH HERE
 #endif
 

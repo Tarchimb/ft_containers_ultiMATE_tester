@@ -90,6 +90,7 @@ parse_argument()
 
 main ()
 {
+  rm -rf /tmp/mylock
 	print_title
 	init_script "$@"
 	trap end_program SIGINT &>/dev/null
@@ -208,15 +209,29 @@ diff_outfiles()
 			git --no-pager diff --text --no-index $ft_file $std_file
 		fi
 		git --no-pager diff --text --no-index $ft_file $std_file &>$REDIR
-
-		if [ "$?" == "0" ]; then # Delete passed tests logs
-			echo -en "$index"$GREEN" OK" $END
-			rm $std_file  &>/dev/null
-			rm $ft_file  &>/dev/null
-		else # Move failed tests logs into logs folder
-			echo -en "$index"$RED" NOT OK" $END
-			mv $std_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
-			mv $ft_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
+		diff_return_value="$?"
+    if [ "(cat $ft_file | grep CRASH)" == "(cat $std_file | grep CRASH)" ]; then
+      echo -en "$index"$RED" BOTH CRASH" $END
+      else
+		    if [ "$diff_return_value" == "0" ]; then # Delete passed tests logs
+		    	echo -en "$index"$GREEN" OK" $END
+		    	rm $std_file  &>/dev/null
+		    	rm $ft_file  &>/dev/null
+		    else # Move failed tests logs into logs folder
+		      cat $ft_file | grep "CRASH" &>/dev/null
+		      if [ "$?" == "0" ]; then
+		        echo -en "$index"$RED" CRASH" $END
+		      else
+		        cat $std_file | grep "CRASH" &>/dev/null
+		        if [ "$?" == "0" ]; then
+		          echo -en "$index"$RED" STD_CRASH" $END
+		        else
+		    	    echo -en "$index"$RED" NOT OK" $END
+		    	  fi
+		    	fi
+		    	mv $std_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
+		    	mv $ft_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
+		    fi
 		fi
 
 		index=$((index+1));
@@ -249,6 +264,8 @@ check_if_file_exists()
 {
 	file_name="$filename"_"$1""_std.txt";
 	`test -e $file_name`;
+	file_name="$filename"_"$1""_ft.txt";
+  `test -e $file_name`;
 }
 
 clean_path ()

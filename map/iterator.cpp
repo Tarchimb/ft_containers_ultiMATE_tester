@@ -47,82 +47,98 @@ void test_forward_iterator(CURRENT_NAMESPACE::map<T, U>& map)
 	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 
 	{ // Copy constructor
-		TEST_INIT();
-		iterator it1(map.begin());
-		const_iterator it2(it1);
+		TEST_INIT(){
+			iterator it1(map.begin());
+			const_iterator it2(it1);
 
-		write_result(ofs, *it1);
-		write_result(ofs, *it2);
+			write_result(ofs, *it1);
+			write_result(ofs, *it2);
+			exit(0);
+		}
 	}
 	{ // Operator =
-		TEST_INIT();
-		iterator it1(map.begin());
-		const_iterator it2 = it1;
-		write_result(ofs, *it1);
-		write_result(ofs, *it2);
-		write_result(ofs, it2 == it1);
-		write_result(ofs, it2 != it1);
+		TEST_INIT(){
+			iterator it1(map.begin());
+			const_iterator it2 = it1;
+			write_result(ofs, *it1);
+			write_result(ofs, *it2);
+			write_result(ofs, it2 == it1);
+			write_result(ofs, it2 != it1);
+			exit(0);
+		}
 	}
 	{ // Post and pre increment
-		TEST_INIT();
-		iterator it1(map.begin());
-		it1++;
-		write_result(ofs, *it1);
-		++it1;
-		write_result(ofs, *it1);
-		++it1++;
-		write_result(ofs, *it1);
-		it1++;
-		write_result(ofs, *it1);
+		TEST_INIT(){
+			iterator it1(map.begin());
+			it1++;
+			write_result(ofs, *it1);
+			++it1;
+			write_result(ofs, *it1);
+			++it1++;
+			write_result(ofs, *it1);
+			it1++;
+			write_result(ofs, *it1);
+			exit(0);
+		}
 	}
 	{ // Dereferencing increment
-		TEST_INIT();
-		iterator it1(map.begin());
-		write_result(ofs, *it1++);
+		TEST_INIT(){
+			iterator it1(map.begin());
+			write_result(ofs, *it1++);
+			exit(0);
+		}
 	}
 	{ // Accessing first and second
-		TEST_INIT();
-		iterator it1(map.begin());
-		write_result(ofs, it1->first);
-		write_result(ofs, it1->second);
-		it1++;
-		it1++;
-		it1++;
-		write_result(ofs, it1->first);
-		write_result(ofs, it1->second);
+		TEST_INIT(){
+			iterator it1(map.begin());
+			write_result(ofs, it1->first);
+			write_result(ofs, it1->second);
+			it1++;
+			it1++;
+			it1++;
+			write_result(ofs, it1->first);
+			write_result(ofs, it1->second);
+			exit(0);
+		}
 	}
 	{ // Equality operators
-		TEST_INIT();
-		iterator it1(map.begin());
-		const_iterator it2(it1);
+		TEST_INIT(){
+			iterator it1(map.begin());
+			const_iterator it2(it1);
 
-		write_result(ofs, it1 == it2);
-		write_result(ofs, it1 != it2);
-		++it1;
-		write_result(ofs, it1 == it2);
-		write_result(ofs, it1 != it2);
-		++it2;
-		write_result(ofs, it1 == it2);
-		write_result(ofs, it1 != it2);
+			write_result(ofs, it1 == it2);
+			write_result(ofs, it1 != it2);
+			++it1;
+			write_result(ofs, it1 == it2);
+			write_result(ofs, it1 != it2);
+			++it2;
+			write_result(ofs, it1 == it2);
+			write_result(ofs, it1 != it2);
+			exit(0);
+		}
 	}
 	{ // Navigate through whole tree
-		TEST_INIT();
+		TEST_INIT(){
 		iterator it1(map.begin());
 		while (it1 != map.end())
 			write_result(ofs, *it1++);
+			exit(0);
+		}
 	}
     { //Test adress at init
-        TEST_INIT();
-        CURRENT_NAMESPACE::map<T, U> empty_map;
-        iterator it = empty_map.begin();
-        const_iterator cit = empty_map.begin();
-        iterator end = empty_map.end();
-        const_iterator cend = empty_map.end();
+        TEST_INIT(){
+			CURRENT_NAMESPACE::map<T, U> empty_map;
+			iterator it = empty_map.begin();
+			const_iterator cit = empty_map.begin();
+			iterator end = empty_map.end();
+			const_iterator cend = empty_map.end();
 
-        write_result(ofs, it == end);
-        write_result(ofs, cit == cend);
-        write_result(ofs, it == cend);
-        write_result(ofs, cit == end);
+			write_result(ofs, it == end);
+			write_result(ofs, cit == cend);
+			write_result(ofs, it == cend);
+			write_result(ofs, cit == end);
+			exit(0);
+		}
     }
 }
 
@@ -133,51 +149,61 @@ void test_bidirectional_iterator(CURRENT_NAMESPACE::map<T, U>& map)
 	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 
 	{ // Pre decrement
-		TEST_INIT();
-		iterator it1(map.end());
-		const_iterator it2(it1);
+		TEST_INIT(){
+			iterator it1(map.end());
+			const_iterator it2(it1);
 
-		--it1;
-		--it2;
-		write_result(ofs, *it1);
-		write_result(ofs, *it2);
+			--it1;
+			--it2;
+			write_result(ofs, *it1);
+			write_result(ofs, *it2);
+			exit(0);
+		}
 	}
 	{ // Post decrement
-		TEST_INIT();
-		iterator it1(map.end());
-		const_iterator it2(it1);
+		TEST_INIT(){
+			iterator it1(map.end());
+			const_iterator it2(it1);
 
-		it1--;
-		it2--;
-		write_result(ofs, *it1);
-		write_result(ofs, *it2);
+			it1--;
+			it2--;
+			write_result(ofs, *it1);
+			write_result(ofs, *it2);
+			exit(0);
+		}
 	}
 	{ // Pre and post increment
-		TEST_INIT();
-		iterator it1(map.end());
-		const_iterator it2(it1);
+		TEST_INIT(){
+			iterator it1(map.end());
+			const_iterator it2(it1);
 
-		--it1--;
-		--it2--;
-		write_result(ofs, *it1);
-		write_result(ofs, *it2);
+			--it1--;
+			--it2--;
+			write_result(ofs, *it1);
+			write_result(ofs, *it2);
+			exit(0);
+		}
 	}
 	{ // Dereference + decrement
-		TEST_INIT();
-		iterator it1(map.end());
-		const_iterator it2(it1);
+		TEST_INIT(){
+			iterator it1(map.end());
+			const_iterator it2(it1);
 
-		*it1--;
-		*it2--;
-		write_result(ofs, *it1--);
-		write_result(ofs, *it2--);
+			*it1--;
+			*it2--;
+			write_result(ofs, *it1--);
+			write_result(ofs, *it2--);
+			exit(0);
+		}
 	}
 	{ // Navigate through the whole tree 
-		TEST_INIT();
-		iterator it1(map.end());
-		--it1;
-		while (it1 != map.begin())
-			write_result(ofs, *it1--);
+		TEST_INIT(){
+			iterator it1(map.end());
+			--it1;
+			while (it1 != map.begin())
+				write_result(ofs, *it1--);
+			exit(0);
+		}
 	}
 
 }
@@ -187,17 +213,21 @@ void test_bidirectional_iterator(CURRENT_NAMESPACE::map<T, U>& map)
         typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 
         { //Iterate forward from begin
-            TEST_INIT();
-            for (iterator it = map.begin(); it != map.end(); it++)
-            {
-                write_result(ofs, *it);
-            }
+            TEST_INIT(){
+				for (iterator it = map.begin(); it != map.end(); it++)
+				{
+					write_result(ofs, *it);
+				}
+				exit(0);
+			}
         }
         { //Iterate backward from end
-            TEST_INIT();
-            for (iterator it = map.end(); it != map.end(); it--)
-            {
-                write_result(ofs, *it);
-            }
+            TEST_INIT(){
+				for (iterator it = map.end(); it != map.end(); it--)
+				{
+					write_result(ofs, *it);
+				}
+				exit(0);
+			}
         }
     }

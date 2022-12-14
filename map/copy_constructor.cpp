@@ -48,12 +48,13 @@ int main(void)
 template <class T, class U, class C>
 void test_for_type(CURRENT_NAMESPACE::map<T, U, C> &map)
 {
-    TEST_INIT();
-    CURRENT_NAMESPACE::map<T, U, C> m(map);
-    CURRENT_NAMESPACE::map<T, U, C> m1(map);
-    CURRENT_NAMESPACE::map<T, U, C> m2(m1);
-	write_result(ofs, m, true);
-	write_result(ofs, m1, true);
-	write_result(ofs, m2, true);
-
+    TEST_INIT(){
+		CURRENT_NAMESPACE::map<T, U, C> m(map);
+		CURRENT_NAMESPACE::map<T, U, C> m1(map);
+		CURRENT_NAMESPACE::map<T, U, C> m2(m1);
+		write_result(ofs, m, true);
+		write_result(ofs, m1, true);
+		write_result(ofs, m2, true);
+		exit(0);
+	}
 }

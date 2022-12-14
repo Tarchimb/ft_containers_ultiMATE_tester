@@ -39,12 +39,13 @@ int main(void)
 template <class T, class U>
 void test_pair(CURRENT_NAMESPACE::map<T, U> &map, T key, U value)
 {// Insert the pair and check the return value
-	TEST_INIT();
+	TEST_INIT(){
+		typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
+		CURRENT_NAMESPACE::pair<iterator, bool> pair;
 
-	typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
-	CURRENT_NAMESPACE::pair<iterator, bool> pair;
-
-	pair = map.insert(CURRENT_NAMESPACE::make_pair(key, value));
-	ofs << pair.first->first << ", " << pair.second << std::endl; 
-	write_result(ofs, map);
+		pair = map.insert(CURRENT_NAMESPACE::make_pair(key, value));
+		ofs << pair.first->first << ", " << pair.second << std::endl;
+		write_result(ofs, map);
+		exit(0);
+	}
 }

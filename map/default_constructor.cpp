@@ -24,7 +24,9 @@ int main(void)
 template <class T, class U, class C>
 void test_for_type()
 {
-	TEST_INIT();
-	CURRENT_NAMESPACE::map<T, U, C> m;
-	write_result(ofs, m, false);
+	TEST_INIT(){
+		CURRENT_NAMESPACE::map<T, U, C> m;
+		write_result(ofs, m, false);
+		exit(0);
+	}
 }

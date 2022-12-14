@@ -49,14 +49,18 @@ template <class T, class U, class C>
 void test_for_type(CURRENT_NAMESPACE::map<T, U, C> &map)
 {
     { // Simple construct range
-        TEST_INIT();
-        CURRENT_NAMESPACE::map<T, U, C> m(map.begin(), map.end());
-        write_result(ofs, m, true);
+        TEST_INIT(){
+			CURRENT_NAMESPACE::map<T, U, C> m(map.begin(), map.end());
+			write_result(ofs, m, true);
+			exit(0);
+		}
     }
     { // Construct from an empty range
-        TEST_INIT();
-        CURRENT_NAMESPACE::map<T, U, C> m_empty;
-        CURRENT_NAMESPACE::map<T, U, C> m(m_empty.begin(), m_empty.end());
-        write_result(ofs, m, true);
+        TEST_INIT(){
+			CURRENT_NAMESPACE::map<T, U, C> m_empty;
+			CURRENT_NAMESPACE::map<T, U, C> m(m_empty.begin(), m_empty.end());
+			write_result(ofs, m, true);
+			exit(0);
+		}
     }
 }

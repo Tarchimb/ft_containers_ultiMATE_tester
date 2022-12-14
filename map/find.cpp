@@ -40,33 +40,38 @@ void classic_map()
 	typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
 	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 	{ // Find with unitialized map
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<T, U>m;
-		iterator it = m.find(T());
-		write_result(ofs, it == m.end());
-		write_result(ofs, it == m.begin());
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::map<T, U>m;
+			iterator it = m.find(T());
+			write_result(ofs, it == m.end());
+			write_result(ofs, it == m.begin());
+			exit(0);
+		}
 	}
 	{ // Find with filled map
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<T, U>m;
-		T key = T();
-		U value = U();
-		for (int i = 0; i < 15; i++)
-		{
-			iterator it;
-			m.insert(CURRENT_NAMESPACE::pair<T, U>(key, value));
-			it = m.find(key);
-			if (it != m.end())
-				write_result(ofs, *it);
-			else
-				write_result(ofs, it == m.end());
+		TEST_INIT(){
+			CURRENT_NAMESPACE::map<T, U>m;
+			T key = T();
+			U value = U();
+			for (int i = 0; i < 15; i++)
+			{
+				iterator it;
+				m.insert(CURRENT_NAMESPACE::pair<T, U>(key, value));
+				it = m.find(key);
+				if (it != m.end())
+					write_result(ofs, *it);
+				else
+					write_result(ofs, it == m.end());
 
-			++key;
-			++value;
-			if (it != m.end())
-				write_result(ofs, *it);
-			else
-				write_result(ofs, it == m.end());
+				++key;
+				++value;
+				if (it != m.end())
+					write_result(ofs, *it);
+				else
+					write_result(ofs, it == m.end());
+			}
+			exit(0);
 		}
 	}
 }
@@ -77,24 +82,28 @@ void const_map(const CURRENT_NAMESPACE::map<T, U>& m)
 	typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
 	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 	{ // Find with unitialized const map
-		TEST_INIT();
+		TEST_INIT(){
 		const_iterator it = m.find(T());
 		write_result(ofs, it == m.end());
 		write_result(ofs, it == m.begin());
+		exit(0);
+		}
 	}
 	{ // Find with filled const map
-		TEST_INIT();
-		const_iterator it1 = m.begin();
+		TEST_INIT(){
+			const_iterator it1 = m.begin();
 
-		T key = T();
-		while (it1 != m.end())
-		{
-			const_iterator it2 = m.find(key);
-			write_result(ofs, *it2);
-			++key;
-			it1++;
+			T key = T();
+			while (it1 != m.end())
+			{
+				const_iterator it2 = m.find(key);
+				write_result(ofs, *it2);
+				++key;
+				it1++;
+			}
+			it1 = m.find(key);
+			write_result(ofs, it1 == m.end());
+			exit(0);
 		}
-		it1 = m.find(key);
-		write_result(ofs, it1 == m.end());
 	}
 }

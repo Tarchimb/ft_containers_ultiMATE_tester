@@ -18,22 +18,27 @@ template <class T, class U>
 void test_for_type()
 {
 	{ // Count with unitialized map
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<T, U>m;
-		write_result(ofs, m.count(T()));
+		TEST_INIT(){
+			CURRENT_NAMESPACE::map<T, U>m;
+			write_result(ofs, m.count(T()));
+			exit(0);
+		}
 	}
 	{ // Count with filled map
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<T, U>m;
-		T key = T();
-		U value = U();
-		for (int i = 0; i < 15; i++)
+		TEST_INIT()
 		{
-			m.insert(CURRENT_NAMESPACE::pair<T, U>(key, value));
-			write_result(ofs, m.count(key)); // Search inserted key
-			++key;
-			++value;
-			write_result(ofs, m.count(key)); // Search key not yet inserted
+			CURRENT_NAMESPACE::map<T, U>m;
+			T key = T();
+			U value = U();
+			for (int i = 0; i < 15; i++)
+			{
+				m.insert(CURRENT_NAMESPACE::pair<T, U>(key, value));
+				write_result(ofs, m.count(key)); // Search inserted key
+				++key;
+				++value;
+				write_result(ofs, m.count(key)); // Search key not yet inserted
+			}
+			exit(0);
 		}
 	}
 }
