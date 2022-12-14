@@ -90,7 +90,10 @@ void const_map(const CURRENT_NAMESPACE::map<T, U>& m)
 		while (it1 != m.end())
 		{
 			const_iterator it2 = m.find(key);
-			write_result(ofs, *it2);
+			if (it2 != m.end())
+				write_result(ofs, *it2);
+			else
+				write_result(ofs, it2 == m.end());
 			++key;
 			it1++;
 		}
