@@ -50,10 +50,10 @@ CURRENT_NAMESPACE::pair<T, U> generate_pair(int index, bool is_linear)
 	return CURRENT_NAMESPACE::make_pair(key, value);
 }
 
-template<class T, class U>
-CURRENT_NAMESPACE::map<T, U> generate_map(unsigned int size, bool is_linear = false)
+template<class T, class U, class C = std::less<T> >
+CURRENT_NAMESPACE::map<T, U, C> generate_map(unsigned int size, bool is_linear = false)
 {
-	CURRENT_NAMESPACE::map<T, U> m;
+	CURRENT_NAMESPACE::map<T, U, C> m;
 
 	if (size > 50)
 		size = 50;

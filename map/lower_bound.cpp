@@ -41,16 +41,8 @@ void classic_map()
 	}
 	{ // Find with filled map (value inserted with no gaps)
 		TEST_INIT();
-		CURRENT_NAMESPACE::map<T, U>m;
+		CURRENT_NAMESPACE::map<T, U>m = generate_map<T, U>(15, true);
 		T key = T();
-		U value = U();
-		for (int i = 0; i < 15; i++)
-		{
-			m.insert(CURRENT_NAMESPACE::pair<T, U>(key, value));
-			++key;
-			++value;
-		}
-		key = T();
 		for (int i = 0; i < 20; i++)
 		{
 			iterator it;
@@ -64,19 +56,8 @@ void classic_map()
 	}
 	{ // Find with filled map (value inserted with gaps)
 		TEST_INIT();
-		CURRENT_NAMESPACE::map<T, U>m;
+		CURRENT_NAMESPACE::map<T, U>m = generate_map<T, U>(15);
 		T key = T();
-		U value = U();
-		for (int i = 0; i < 15; i++)
-		{
-			m.insert(CURRENT_NAMESPACE::pair<T, U>(key, value));
-			for (int j = 0; j < 5; j++)
-			{
-				++key;
-				++value;
-			}
-		}
-		key = T();
 		for (int i = 0; i < 20; i++)
 		{
 			iterator it;
@@ -104,7 +85,6 @@ void const_map(const CURRENT_NAMESPACE::map<T, U>& m)
 	{ // Find with filled map (value inserted with no gaps)
 		TEST_INIT();
 		T key = T();
-		U value = U();
 		for (int i = 0; i < 20; i++)
 		{
 			const_iterator it;
