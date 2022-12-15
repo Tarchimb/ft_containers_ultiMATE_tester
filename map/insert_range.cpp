@@ -27,7 +27,6 @@ int main(void)
 
 	{// Inserting a range of pair<TestStruct, int>
 		TEST_INIT();
-		INIT_MAPS
 
 		CURRENT_NAMESPACE::map<TestStruct, TestStruct> m = generate_map<TestStruct, TestStruct>(20);
 		CURRENT_NAMESPACE::map<TestStruct, TestStruct> m1;
