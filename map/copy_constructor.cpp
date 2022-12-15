@@ -1,4 +1,4 @@
-#include "../map_common.cpp"
+#include "../common/map_common.cpp"
 
 std::string testName = "copy_constructor";
 template <class T, class U, class C>

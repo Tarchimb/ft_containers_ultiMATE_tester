@@ -1,4 +1,4 @@
-#include "../common.cpp"
+#include "../common/vector_common.cpp"
 
 std::string testName("operator_brackets");
 

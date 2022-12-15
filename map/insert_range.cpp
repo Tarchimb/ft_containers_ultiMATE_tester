@@ -1,4 +1,4 @@
-#include "../map_common.cpp"
+#include "../common/map_common.cpp"
 #include <cstdlib>
 #include <fstream>
 #include <utility>

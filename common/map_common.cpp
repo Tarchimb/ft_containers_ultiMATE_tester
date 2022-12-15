@@ -1,15 +1,15 @@
-#include "common.cpp"
+#include "../common.cpp"
+#include "./other_common.cpp"
 #include <utility>
 
-	
 const int ARR_INT[50] = {71, 87, 70, 22, 28, 2, 43, 99, 32, 46, 76, 69, 51, 36, 19, 42, 86, 10, 62, 20, 49, 29, 64, 56, 67, 15, 38, 12, 57, 55, 60, 26, 96, 83, 25, 47, 3, 100, 11, 5, 66, 91, 23, 63, 24, 85, 4, 53, 34, 28};\
 
 template <class T>
 struct ft_greater {
-    bool operator()(const T lhs, const T rhs) const
-    {
-        return rhs < lhs;
-    }
+	bool operator()(const T lhs, const T rhs) const
+	{
+		return rhs < lhs;
+	}
 };
 
 namespace std {
