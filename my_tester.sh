@@ -52,7 +52,7 @@ init_include()
 	sed 's/\/Users/#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/\/\//\//g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
-	ed -s ${TESTER_PATH}/common.cpp <<< $'27r tmp\nw'
+	ed -s ${TESTER_PATH}/common.cpp <<< $'28r tmp\nw'
 	rm -f tmp
 
 	echo -e "${YELLOW}Path updated!${END}"
@@ -192,6 +192,8 @@ diff_outfiles()
 	mutex_lock
 	echo -en $filename:
 	index=1
+	std_crash="false"
+	ft_crash="false"
 	check_if_file_exists $index
 
 	if [ ! -z "$LEAKS" ]
@@ -210,30 +212,22 @@ diff_outfiles()
 		fi
 		git --no-pager diff --text --no-index $ft_file $std_file &>$REDIR
 		diff_return_value="$?"
-    if [ "(cat $ft_file | grep CRASH)" == "(cat $std_file | grep CRASH)" ]; then
-      echo -en "$index"$RED" BOTH CRASH" $END
-      else
-		    if [ "$diff_return_value" == "0" ]; then # Delete passed tests logs
-		    	echo -en "$index"$GREEN" OK" $END
-		    	rm $std_file  &>/dev/null
-		    	rm $ft_file  &>/dev/null
-		    else # Move failed tests logs into logs folder
-		      cat $ft_file | grep "CRASH" &>/dev/null
-		      if [ "$?" == "0" ]; then
-		        echo -en "$index"$RED" CRASH" $END
-		      else
-		        cat $std_file | grep "CRASH" &>/dev/null
-		        if [ "$?" == "0" ]; then
-		          echo -en "$index"$RED" STD_CRASH" $END
-		        else
-		    	    echo -en "$index"$RED" NOT OK" $END
-		    	  fi
-		    	fi
-		    	mv $std_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
-		    	mv $ft_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
-		    fi
+		is_crashed $std_file $ft_file
+    if [ "$ft_crash" == "true" ] && [ "$std_crash" == "true" ]; then
+      echo -en "$index"$RED" BOTH CRASHED" $END
+    elif [ "$ft_crash" == "true" ]; then # Move failed tests logs into logs folder
+      echo -en "$index"$RED" CRASHED" $END
+    elif [ "$std_crash" == "true" ]; then
+      echo -en "$index"$RED" STD_CRASHED" $END
+    elif [ "$diff_return_value" != "0" ]; then
+      echo -en "$index"$RED" NOT OK" $END
+      mv $std_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
+      mv $ft_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
+    else  # Delete passed tests logs
+        echo -en "$index"$GREEN" OK" $END
+        rm $std_file  &>/dev/null
+        rm $ft_file  &>/dev/null
 		fi
-
 		index=$((index+1));
 		check_if_file_exists $index
 	done
@@ -243,6 +237,23 @@ diff_outfiles()
 	clean_path
 	echo
 	mutex_unlock
+}
+
+# $1 = $std_file, $2 = $ft_file
+is_crashed ()
+{
+  cat $std_file | grep CRASH &>/dev/null
+  if [ "$?" == "0" ]; then
+    std_crash="true"
+    else
+      std_crash="false"
+  fi
+  cat $ft_file | grep CRASH &>/dev/null
+  if [ "$?" == "0" ]; then
+      ft_crash="true"
+      else
+        ft_crash="false"
+  fi
 }
 
 mutex_lock ()

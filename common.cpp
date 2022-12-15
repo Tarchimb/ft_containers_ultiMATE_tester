@@ -10,29 +10,11 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define TEST_INIT() \
+#define TEST_INIT(x) \
 		change_ofs_to_next_test(ofs, testName);\
 		ofs << "the following tests are from file: " << __FILE__ << std::endl;\
 		ofs << "test on line: " << __LINE__ << std::endl;                     \
-		FORK()
-
-#define FORK() \
-		int status; \
-		pid_t w, c_pid = fork(); \
-		if (c_pid == -1)  \
-			exit(0);         \
-		else if (c_pid > 0) { \
-        w = waitpid(c_pid, &status, WUNTRACED | WCONTINUED); \
-        if (w == -1) {  \
-        perror("waitpid"); \
-        exit(EXIT_FAILURE); \
-        } \
-         \
-        if (WIFSIGNALED(status)) { \
-        	write_result(ofs, "CRASH"); \
-        }           \
-        }\
-        else
+		FORK(x)
 
 #ifndef NAMESPACE
 # define NAMESPACE 0
@@ -63,6 +45,24 @@
 #include "/Users/tarchimb/42/ft_containers/iterators/iterator.hpp"
 	// INCLUDE PATH HERE
 #endif
+
+#define FORK(x) \
+		int status; \
+		pid_t w, c_pid = fork(); \
+		if (c_pid == -1)  \
+			exit(0);         \
+		else if (c_pid > 0) { \
+        w = waitpid(c_pid, &status, WUNTRACED | WCONTINUED); \
+        if (w == -1) {  \
+        perror("waitpid"); \
+        exit(EXIT_FAILURE); \
+        } \
+         \
+        if (WIFSIGNALED(status)) { \
+        	write_result(ofs, "CRASH"); \
+        }           \
+        }\
+        else
 
 int test = 1; // Used to create indexed log
 std::ofstream ofs;

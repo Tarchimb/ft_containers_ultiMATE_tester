@@ -5,7 +5,7 @@
 
 std::string testName = "erase";
 template <class T, class U>
-void test_for_type(CURRENT_NAMESPACE::map<T, U> &map, CURRENT_NAMESPACE::pair<T, U> val);
+void test_for_type(CURRENT_NAMESPACE::map<T, U> &map);
 
 int main(void)
 {
@@ -16,7 +16,7 @@ int main(void)
     CURRENT_NAMESPACE::map<TestStruct, double> m_struct2;
 
 
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 150; i++)
     {
         m_int.insert(CURRENT_NAMESPACE::pair<int, int>(i, i));
         m_double.insert(CURRENT_NAMESPACE::pair<double, char>(i, i % 127));
@@ -25,16 +25,16 @@ int main(void)
         m_struct2.insert(CURRENT_NAMESPACE::pair<TestStruct, double>(TestStruct(i, i, std::to_string(i)), i));
     }
 
-    test_for_type<double, char>(m_double, CURRENT_NAMESPACE::pair<double, char>(42, 42 % 127));
-    test_for_type<std::string, int>(m_string, CURRENT_NAMESPACE::pair<std::string, int>(std::to_string(42), 42));
-    test_for_type<TestStruct, TestStruct>(m_struct, CURRENT_NAMESPACE::pair<TestStruct, TestStruct>(TestStruct(42, 42, std::to_string(42)), TestStruct(42, 42, std::to_string(42))));
-    test_for_type<TestStruct, double>(m_struct2, CURRENT_NAMESPACE::pair<TestStruct, double>(TestStruct(42, 42, std::to_string(42)), 42));
+    test_for_type<double, char>(m_double);
+    test_for_type<std::string, int>(m_string);
+    test_for_type<TestStruct, TestStruct>(m_struct);
+    test_for_type<TestStruct, double>(m_struct2);
 
     ofs.close();
 }
 
 template <class T, class U>
-void test_for_type(CURRENT_NAMESPACE::map<T, U> &map, CURRENT_NAMESPACE::pair<T, U> val)
+void test_for_type(CURRENT_NAMESPACE::map<T, U> &map)
 {
     typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
     typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
@@ -49,6 +49,7 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U> &map, CURRENT_NAMESPACE::pair<T,
 			m.erase(it);
 			it = m.begin();
 			m.erase(it);
+			write_result(ofs, m);
 			exit(0);
 		}
     }
@@ -59,27 +60,10 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U> &map, CURRENT_NAMESPACE::pair<T,
 			map.erase(it);
 			it = map.begin();
 			map.erase(it);
-		}
-    }
-	{ //Erase whole map forward
-		TEST_INIT()
-		{
-//			CURRENT_NAMESPACE::map<T, U> m(map);
-			while (map.size() > 0) {
-				iterator it = map.begin();
-				map.erase(it);
-			}
+			it = map.begin();
+			map.erase(it);
+			write_result(ofs, map);
 			exit(0);
 		}
     }
-    { //Erase whole map backward
-        TEST_INIT()
-		{
-        for (iterator it = map.end(); it != map.begin(); it--)
-            map.erase(it);
-			exit(0);
-		}
-	}
-//    }
-
 }
