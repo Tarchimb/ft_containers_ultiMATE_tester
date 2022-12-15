@@ -1,8 +1,4 @@
-//
-// Created by Cyril Battistolo on 18/11/2022.
-//
-
-#include "../common.cpp"
+#include "../common/other_common.cpp"
 
 std::string testName("is_integral");
 

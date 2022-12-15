@@ -1,4 +1,4 @@
-#include "../map_common.cpp"
+#include "../common/map_common.cpp"
 #include <iostream>
 #include <sys/wait.h>
 #include <unistd.h>

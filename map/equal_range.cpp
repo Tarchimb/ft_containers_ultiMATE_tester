@@ -1,4 +1,4 @@
-#include "../map_common.cpp"
+#include "../common/map_common.cpp"
 
 std::string testName = "equal_range";
 
@@ -24,14 +24,7 @@ template <class T, class U>
 void test_for_type()
 {
 	classic_map<T, U>();
-
-	// Create and fill map for const_map test
-	CURRENT_NAMESPACE::map<T, U>m;
-	T key = T();
-	U value = U();
-	for (int i = 0; i < 15; i++)
-		m.insert(CURRENT_NAMESPACE::pair<T, U>(++key, ++value));
-	const_map<T, U>(m);
+	const_map<T, U>(generate_map<T, U>(15));
 }
 
 template <class T, class U>

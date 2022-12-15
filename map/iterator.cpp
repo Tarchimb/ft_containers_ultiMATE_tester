@@ -1,4 +1,4 @@
-#include "../map_common.cpp"
+#include "../common/map_common.cpp"
 
 std::string testName("iterator");
 
@@ -14,18 +14,16 @@ void test_iteration_iterator(CURRENT_NAMESPACE::map<T, U>& map);
 
 int main(int argc, char** argv)
 {
-	CURRENT_NAMESPACE::map<int, int> map_int;
-    CURRENT_NAMESPACE::map<std::string, std::string> map_string;
-    CURRENT_NAMESPACE::map<TestStruct, TestStruct> map_struct;
+	CURRENT_NAMESPACE::map<int, int> map_int = generate_map<int, int>(50);
+	CURRENT_NAMESPACE::map<int, TestStruct> map_int_struct = generate_map<int, TestStruct>(50);
+	CURRENT_NAMESPACE::map<double, int> map_double_int = generate_map<double, int>(50);
+	CURRENT_NAMESPACE::map<float, float> map_float = generate_map<float, float>(50);
+    CURRENT_NAMESPACE::map<TestStruct, TestStruct> map_struct = generate_map<TestStruct, TestStruct>(50);
 
-    for (int i = 0; i < 1500; i++)
-    {
-        map_int.insert(CURRENT_NAMESPACE::pair<int, int>(i, i));
-        map_string.insert(CURRENT_NAMESPACE::pair<std::string, std::string>(std::to_string(i), std::to_string(i)));
-        map_struct.insert(CURRENT_NAMESPACE::pair<TestStruct, TestStruct>(TestStruct(i, i, std::to_string(i)), TestStruct(i, i, std::to_string(i))));
-    }
     test_for_type<int, int>(map_int);
-    test_for_type<std::string, std::string>(map_string);
+    test_for_type<int, TestStruct>(map_int_struct);
+    test_for_type<double, int>(map_double_int);
+    test_for_type<float, float>(map_float);
     test_for_type<TestStruct, TestStruct>(map_struct);
 
 	ofs.close();
