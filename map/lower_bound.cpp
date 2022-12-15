@@ -1,6 +1,6 @@
 #include "../common/map_common.cpp"
 
-std::string testName = "find";
+std::string testName = "lower_bound";
 
 template <class T, class U>
 void test_for_type();
@@ -42,31 +42,57 @@ void classic_map()
 	{ // Find with unitialized map
 		TEST_INIT();
 		CURRENT_NAMESPACE::map<T, U>m;
-		iterator it = m.find(T());
+		iterator it = m.lower_bound(T());
 		write_result(ofs, it == m.end());
 		write_result(ofs, it == m.begin());
 	}
-	{ // Find with filled map
+	{ // Find with filled map (value inserted with no gaps)
 		TEST_INIT();
 		CURRENT_NAMESPACE::map<T, U>m;
 		T key = T();
 		U value = U();
 		for (int i = 0; i < 15; i++)
 		{
-			iterator it;
 			m.insert(CURRENT_NAMESPACE::pair<T, U>(key, value));
-			it = m.find(key);
-			if (it != m.end())
-				write_result(ofs, *it);
-			else
-				write_result(ofs, it == m.end());
-
 			++key;
 			++value;
+		}
+		key = T();
+		for (int i = 0; i < 20; i++)
+		{
+			iterator it;
+			it = m.lower_bound(key);
 			if (it != m.end())
 				write_result(ofs, *it);
 			else
 				write_result(ofs, it == m.end());
+			++key;
+		}
+	}
+	{ // Find with filled map (value inserted with gaps)
+		TEST_INIT();
+		CURRENT_NAMESPACE::map<T, U>m;
+		T key = T();
+		U value = U();
+		for (int i = 0; i < 15; i++)
+		{
+			m.insert(CURRENT_NAMESPACE::pair<T, U>(key, value));
+			for (int j = 0; j < 5; j++)
+			{
+				++key;
+				++value;
+			}
+		}
+		key = T();
+		for (int i = 0; i < 20; i++)
+		{
+			iterator it;
+			it = m.lower_bound(key);
+			if (it != m.end())
+				write_result(ofs, *it);
+			else
+				write_result(ofs, it == m.end());
+			++key;
 		}
 	}
 }
@@ -76,25 +102,25 @@ void const_map(const CURRENT_NAMESPACE::map<T, U>& m)
 {
 	typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
 	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
-	{ // Find with unitialized const map
+	{ // Find with unitialized map
 		TEST_INIT();
-		const_iterator it = m.find(T());
+		const_iterator it = m.lower_bound(T());
 		write_result(ofs, it == m.end());
 		write_result(ofs, it == m.begin());
 	}
-	{ // Find with filled const map
+	{ // Find with filled map (value inserted with no gaps)
 		TEST_INIT();
-		const_iterator it1 = m.begin();
-
 		T key = T();
-		while (it1 != m.end())
+		U value = U();
+		for (int i = 0; i < 20; i++)
 		{
-			const_iterator it2 = m.find(key);
-			write_result(ofs, *it2);
+			const_iterator it;
+			it = m.lower_bound(key);
+			if (it != m.end())
+				write_result(ofs, *it);
+			else
+				write_result(ofs, it == m.end());
 			++key;
-			it1++;
 		}
-		it1 = m.find(key);
-		write_result(ofs, it1 == m.end());
 	}
 }

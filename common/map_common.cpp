@@ -1,11 +1,12 @@
-#include "common.cpp"
+#include "../common.cpp"
+#include "./other_common.cpp"
 
 template <class T>
 struct ft_greater {
-    bool operator()(const T lhs, const T rhs) const
-    {
-        return rhs < lhs;
-    }
+	bool operator()(const T lhs, const T rhs) const
+	{
+		return rhs < lhs;
+	}
 };
 
 namespace std {
