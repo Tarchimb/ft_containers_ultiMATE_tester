@@ -43,19 +43,10 @@ CURRENT_NAMESPACE::pair<T, U> generate_pair(int index, bool is_linear)
 	T key = T();
 	U value = U();
 	
-	if (is_linear == false)
-	{
-		for (int i = 0; i < ARR_INT[index]; i++) {
-			++key;
-			++value;
-		} 
-	}
-	else {
-		for (int i = 0; i < index; i++) {
-			++key;
-			++value;
-		} 
-	}
+	for (int i = 0; i < (is_linear ? index : ARR_INT[index]); i++) {
+		++key;
+		++value;
+	} 
 	return CURRENT_NAMESPACE::make_pair(key, value);
 }
 
