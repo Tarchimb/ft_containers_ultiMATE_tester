@@ -38,21 +38,29 @@ void write_result(std::ofstream& ofs, const CURRENT_NAMESPACE::map<T, U, C>& map
 }
 
 template<class T, class U>
-CURRENT_NAMESPACE::pair<T, U> generate_pair(int index)
+CURRENT_NAMESPACE::pair<T, U> generate_pair(int index, bool is_linear)
 {
 	T key = T();
 	U value = U();
-
-	for (int i = 0; i < ARR_INT[index]; i++) {
-		++key;
-		++value;
-	} 
-	std::cout << key << std::endl;
+	
+	if (is_linear == false)
+	{
+		for (int i = 0; i < ARR_INT[index]; i++) {
+			++key;
+			++value;
+		} 
+	}
+	else {
+		for (int i = 0; i < index; i++) {
+			++key;
+			++value;
+		} 
+	}
 	return CURRENT_NAMESPACE::make_pair(key, value);
 }
 
 template<class T, class U>
-CURRENT_NAMESPACE::map<T, U> generate_map(unsigned int size)
+CURRENT_NAMESPACE::map<T, U> generate_map(unsigned int size, bool is_linear = false)
 {
 	CURRENT_NAMESPACE::map<T, U> m;
 
@@ -60,7 +68,7 @@ CURRENT_NAMESPACE::map<T, U> generate_map(unsigned int size)
 		size = 50;
 	for (unsigned int i = 0; i < size; i++)
 	{
-		m.insert(generate_pair<T, U>(i));
+		m.insert(generate_pair<T, U>(i, is_linear));
 	}
 	return m;
 }
