@@ -24,14 +24,7 @@ template <class T, class U>
 void test_for_type()
 {
 	classic_map<T, U>();
-
-	// Create and fill map for const_map test
-	CURRENT_NAMESPACE::map<T, U>m;
-	T key = T();
-	U value = U();
-	for (int i = 0; i < 15; i++)
-		m.insert(CURRENT_NAMESPACE::pair<T, U>(++key, ++value));
-	const_map<T, U>(m);
+	const_map<T, U>(generate_map<T, U>(15));
 }
 
 template <class T, class U>
@@ -90,7 +83,10 @@ void const_map(const CURRENT_NAMESPACE::map<T, U>& m)
 		while (it1 != m.end())
 		{
 			const_iterator it2 = m.find(key);
-			write_result(ofs, *it2);
+			if (it2 != m.end())
+				write_result(ofs, *it2);
+			else
+				write_result(ofs, it2 == m.end());
 			++key;
 			it1++;
 		}

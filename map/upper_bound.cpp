@@ -1,6 +1,6 @@
 #include "../common/map_common.cpp"
 
-std::string testName = "lower_bound";
+std::string testName = "upper_bound";
 
 template <class T, class U>
 void test_for_type();
@@ -35,7 +35,7 @@ void classic_map()
 	{ // Find with unitialized map
 		TEST_INIT();
 		CURRENT_NAMESPACE::map<T, U>m;
-		iterator it = m.lower_bound(T());
+		iterator it = m.upper_bound(T());
 		write_result(ofs, it == m.end());
 		write_result(ofs, it == m.begin());
 	}
@@ -46,7 +46,7 @@ void classic_map()
 		for (int i = 0; i < 20; i++)
 		{
 			iterator it;
-			it = m.lower_bound(key);
+			it = m.upper_bound(key);
 			if (it != m.end())
 				write_result(ofs, *it);
 			else
@@ -61,7 +61,7 @@ void classic_map()
 		for (int i = 0; i < 20; i++)
 		{
 			iterator it;
-			it = m.lower_bound(key);
+			it = m.upper_bound(key);
 			if (it != m.end())
 				write_result(ofs, *it);
 			else
@@ -78,7 +78,7 @@ void const_map(const CURRENT_NAMESPACE::map<T, U>& m)
 	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 	{ // Find with unitialized map
 		TEST_INIT();
-		const_iterator it = m.lower_bound(T());
+		const_iterator it = m.upper_bound(T());
 		write_result(ofs, it == m.end());
 		write_result(ofs, it == m.begin());
 	}
@@ -88,7 +88,7 @@ void const_map(const CURRENT_NAMESPACE::map<T, U>& m)
 		for (int i = 0; i < 20; i++)
 		{
 			const_iterator it;
-			it = m.lower_bound(key);
+			it = m.upper_bound(key);
 			if (it != m.end())
 				write_result(ofs, *it);
 			else
