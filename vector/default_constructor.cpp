@@ -19,7 +19,10 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type()
 {
-	TEST_INIT();
-	CURRENT_NAMESPACE::vector<T> vector;
-	write_result<T>(ofs, vector, false);
+	TEST_INIT()
+	{
+		CURRENT_NAMESPACE::vector<T> vector;
+		write_result<T>(ofs, vector, false);
+		exit(0);
+	}
 }

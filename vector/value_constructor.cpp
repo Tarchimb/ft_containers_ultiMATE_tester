@@ -17,25 +17,31 @@ template <typename T>
 void test_for_type(std::ofstream& ofs, const int& count, const T value)
 {
 	{ // classic count and value
-		TEST_INIT();
-		try {
-			CURRENT_NAMESPACE::vector<T> vector(count, value);
-			write_result(ofs, vector);
-		}
-		catch (std::exception& e)
+		TEST_INIT()
 		{
-			write_result(ofs, e.what());
+			try {
+				CURRENT_NAMESPACE::vector<T> vector(count, value);
+				write_result(ofs, vector);
+			}
+			catch (std::exception& e)
+			{
+				write_result(ofs, e.what());
+			}
+			exit(0);
 		}
 	}
 	{ // count = 0
-		TEST_INIT();
-		try {
-			CURRENT_NAMESPACE::vector<T> vector(0, value);
-			write_result(ofs, vector);
-		}
-		catch (std::exception& e)
+		TEST_INIT()
 		{
-			write_result(ofs, e.what());
+			try {
+				CURRENT_NAMESPACE::vector<T> vector(0, value);
+				write_result(ofs, vector);
+			}
+			catch (std::exception& e)
+			{
+				write_result(ofs, e.what());
+			}
+			exit(0);
 		}
 	}
 }

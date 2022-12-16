@@ -40,14 +40,20 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(const CURRENT_NAMESPACE::vector<T>& vector1)
 {
-	TEST_INIT();
-	CURRENT_NAMESPACE::vector<T> vector2(vector1);
-	write_result<T>(ofs, vector2);
+	TEST_INIT()
+	{
+		CURRENT_NAMESPACE::vector<T> vector2(vector1);
+		write_result<T>(ofs, vector2);
+		exit(0);
+	}
 }
 
 template <typename T>
 void test_for_capacity(const CURRENT_NAMESPACE::vector<T> vector1)
 {
-	TEST_INIT();
-	write_result<T>(ofs, vector1);
+	TEST_INIT()
+	{
+		write_result<T>(ofs, vector1);
+		exit(0);
+	}
 }

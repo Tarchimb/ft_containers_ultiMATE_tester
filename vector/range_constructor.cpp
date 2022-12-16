@@ -18,39 +18,48 @@ template <typename T>
 void test_for_type(const T& value)
 {
 	{ // Classic range constructor
-		TEST_INIT();
-		try {
-			CURRENT_NAMESPACE::vector<T> vector1(100, value);
-			CURRENT_NAMESPACE::vector<T> vector2(vector1.begin(), vector1.end());
-			write_result(ofs, vector2);
-		}
-		catch (std::exception& e)
+		TEST_INIT()
 		{
-			write_result(ofs, e.what());
+			try {
+				CURRENT_NAMESPACE::vector<T> vector1(100, value);
+				CURRENT_NAMESPACE::vector<T> vector2(vector1.begin(), vector1.end());
+				write_result(ofs, vector2);
+			}
+			catch (std::exception& e)
+			{
+				write_result(ofs, e.what());
+			}
+			exit(0);
 		}
 	}
 	{ // Range constructor with modified iterators
-		TEST_INIT();
-		try {
-			CURRENT_NAMESPACE::vector<T> vector1(100, value);
-			CURRENT_NAMESPACE::vector<T> vector2(vector1.begin() + 25, vector1.end() - 25);
-			write_result(ofs, vector2);
-		}
-		catch (std::exception& e)
+		TEST_INIT()
 		{
-			write_result(ofs, e.what());
+			try {
+				CURRENT_NAMESPACE::vector<T> vector1(100, value);
+				CURRENT_NAMESPACE::vector<T> vector2(vector1.begin() + 25, vector1.end() - 25);
+				write_result(ofs, vector2);
+			}
+			catch (std::exception& e)
+			{
+				write_result(ofs, e.what());
+			}
+			exit(0);
 		}
 	}
 	{ // Range constructor with begin = end
-		TEST_INIT();
-		try {
-			CURRENT_NAMESPACE::vector<T> vector1(100, value);
-			CURRENT_NAMESPACE::vector<T> vector2(vector1.begin() + 50, vector1.begin() + 50);
-			write_result(ofs, vector2);
-		}
-		catch (std::exception& e)
+		TEST_INIT()
 		{
-			write_result(ofs, e.what());
+			try {
+				CURRENT_NAMESPACE::vector<T> vector1(100, value);
+				CURRENT_NAMESPACE::vector<T> vector2(vector1.begin() + 50, vector1.begin() + 50);
+				write_result(ofs, vector2);
+			}
+			catch (std::exception& e)
+			{
+				write_result(ofs, e.what());
+			}
+			exit(0);
 		}
 	}
 }

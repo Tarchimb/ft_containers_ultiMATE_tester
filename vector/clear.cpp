@@ -24,49 +24,67 @@ template <typename T>
 void test_for_type(CURRENT_NAMESPACE::vector<T>& vector1, const T& value)
 {
 	{ // clear empty vector
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v;
-		v.clear();
-		write_result(ofs, v);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v;
+			v.clear();
+			write_result(ofs, v);
+			exit(0);
+		}
 	}
 	{ // clear filled vector
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(10, value);
-		v.clear();
-		write_result(ofs, v);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(10, value);
+			v.clear();
+			write_result(ofs, v);
+			exit(0);
+		}
 	}
 	{ // clear filled vector then re-assign it
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(10, value);
-		v.clear();
-		v.assign(vector1.begin(), vector1.end());
-		write_result(ofs, v);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(10, value);
+			v.clear();
+			v.assign(vector1.begin(), vector1.end());
+			write_result(ofs, v);
+			exit(0);
+		}
 	}
 	{ // clear vector multiple times
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(10, value);
-		v.clear();
-		v.clear();
-		v.clear();
-		write_result(ofs, v);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(10, value);
+			v.clear();
+			v.clear();
+			v.clear();
+			write_result(ofs, v);
+			exit(0);
+		}
 	}
 	{ // clear vector, reserve then re-clear
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(10, value);
-		v.clear();
-		v.reserve(20);
-		v.clear();
-		write_result(ofs, v);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(10, value);
+			v.clear();
+			v.reserve(20);
+			v.clear();
+			write_result(ofs, v);
+			exit(0);
+		}
 	}
 	{ // checking iterators validity
-		TEST_INIT();
-		typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
-		CURRENT_NAMESPACE::vector<T> v(10, value);
-		iterator it1 = v.begin();
-		iterator it2 = v.end();
-		v.clear();
-		write_result(ofs, v);
-		write_result(ofs, it1 == v.begin());
-		write_result(ofs, it2 == v.end());
+		TEST_INIT()
+		{
+			typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
+			CURRENT_NAMESPACE::vector<T> v(10, value);
+			iterator it1 = v.begin();
+			iterator it2 = v.end();
+			v.clear();
+			write_result(ofs, v);
+			write_result(ofs, it1 == v.begin());
+			write_result(ofs, it2 == v.end());
+			exit(0);
+		}
 	}
 }

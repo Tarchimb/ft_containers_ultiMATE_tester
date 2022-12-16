@@ -29,11 +29,14 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(CURRENT_NAMESPACE::vector<T>& vector1)
 {
-	TEST_INIT();
-	typename CURRENT_NAMESPACE::vector<T>::const_reference cref = vector1.front();
-	write_result(ofs, cref);
-	typename CURRENT_NAMESPACE::vector<T>::reference ref = vector1.front();
-	ref = ref * 2;
-	write_result(ofs, ref);
-	write_result(ofs, vector1.front());
+	TEST_INIT()
+	{
+		typename CURRENT_NAMESPACE::vector<T>::const_reference cref = vector1.front();
+		write_result(ofs, cref);
+		typename CURRENT_NAMESPACE::vector<T>::reference ref = vector1.front();
+		ref = ref * 2;
+		write_result(ofs, ref);
+		write_result(ofs, vector1.front());
+		exit(0);
+	}
 }

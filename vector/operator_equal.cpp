@@ -28,37 +28,52 @@ template <typename T>
 void test_for_type(const CURRENT_NAMESPACE::vector<T>& vector1, const T& value)
 {
 	{ // Replace empty vector with another empty vector
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> vector;
-		CURRENT_NAMESPACE::vector<T> vector2;
-		vector = vector2;
-		write_result<T>(ofs, vector);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> vector;
+			CURRENT_NAMESPACE::vector<T> vector2;
+			vector = vector2;
+			exit(0);
+			write_result<T>(ofs, vector);
+		}
 	}
 	{ // Replace empty vector with filled vector
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> vector2;
-		vector2 = vector1;
-		write_result<T>(ofs, vector2);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> vector2;
+			vector2 = vector1;
+			write_result<T>(ofs, vector2);
+			exit(0);
+		}
 	}
 	{ // Replace filled vector witht another filled vector
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> vector(5, T());
-		CURRENT_NAMESPACE::vector<T> vector2(5, value);
-		vector = vector2;
-		write_result<T>(ofs, vector);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> vector(5, T());
+			CURRENT_NAMESPACE::vector<T> vector2(5, value);
+			vector = vector2;
+			exit(0);
+			write_result<T>(ofs, vector);
+		}
 	}
 	{ // Replace filled vector witht another filled vector (dst being larger than src)
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> vector(15, T());
-		CURRENT_NAMESPACE::vector<T> vector2(5, value);
-		vector = vector2;
-		write_result<T>(ofs, vector);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> vector(15, T());
+			CURRENT_NAMESPACE::vector<T> vector2(5, value);
+			vector = vector2;
+			exit(0);
+			write_result<T>(ofs, vector);
+		}
 	}
 	{ // Replace filled vector witht another filled vector (dst being smaller than src)
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> vector(5, T());
-		CURRENT_NAMESPACE::vector<T> vector2(15, value);
-		vector = vector2;
-		write_result<T>(ofs, vector);
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> vector(5, T());
+			CURRENT_NAMESPACE::vector<T> vector2(15, value);
+			vector = vector2;
+			exit(0);
+			write_result<T>(ofs, vector);
+		}
 	}
 }

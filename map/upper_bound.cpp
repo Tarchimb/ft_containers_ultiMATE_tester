@@ -33,40 +33,49 @@ void classic_map()
 	typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
 	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 	{ // Find with unitialized map
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<T, U>m;
-		iterator it = m.upper_bound(T());
-		write_result(ofs, it == m.end());
-		write_result(ofs, it == m.begin());
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::map<T, U>m;
+			iterator it = m.upper_bound(T());
+			write_result(ofs, it == m.end());
+			write_result(ofs, it == m.begin());
+			exit(0);
+		}
 	}
 	{ // Find with filled map (value inserted with no gaps)
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<T, U>m = generate_map<T, U>(15, true);
-		T key = T();
-		for (int i = 0; i < 20; i++)
+		TEST_INIT()
 		{
-			iterator it;
-			it = m.upper_bound(key);
-			if (it != m.end())
-				write_result(ofs, *it);
-			else
-				write_result(ofs, it == m.end());
-			++key;
+			CURRENT_NAMESPACE::map<T, U>m = generate_map<T, U>(15, true);
+			T key = T();
+			for (int i = 0; i < 20; i++)
+			{
+				iterator it;
+				it = m.upper_bound(key);
+				if (it != m.end())
+					write_result(ofs, *it);
+				else
+					write_result(ofs, it == m.end());
+				++key;
+			}
+			exit(0);
 		}
 	}
 	{ // Find with filled map (value inserted with gaps)
-		TEST_INIT();
-		CURRENT_NAMESPACE::map<T, U>m = generate_map<T, U>(15);
-		T key = T();
-		for (int i = 0; i < 20; i++)
+		TEST_INIT()
 		{
-			iterator it;
-			it = m.upper_bound(key);
-			if (it != m.end())
-				write_result(ofs, *it);
-			else
-				write_result(ofs, it == m.end());
-			++key;
+			CURRENT_NAMESPACE::map<T, U>m = generate_map<T, U>(15);
+			T key = T();
+			for (int i = 0; i < 20; i++)
+			{
+				iterator it;
+				it = m.upper_bound(key);
+				if (it != m.end())
+					write_result(ofs, *it);
+				else
+					write_result(ofs, it == m.end());
+				++key;
+			}
+			exit(0);
 		}
 	}
 }
@@ -77,23 +86,29 @@ void const_map(const CURRENT_NAMESPACE::map<T, U>& m)
 	typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
 	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 	{ // Find with unitialized map
-		TEST_INIT();
-		const_iterator it = m.upper_bound(T());
-		write_result(ofs, it == m.end());
-		write_result(ofs, it == m.begin());
+		TEST_INIT()
+		{
+			const_iterator it = m.upper_bound(T());
+			write_result(ofs, it == m.end());
+			write_result(ofs, it == m.begin());
+			exit(0);
+		}
 	}
 	{ // Find with filled map (value inserted with no gaps)
-		TEST_INIT();
-		T key = T();
-		for (int i = 0; i < 20; i++)
+		TEST_INIT()
 		{
-			const_iterator it;
-			it = m.upper_bound(key);
-			if (it != m.end())
-				write_result(ofs, *it);
-			else
-				write_result(ofs, it == m.end());
-			++key;
+			T key = T();
+			for (int i = 0; i < 20; i++)
+			{
+				const_iterator it;
+				it = m.upper_bound(key);
+				if (it != m.end())
+					write_result(ofs, *it);
+				else
+					write_result(ofs, it == m.end());
+				++key;
+			}
+			exit(0);
 		}
 	}
 }

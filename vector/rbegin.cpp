@@ -25,11 +25,14 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(std::ofstream& ofs, CURRENT_NAMESPACE::vector<T>& vector1)
 {
-	TEST_INIT();
+	TEST_INIT()
+	{
+		typename CURRENT_NAMESPACE::vector<T>::const_reverse_iterator it = vector1.rbegin();
+		write_result<T>(ofs, *it);
+		typename CURRENT_NAMESPACE::vector<T>::reverse_iterator it2 = vector1.rbegin();
+		write_result<T>(ofs, (*it2));
+		write_result<bool>(ofs, &(*it2) == &(*it));
+		exit(0);
+	}
 
-	typename CURRENT_NAMESPACE::vector<T>::const_reverse_iterator it = vector1.rbegin();
-	write_result<T>(ofs, *it);
-	typename CURRENT_NAMESPACE::vector<T>::reverse_iterator it2 = vector1.rbegin();
-	write_result<T>(ofs, (*it2));
-	write_result<bool>(ofs, &(*it2) == &(*it));
 }

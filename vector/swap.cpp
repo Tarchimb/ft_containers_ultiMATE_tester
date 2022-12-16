@@ -17,60 +17,69 @@ void test_for_type(std::ofstream& ofs, const T& value)
 	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
 
 	{
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v1(5, value);
-		CURRENT_NAMESPACE::vector<T> v2(5, value * 2);
-		iterator it1 = v1.begin();
-		iterator it2 = v2.begin();
-		T& ref1 = v1.front();
-		T& ref2 = v2.front();
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v1(5, value);
+			CURRENT_NAMESPACE::vector<T> v2(5, value * 2);
+			iterator it1 = v1.begin();
+			iterator it2 = v2.begin();
+			T& ref1 = v1.front();
+			T& ref2 = v2.front();
 
-		v1.swap(v2);
-		write_result(ofs, v1);
-		write_result(ofs, *it1);
-		write_result(ofs, ref1);
-		write_result(ofs, v2);
-		write_result(ofs, *it2);
-		write_result(ofs, ref2);
-		write_result(ofs, it1 == v1.begin());
-		write_result(ofs, it1 == v2.begin());
+			v1.swap(v2);
+			write_result(ofs, v1);
+			write_result(ofs, *it1);
+			write_result(ofs, ref1);
+			write_result(ofs, v2);
+			write_result(ofs, *it2);
+			write_result(ofs, ref2);
+			write_result(ofs, it1 == v1.begin());
+			write_result(ofs, it1 == v2.begin());
+			exit(0);
+		}
 	}
 	{
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v1(2, value);
-		CURRENT_NAMESPACE::vector<T> v2(5, value * 2);
-		iterator it1 = v1.begin() + 1;
-		iterator it2 = v2.begin() + 1;
-		T& ref1 = v1.front();
-		T& ref2 = v2.front();
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v1(2, value);
+			CURRENT_NAMESPACE::vector<T> v2(5, value * 2);
+			iterator it1 = v1.begin() + 1;
+			iterator it2 = v2.begin() + 1;
+			T& ref1 = v1.front();
+			T& ref2 = v2.front();
 
-		v1.swap(v2);
-		write_result(ofs, v1);
-		write_result(ofs, *it1);
-		write_result(ofs, ref1);
-		write_result(ofs, v2);
-		write_result(ofs, *it2);
-		write_result(ofs, ref2);
-		write_result(ofs, it1 == v1.begin() + 1);
-		write_result(ofs, it1 == v2.begin() + 1);
+			v1.swap(v2);
+			write_result(ofs, v1);
+			write_result(ofs, *it1);
+			write_result(ofs, ref1);
+			write_result(ofs, v2);
+			write_result(ofs, *it2);
+			write_result(ofs, ref2);
+			write_result(ofs, it1 == v1.begin() + 1);
+			write_result(ofs, it1 == v2.begin() + 1);
+			exit(0);
+		}
 	}
 	{
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v1(200, value);
-		CURRENT_NAMESPACE::vector<T> v2(1000, value * 2);
-		iterator it1 = v1.begin() + 1;
-		iterator it2 = v2.begin() + 1;
-		T& ref1 = v1.front();
-		T& ref2 = v2.front();
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v1(200, value);
+			CURRENT_NAMESPACE::vector<T> v2(1000, value * 2);
+			iterator it1 = v1.begin() + 1;
+			iterator it2 = v2.begin() + 1;
+			T& ref1 = v1.front();
+			T& ref2 = v2.front();
 
-		v1.swap(v2);
-		write_result(ofs, v1);
-		write_result(ofs, *it1);
-		write_result(ofs, ref1);
-		write_result(ofs, v2);
-		write_result(ofs, *it2);
-		write_result(ofs, ref2);
-		write_result(ofs, it1 == v1.begin() + 1);
-		write_result(ofs, it1 == v2.begin() + 1);
+			v1.swap(v2);
+			write_result(ofs, v1);
+			write_result(ofs, *it1);
+			write_result(ofs, ref1);
+			write_result(ofs, v2);
+			write_result(ofs, *it2);
+			write_result(ofs, ref2);
+			write_result(ofs, it1 == v1.begin() + 1);
+			write_result(ofs, it1 == v2.begin() + 1);
+			exit(0);
+		}
 	}
 }

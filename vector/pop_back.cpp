@@ -17,45 +17,54 @@ template <typename T>
 void test_for_type(const T& value)
 {
 	{ // Pop back with filled vector
-		TEST_INIT();
-
-		CURRENT_NAMESPACE::vector<T> vector(20, value);
-		const int SIZE = vector.size();
-		for (int i = 0; i < SIZE; i++)
+		TEST_INIT()
 		{
-			if (i == SIZE / 2)
-				write_result(ofs, vector); // half way check
-			vector.pop_back();
+
+			CURRENT_NAMESPACE::vector<T> vector(20, value);
+			const int SIZE = vector.size();
+			for (int i = 0; i < SIZE; i++)
+			{
+				if (i == SIZE / 2)
+					write_result(ofs, vector); // half way check
+				vector.pop_back();
+			}
+			write_result(ofs, vector);
+			exit(0);
 		}
-		write_result(ofs, vector);
 	}
 	{ // Pop back with empty vector
-		TEST_INIT();
-
-		CURRENT_NAMESPACE::vector<T> vector;
-		vector.clear();
-		const int SIZE = vector.size();
-		for (int i = 0; i < SIZE; i++)
+		TEST_INIT()
 		{
-			if (i == SIZE / 2)
-				write_result(ofs, vector); // half way check
-			vector.pop_back();
+
+			CURRENT_NAMESPACE::vector<T> vector;
+			vector.clear();
+			const int SIZE = vector.size();
+			for (int i = 0; i < SIZE; i++)
+			{
+				if (i == SIZE / 2)
+					write_result(ofs, vector); // half way check
+				vector.pop_back();
+			}
+			write_result(ofs, vector);
+			exit(0);
 		}
-		write_result(ofs, vector);
 	}
 	{ // Pop back with reserved space
-		TEST_INIT();
-
-		CURRENT_NAMESPACE::vector<T> vector;
-		vector.reserve(100);
-		const int SIZE = vector.size();
-		for (int i = 0; i < SIZE; i++)
+		TEST_INIT()
 		{
-			if (i == SIZE / 2)
-				write_result(ofs, vector); // half way check
-			vector.pop_back();
+
+			CURRENT_NAMESPACE::vector<T> vector;
+			vector.reserve(100);
+			const int SIZE = vector.size();
+			for (int i = 0; i < SIZE; i++)
+			{
+				if (i == SIZE / 2)
+					write_result(ofs, vector); // half way check
+				vector.pop_back();
+			}
+			write_result(ofs, vector);
+			exit(0);
 		}
-		write_result(ofs, vector);
 	}
 
 }

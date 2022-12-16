@@ -28,13 +28,16 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(CURRENT_NAMESPACE::vector<T>& vector1)
 {
-	TEST_INIT();
-	const typename CURRENT_NAMESPACE::vector<T>::value_type* cval = vector1.data();
-	write_result(ofs, *cval);
-	typename CURRENT_NAMESPACE::vector<T>::value_type* val = vector1.data();
-	*val = *val * 2;
-	write_result(ofs, *val);
-	write_result(ofs, *(vector1.data()));
-	write_result(ofs, &(*val) == &(*cval));
-	write_result(ofs, &(*val) == &(*vector1.begin()));
+	TEST_INIT()
+	{
+		const typename CURRENT_NAMESPACE::vector<T>::value_type* cval = vector1.data();
+		write_result(ofs, *cval);
+		typename CURRENT_NAMESPACE::vector<T>::value_type* val = vector1.data();
+		*val = *val * 2;
+		write_result(ofs, *val);
+		write_result(ofs, *(vector1.data()));
+		write_result(ofs, &(*val) == &(*cval));
+		write_result(ofs, &(*val) == &(*vector1.begin()));
+		exit(0);
+	}
 }

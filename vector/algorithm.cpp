@@ -31,18 +31,27 @@ template <typename T>
 void test_std_algorithm(CURRENT_NAMESPACE::vector<T> array)
 {
 	{
-		TEST_INIT();
-		std::transform(array.begin(), array.end(), array.begin(), op_increase<T>);
-		write_result(ofs, array);
+		TEST_INIT()
+		{
+			std::transform(array.begin(), array.end(), array.begin(), op_increase<T>);
+			write_result(ofs, array);
+			exit(0);
+		}
 	}
 	{
-		TEST_INIT();
-		std::reverse(array.begin(), array.end());
-		write_result(ofs, array);
+		TEST_INIT()
+		{
+			std::reverse(array.begin(), array.end());
+			write_result(ofs, array);
+			exit(0);
+		}
 	}
 	{
-		TEST_INIT();
-		std::sort(array.begin(), array.end());
-		write_result(ofs, array);
+		TEST_INIT()
+		{
+			std::sort(array.begin(), array.end());
+			write_result(ofs, array);
+			exit(0);
+		}
 	}
 }

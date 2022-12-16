@@ -41,16 +41,22 @@ void test_equal(const T& value)
 	}
 
 	{ // Equal with same size
-		TEST_INIT();
-		write_result(ofs, low == high);
-		write_result(ofs, low == low);
-		write_result(ofs, high == high);
+		TEST_INIT()
+		{
+			write_result(ofs, low == high);
+			write_result(ofs, low == low);
+			write_result(ofs, high == high);
+			exit(0);
+		}
 	}
 	{ // Not equal with same size
-		TEST_INIT();
-		write_result(ofs, low != high);
-		write_result(ofs, low != low);
-		write_result(ofs, high != high);
+		TEST_INIT()
+		{
+			write_result(ofs, low != high);
+			write_result(ofs, low != low);
+			write_result(ofs, high != high);
+			exit(0);
+		}
 	}
 
 	low.clear(); high.clear();
@@ -60,16 +66,22 @@ void test_equal(const T& value)
 		high.push_back(value * i * 2);
 
 	{ // Equal with different size
-		TEST_INIT();
-		write_result(ofs, low == high);
-		write_result(ofs, low == low);
-		write_result(ofs, high == high);
+		TEST_INIT()
+		{
+			write_result(ofs, low == high);
+			write_result(ofs, low == low);
+			write_result(ofs, high == high);
+			exit(0);
+		}
 	}
 	{ // Not equal with different size
-		TEST_INIT();
-		write_result(ofs, low != high);
-		write_result(ofs, low != low);
-		write_result(ofs, high != high);
+		TEST_INIT()
+		{
+			write_result(ofs, low != high);
+			write_result(ofs, low != low);
+			write_result(ofs, high != high);
+			exit(0);
+		}
 	}
 }
 
@@ -84,16 +96,22 @@ void test_less(const T& value)
 	}
 
 	{ // Less than with same size
-		TEST_INIT();
-		write_result(ofs, low < high);
-		write_result(ofs, low < low);
-		write_result(ofs, high < high);
+		TEST_INIT()
+		{
+			write_result(ofs, low < high);
+			write_result(ofs, low < low);
+			write_result(ofs, high < high);
+			exit(0);
+		}
 	}
 	{ // Less or equal with same size
-		TEST_INIT();
-		write_result(ofs, low <= high);
-		write_result(ofs, low <= low);
-		write_result(ofs, high <= high);
+		TEST_INIT()
+		{
+			write_result(ofs, low <= high);
+			write_result(ofs, low <= low);
+			write_result(ofs, high <= high);
+			exit(0);
+		}
 	}
 
 	low.clear(); high.clear();
@@ -103,16 +121,22 @@ void test_less(const T& value)
 		high.push_back(value * i * 2);
 
 	{ // Less than with different size
-		TEST_INIT();
-		write_result(ofs, low < high);
-		write_result(ofs, low < low);
-		write_result(ofs, high < high);
+		TEST_INIT()
+		{
+			write_result(ofs, low < high);
+			write_result(ofs, low < low);
+			write_result(ofs, high < high);
+			exit(0);
+		}
 	}
 	{ // Less or equal with different size
-		TEST_INIT();
-		write_result(ofs, low <= high);
-		write_result(ofs, low <= low);
-		write_result(ofs, high <= high);
+		TEST_INIT()
+		{
+			write_result(ofs, low <= high);
+			write_result(ofs, low <= low);
+			write_result(ofs, high <= high);
+			exit(0);
+		}
 	}
 }
 
@@ -127,16 +151,22 @@ void test_greater(const T& value)
 	}
 
 	{ // Greater than with same size
-		TEST_INIT();
-		write_result(ofs, low > high);
-		write_result(ofs, low > low);
-		write_result(ofs, high > high);
+		TEST_INIT()
+		{
+			write_result(ofs, low > high);
+			write_result(ofs, low > low);
+			write_result(ofs, high > high);
+			exit(0);
+		}
 	}
 	{ // Greater or equal with same size
-		TEST_INIT();
-		write_result(ofs, low >= high);
-		write_result(ofs, low >= low);
-		write_result(ofs, high >= high);
+		TEST_INIT()
+		{
+			write_result(ofs, low >= high);
+			write_result(ofs, low >= low);
+			write_result(ofs, high >= high);
+			exit(0);
+		}
 	}
 
 	low.clear(); high.clear();
@@ -146,15 +176,21 @@ void test_greater(const T& value)
 		high.push_back(value * i * 2);
 
 	{ // Greater than with different size
-		TEST_INIT();
-		write_result(ofs, low > high);
-		write_result(ofs, low > low);
-		write_result(ofs, high > high);
+		TEST_INIT()
+		{
+			write_result(ofs, low > high);
+			write_result(ofs, low > low);
+			write_result(ofs, high > high);
+			exit(0);
+		}
 	}
 	{ // Greater or equal with different size
-		TEST_INIT();
-		write_result(ofs, low >= high);
-		write_result(ofs, low >= low);
-		write_result(ofs, high >= high);
+		TEST_INIT()
+		{
+			write_result(ofs, low >= high);
+			write_result(ofs, low >= low);
+			write_result(ofs, high >= high);
+			exit(0);
+		}
 	}
 }

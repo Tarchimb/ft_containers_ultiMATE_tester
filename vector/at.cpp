@@ -29,19 +29,21 @@ int main(int argc, char** argv)
 template <typename T>
 void test_for_type(CURRENT_NAMESPACE::vector<T>& vector1)
 {
-	TEST_INIT();
-
-	for (int i = -1; i < (int)vector1.size(); i++)
+	TEST_INIT()
 	{
-		try {
-			typename CURRENT_NAMESPACE::vector<T>::const_reference cref = vector1.at(i);
-			write_result(ofs, cref);
-			typename CURRENT_NAMESPACE::vector<T>::reference ref = vector1.at(i);
-			ref = ref * 2;
-			write_result(ofs, ref);
-			write_result(ofs, vector1.at(i));
-		} catch (std::exception& e) {
-			write_result(ofs, "throw on invalid index");
+		for (int i = -1; i < (int)vector1.size(); i++)
+		{
+			try {
+				typename CURRENT_NAMESPACE::vector<T>::const_reference cref = vector1.at(i);
+				write_result(ofs, cref);
+				typename CURRENT_NAMESPACE::vector<T>::reference ref = vector1.at(i);
+				ref = ref * 2;
+				write_result(ofs, ref);
+				write_result(ofs, vector1.at(i));
+			} catch (std::exception& e) {
+				write_result(ofs, "throw on invalid index");
+			}
 		}
+		exit(0);
 	}
 }

@@ -38,43 +38,58 @@ void test_erase_position(const T& value)
 	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
 
 	{ // erase value at vector beginning
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(5, value);
-		iterator it = v.erase(v.begin());
-		write_result(ofs, v);
-		write_result(ofs, *it);
-		write_result(ofs, &(*it) == &(*v.begin()));
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(5, value);
+			iterator it = v.erase(v.begin());
+			write_result(ofs, v);
+			write_result(ofs, *it);
+			write_result(ofs, &(*it) == &(*v.begin()));
+			exit(0);
+		}
 	}
 	{ // erase value in vector middle
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(5, value);
-		iterator it = v.erase(v.begin() + 2);
-		write_result(ofs, v);
-		write_result(ofs, *it);
-		write_result(ofs, &(*it) == &(*v.begin()));
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(5, value);
+			iterator it = v.erase(v.begin() + 2);
+			write_result(ofs, v);
+			write_result(ofs, *it);
+			write_result(ofs, &(*it) == &(*v.begin()));
+			exit(0);
+		}
 	}
 	{ // erase the only value in vector
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(1, value);
-		iterator it = v.erase(v.begin());
-		write_result(ofs, v);
-		write_result(ofs, *it);
-		write_result(ofs, &(*it) == &(*v.begin()));
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(1, value);
+			iterator it = v.erase(v.begin());
+			write_result(ofs, v);
+			write_result(ofs, *it);
+			write_result(ofs, &(*it) == &(*v.begin()));
+			exit(0);
+		}
 	}
 	{ // erase value at the end
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(5, value);
-		iterator it = v.erase(v.end() - 1);
-		write_result(ofs, v);
-		write_result(ofs, *it);
-		write_result(ofs, &(*it) == &(*v.end()));
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(5, value);
+			iterator it = v.erase(v.end() - 1);
+			write_result(ofs, v);
+			write_result(ofs, *it);
+			write_result(ofs, &(*it) == &(*v.end()));
+			exit(0);
+		}
 	}
 	{ // erase value on only reserved vector
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(1);
-		iterator it = v.erase(v.begin());
-		write_result(ofs, v);
-		write_result(ofs, &(*it) == &(*v.begin()));
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(1);
+			iterator it = v.erase(v.begin());
+			write_result(ofs, v);
+			write_result(ofs, &(*it) == &(*v.begin()));
+			exit(0);
+		}
 	}
 }
 
@@ -83,39 +98,54 @@ void test_erase_range(const T& value)
 {
 	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
 	{ // erase whole vector
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(5, value);
-		iterator it = v.erase(v.begin(), v.end());
-		write_result(ofs, v);
-		write_result(ofs, &(*it) == &(*v.begin()));
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(5, value);
+			iterator it = v.erase(v.begin(), v.end());
+			write_result(ofs, v);
+			write_result(ofs, &(*it) == &(*v.begin()));
+			exit(0);
+		}
 	}
 	{ // erase vector (begin & end not included)
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(5, value);
-		iterator it = v.erase(v.begin() + 1, v.end() - 1);
-		write_result(ofs, v);
-		write_result(ofs, &(*it) == &(*v.begin()));
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(5, value);
+			iterator it = v.erase(v.begin() + 1, v.end() - 1);
+			write_result(ofs, v);
+			write_result(ofs, &(*it) == &(*v.begin()));
+			exit(0);
+		}
 	}
 	{ // erase whole vector except begin
-		TEST_INIT();
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(5, value);
+			iterator it = v.erase(v.begin() + 1, v.begin() + v.size());
+			write_result(ofs, v);
+			write_result(ofs, &(*it) == &(*v.begin()));
+			exit(0);
+		}
 
-		CURRENT_NAMESPACE::vector<T> v(5, value);
-		iterator it = v.erase(v.begin() + 1, v.begin() + v.size());
-		write_result(ofs, v);
-		write_result(ofs, &(*it) == &(*v.begin()));
 	}
 	{ // erase vector except the last three elements
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(5, value);
-		iterator it = v.erase(v.end() - 3, v.end());
-		write_result(ofs, v);
-		write_result(ofs, &(*it) == &(*v.begin()));
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(5, value);
+			iterator it = v.erase(v.end() - 3, v.end());
+			write_result(ofs, v);
+			write_result(ofs, &(*it) == &(*v.begin()));
+			exit(0);
+		}
 	}
 	{ // erase with begin and end are equals
-		TEST_INIT();
-		CURRENT_NAMESPACE::vector<T> v(5, value);
-		iterator it = v.erase(v.begin(), v.begin());
-		write_result(ofs, v);
-		write_result(ofs, &(*it) == &(*v.begin()));
+		TEST_INIT()
+		{
+			CURRENT_NAMESPACE::vector<T> v(5, value);
+			iterator it = v.erase(v.begin(), v.begin());
+			write_result(ofs, v);
+			write_result(ofs, &(*it) == &(*v.begin()));
+			exit(0);
+		}
 	}
 }
