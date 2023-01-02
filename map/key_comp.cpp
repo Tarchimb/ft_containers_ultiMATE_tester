@@ -1,69 +1,37 @@
 #include "../common/map_common.cpp"
-//
+
 std::string testName("key_comp");
-//
-// template <class T, class U>
-// void test_for_type();
-//
-// int main(int argc, char** argv)
-// {
-// 	test_for_type<int, int>();
-// 	// test_for_type<unsigned char, unsigned char>();
-// 	// test_for_type<long, long>();
-// 	// test_for_type<float, float>();
-// 	// test_for_type<std::string, std::string>();
-// 	// test_for_type<TestStruct, TestStruct>();
-// 	//
-// 	// test_for_type<char, int>();
-// 	// test_for_type<unsigned char, char>();
-// 	// test_for_type<int, long>();
-// 	// test_for_type<long, TestStruct>();
-// 	// test_for_type<float, int>();
-// 	// test_for_type<std::string, long>();
-// 	// test_for_type<TestStruct, unsigned char>();
-//
-// 	ofs.close();
-// }
-//
-// template <class T, class U>
-// void test_for_type()
-// {// Test the allocator type
-// 	TEST_INIT();
-// 	CURRENT_NAMESPACE::map<T, U> m = generate_map<T, U>(10);
-// 	write_result(ofs, m.key_comp()(71, 86) == true);
-// 	write_result(ofs, m.key_comp()(86, 11) == true);
-// 	write_result(ofs, m.key_comp()(71, 86) == true);
-// 	write_result(ofs, m.key_comp()(71, 86) == true);
-// }
 
-void test_key_comp()
-{
-	{
-		TEST_INIT();
-		// Test the basic functionality of key_comp
-		CURRENT_NAMESPACE::map<int, int> m;
-		m[1] = 2;
-		m[3] = 4;
-		m[5] = 6;
-		ofs << (m.key_comp()(1, 3) == true) << std::endl;
-		ofs << (m.key_comp()(3, 5) == true) << std::endl;
-		ofs << (m.key_comp()(5, 1) == false) << std::endl;
-	}
-
-	{
-		TEST_INIT();
-		// Test the behavior of key_comp on a map with a custom comparator
-		CURRENT_NAMESPACE::map<int, int, std::greater<int> > m2;
-		m2[1] = 2;
-		m2[3] = 4;
-		m2[5] = 6;
-		ofs << (m2.key_comp()(1, 3) == false) << std::endl;
-		ofs << (m2.key_comp()(3, 5) == false) << std::endl;
-		ofs << (m2.key_comp()(5, 1) == true) << std::endl;
-	}
-}
+template <typename T>
+void testKeyComp(T tab[3]);
 
 int main()
 {
-    test_key_comp();
+	int tab[3] = {10, 5, 15};
+	testKeyComp<int>(tab);
+
+	char tab1[3] = {'a', 'A', ';'};
+    testKeyComp<char>(tab1);
+
+	std::string tab2[3] = {"aled", "ALED", ";*&(#%)"};
+    testKeyComp<std::string>(tab2);
+
+	TestStruct tab3[3] = {TestStruct(10, 10, "AB"), TestStruct(5, 5, "AB"), TestStruct(15, 15, "AB")};
+    testKeyComp<TestStruct>(tab3);
+}
+
+template <typename T>
+void testKeyComp(T tab[3])
+{
+	{
+		TEST_INIT();
+		CURRENT_NAMESPACE::map<T, int> m2;
+		m2[tab[0]] = 100;
+		m2[tab[1]] = 50;
+		m2[tab[2]] = 150;
+
+		ofs << (m2.key_comp()(tab[0], tab[1]) == false) << std::endl;
+		ofs << (m2.key_comp()(tab[1], tab[2]) == true) << std::endl;
+		ofs << (m2.key_comp()(tab[2], tab[0]) == false) << std::endl;
+	}
 }
