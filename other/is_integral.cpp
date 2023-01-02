@@ -66,11 +66,11 @@ int main(int argc, char** argv)
 	}
 	{
 		TEST_INIT();
-		ofs << "long long: " << CURRENT_NAMESPACE::is_integral<__int128_t>::value << std::endl;
+		ofs << "int128t: " << CURRENT_NAMESPACE::is_integral<__int128_t>::value << std::endl;
 	}
 	{
 		TEST_INIT();
-		ofs << "unsigned long long: " << CURRENT_NAMESPACE::is_integral<__uint128_t>::value << std::endl;
+		ofs << "uint128t: " << CURRENT_NAMESPACE::is_integral<__uint128_t>::value << std::endl;
 	}
 	{
 		TEST_INIT();
