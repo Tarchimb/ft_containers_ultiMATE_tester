@@ -52,7 +52,12 @@ init_include()
 	sed 's/\/Users/#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/\/\//\//g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
-	ed -s ${TESTER_PATH}/common.cpp <<< $'27r tmp\nw'
+#	ed -s ${TESTER_PATH}/common.cpp <<< $"$(grep -n "#define CURRENT_NAMESPACE ft" ${TESTER_PATH}/common.cpp | awk -F: '{print $1}')r tmp\nw"
+	sed '/#define CURRENT_NAMESPACE ft/r tmp' common.cpp > common1.cpp
+  mv common1.cpp common.cpp
+#  sed -i 's/#define CURRENT_NAMESPACE ft/#define CURRENT_NAMESPACE ft $(cat tmp)/i' ${TESTER_PATH}"/common.cpp"
+#  sed -i '3r tmp' ${TESTER_PATH}"/common.cpp"
+#	sed -i '/#define CURRENT_NAMESPACE ft/r  tmp ' "${TESTER_PATH}/common.cpp"
 	rm -f tmp
 
 	echo -e "${YELLOW}Path updated!${END}"
@@ -213,6 +218,8 @@ diff_outfiles()
 			echo -en "$index"$GREEN" OK" $END
 			rm $std_file  &>/dev/null
 			rm $ft_file  &>/dev/null
+		elif  cat $ft_file | grep -q "CRASH"  ; then
+			echo -en "$index"$RED" CRASH" $END
 		else # Move failed tests logs into logs folder
 			echo -en "$index"$RED" NOT OK" $END
 			mv $std_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
@@ -247,7 +254,7 @@ mutex_unlock ()
 
 check_if_file_exists()
 {
-	file_name="$filename"_"$1""_std.txt";
+	file_name="$filename"_"$1""_ft.txt";
 	`test -e $file_name`;
 }
 

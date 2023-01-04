@@ -13,9 +13,10 @@
 #include <unistd.h>
 
 #define TEST_INIT() \
-		change_ofs_to_next_test(ofs, testName);\
+        change_ofs_to_next_test(ofs, testName);\
 		ofs << "the following tests are from file: " << __FILE__ << std::endl;\
-		ofs << "test on line: " << __LINE__ << std::endl
+		ofs << "test on line: " << __LINE__ << std::endl; \
+        signal(SIGSEGV, segfault_handler)
 
 #ifndef NAMESPACE
 # define NAMESPACE 0
@@ -27,11 +28,18 @@
 #else
 	#define FILE_NAME "_ft"
 	#define CURRENT_NAMESPACE ft
-	// INCLUDE PATH HERE
 #endif
 
 int test = 1; // Used to create indexed log
+
+
 std::ofstream ofs;
+
+void segfault_handler(int signum)
+{
+    ofs << "CRASH" << std::endl;
+    exit(1);
+}
 
 /*
  * TestStruct is a custom struct used to test containers with non-primitive types
