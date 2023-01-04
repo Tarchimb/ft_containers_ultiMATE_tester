@@ -37,7 +37,8 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U>& m)
 		write_result(ofs, map);
 	}
 	{
-		CURRENT_NAMESPACE::map<T, U, ft_greater<T> > map = generate_map<T, U, ft_greater<T> >(10);
+        TEST_INIT();
+        CURRENT_NAMESPACE::map<T, U, ft_greater<T> > map = generate_map<T, U, ft_greater<T> >(10);
 		map.clear();
 		write_result(ofs, map);
 	}

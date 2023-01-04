@@ -160,16 +160,6 @@ void test_bidirectional_iterator(CURRENT_NAMESPACE::map<T, U>& map)
 		write_result(ofs, *it1);
 		write_result(ofs, *it2);
 	}
-	{ // Dereference + decrement
-		TEST_INIT();
-		iterator it1(map.rend());
-		const_iterator it2(it1);
-
-		*it1--;
-		*it2--;
-		write_result(ofs, *it1--);
-		write_result(ofs, *it2--);
-	}
 	{ // Navigate through the whole tree 
 		TEST_INIT();
 		iterator it1(map.rend());
