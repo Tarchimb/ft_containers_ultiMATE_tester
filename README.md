@@ -40,3 +40,12 @@ To test the `vector` and `map` container types with the `clear.cpp` file, and pr
 ```
 ./script.sh -d vector map clear
 ```
+
+## Contributions
+All pull request are welcome, if you want to improve, or add some tests.
+
+## Credits
+Created by [B-Bischoff](https://github.com/B-Bischoff), 
+[cybattis](https://github.com/cybattis), 
+[mliboz](https://github.com/MaxenceLiboz), 
+[Tarchimb](https://github.com/Tarchimb)
