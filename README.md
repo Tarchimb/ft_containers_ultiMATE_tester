@@ -18,7 +18,7 @@ Then, you can run the script with the following format:
 - `-b`: Run in benchmark mode
 - `-c`: Update the include path in the `common.cpp` file
 - `-d`: Print the diff of the test outputs
-- `-l`: Print the output to the console
+- `-l`: Print the output and diff to the console
 - `-h`: Print a help message
 - `-z`: Check for memory leaks
 
@@ -40,6 +40,9 @@ To test the `vector` and `map` container types with the `clear.cpp` file, and pr
 ```
 ./script.sh -d vector map clear
 ```
+
+## Logs
+All errors and leaks are saved in the log directory.
 
 ## Contributions
 All pull request are welcome, if you want to improve, or add some tests.
