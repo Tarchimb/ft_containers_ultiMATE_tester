@@ -16,7 +16,9 @@
         change_ofs_to_next_test(ofs, testName);\
 		ofs << "the following tests are from file: " << __FILE__ << std::endl;\
 		ofs << "test on line: " << __LINE__ << std::endl; \
-        signal(SIGSEGV, segfault_handler)
+        signal(SIGSEGV, handler);     \
+        signal(SIGABRT, handler);              \
+        signal(SIGBUS, handler)
 
 #ifndef NAMESPACE
 # define NAMESPACE 0
@@ -35,9 +37,9 @@ int test = 1; // Used to create indexed log
 
 std::ofstream ofs;
 
-void segfault_handler(int signum)
+void handler(int signum)
 {
-    ofs << "CRASH" << std::endl;
+    ofs << (signum == SIGSEGV ? "SEGMENTATION FAULT" : signum == SIGABRT ? "ABORT" : "BUS ERROR") << std::endl;
     exit(1);
 }
 

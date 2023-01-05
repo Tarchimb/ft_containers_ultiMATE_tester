@@ -218,8 +218,12 @@ diff_outfiles()
 			echo -en "$index"$GREEN" OK" $END
 			rm $std_file  &>/dev/null
 			rm $ft_file  &>/dev/null
-		elif  cat $ft_file | grep -q "CRASH"  ; then
-			echo -en "$index"$RED" CRASH" $END
+		elif  cat $ft_file | grep -q "SEGMENTATION FAULT"  ; then
+			echo -en "$index"$RED" SEGMENTATION FAULT" $END
+		elif  cat $ft_file | grep -q "ABORT"  ; then
+    	echo -en "$index"$RED" ABORT" $END
+    elif  cat $ft_file | grep -q "BUS ERROR"  ; then
+    	echo -en "$index"$RED" BUS ERROR" $END
 		else # Move failed tests logs into logs folder
 			echo -en "$index"$RED" NOT OK" $END
 			mv $std_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
