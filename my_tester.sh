@@ -52,8 +52,8 @@ init_include()
 	sed 's/\/Users/#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/\/\//\//g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
-	sed '/#define CURRENT_NAMESPACE ft/r tmp' common.cpp > common1.cpp
-  mv common1.cpp common.cpp
+	sed '/#define CURRENT_NAMESPACE ft/r tmp' ${TESTER_PATH}/common.cpp > ${TESTER_PATH}/common1.cpp
+    mv ${TESTER_PATH}/common1.cpp ${TESTER_PATH}/common.cpp
 	rm -f tmp
 
 	echo -e "${YELLOW}Path updated!${END}"
