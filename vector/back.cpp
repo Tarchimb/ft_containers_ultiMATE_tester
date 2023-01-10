@@ -5,7 +5,7 @@ std::string testName("back");
 template <typename T>
 void test_for_type(CURRENT_NAMESPACE::vector<T>& vector1);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
     INIT_SIGNAL();

@@ -5,7 +5,7 @@ std::string testName = "default_constructor";
 template <class T, class U, class C = std::less<T> >
 void test_for_type();
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
 	test_for_type<int, int>();

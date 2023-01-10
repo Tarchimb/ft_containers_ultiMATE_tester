@@ -2,7 +2,7 @@
 
 std::string testName("is_integral");
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
     INIT_SIGNAL();

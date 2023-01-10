@@ -8,7 +8,7 @@ void test_for_type(std::ofstream& ofs, CURRENT_NAMESPACE::vector<T>& vector1);
 template <typename T>
 void test_for_type();
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
 

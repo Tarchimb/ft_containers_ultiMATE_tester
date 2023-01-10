@@ -6,7 +6,7 @@ std::string testName("operator_equal");
 template <typename T>
 void test_for_type(const CURRENT_NAMESPACE::vector<T>& vector1, const T& value);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
 	CURRENT_NAMESPACE::vector<int> v1(10, 42);

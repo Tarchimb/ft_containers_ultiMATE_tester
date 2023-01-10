@@ -5,7 +5,7 @@ std::string testName("random_test");
 template <class T, class U>
 void test_for_type(CURRENT_NAMESPACE::map<T, U>& m, T key, U value);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
     INIT_SIGNAL();

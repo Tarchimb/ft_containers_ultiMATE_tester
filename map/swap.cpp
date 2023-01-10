@@ -5,7 +5,7 @@ std::string testName("swap");
 template <class T, class U>
 void test_for_type(CURRENT_NAMESPACE::map<T, U>& m);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
     INIT_SIGNAL();

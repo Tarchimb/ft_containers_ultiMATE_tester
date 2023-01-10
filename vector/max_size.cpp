@@ -2,7 +2,7 @@
 
 std::string testName("max_size");
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
 	{ // max_size vector<char>

@@ -5,7 +5,7 @@ std::string testName("pop_back");
 template <typename T>
 void test_for_type(const T& value);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
 	test_for_type<int>(1);

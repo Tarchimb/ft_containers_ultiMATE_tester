@@ -5,7 +5,7 @@ std::string testName("get_allocator");
 template <class T, class U>
 void test_for_type();
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
     INIT_SIGNAL();

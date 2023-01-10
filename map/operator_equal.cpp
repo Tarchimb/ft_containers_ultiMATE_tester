@@ -6,7 +6,7 @@ std::string testName("operator_equal");
 template <class T, class U>
 void test_for_type(const T &key, const U &value, const T &key1, const U &value1);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
     INIT_SIGNAL();

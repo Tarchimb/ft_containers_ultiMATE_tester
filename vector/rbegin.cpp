@@ -5,7 +5,7 @@ std::string testName("rbegin");
 template <typename T>
 void test_for_type(std::ofstream& ofs, CURRENT_NAMESPACE::vector<T>& vector1);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
 	CURRENT_NAMESPACE::vector<int> v1(10, 42);

@@ -4,7 +4,7 @@
 
 std::string testName("random");
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
     { // Test basic functions

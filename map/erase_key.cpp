@@ -7,7 +7,7 @@ std::string testName = "erase_key";
 template <class T, class U>
 void test_for_type(CURRENT_NAMESPACE::map<T, U> &map, typename CURRENT_NAMESPACE::pair<T, U>::first_type key, typename CURRENT_NAMESPACE::pair<T, U>::first_type wrong_key);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
 	CURRENT_NAMESPACE::map<int, int> m_int;

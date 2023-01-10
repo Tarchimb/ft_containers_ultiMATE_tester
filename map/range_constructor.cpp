@@ -5,7 +5,7 @@ std::string testName = "range_constructor";
 template <class T, class U, class C = std::less<T> >
 void test_for_type(CURRENT_NAMESPACE::map<T, U, C> &map);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
     INI

@@ -12,7 +12,7 @@ void test_bidirectional_iterator(CURRENT_NAMESPACE::map<T, U>& map);
 template <typename T, typename U>
 void test_iteration_iterator(CURRENT_NAMESPACE::map<T, U>& map);
 
-int main(int argc, char** argv)
+int main(void)
 {
     INIT_SIGNAL();
     INIT_SIGNAL();
