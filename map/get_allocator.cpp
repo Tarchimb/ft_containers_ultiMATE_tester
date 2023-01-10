@@ -8,7 +8,6 @@ void test_for_type();
 int main(void)
 {
     INIT_SIGNAL();
-    INIT_SIGNAL();
 	test_for_type<char, char>();
 	test_for_type<unsigned char, unsigned char>();
 	test_for_type<int, int>();

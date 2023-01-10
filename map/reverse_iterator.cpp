@@ -15,7 +15,6 @@ void test_iteration_iterator(CURRENT_NAMESPACE::map<T, U>& map);
 int main(void)
 {
     INIT_SIGNAL();
-    INIT_SIGNAL();
 	CURRENT_NAMESPACE::map<int, int> map_int = generate_map<int, int>(50);
 	CURRENT_NAMESPACE::map<int, TestStruct> map_int_struct = generate_map<int, TestStruct>(50);
 	CURRENT_NAMESPACE::map<double, int> map_double_int = generate_map<double, int>(50);

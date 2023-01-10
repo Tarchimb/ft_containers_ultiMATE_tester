@@ -9,7 +9,6 @@ void test_for_type(const T &key, const U &value, const T &key1, const U &value1)
 int main(void)
 {
     INIT_SIGNAL();
-    INIT_SIGNAL();
 	test_for_type<int, int>(1, 1, 2, 2);
 	test_for_type<char, char>('a', 'b', 'b', 'c');
 	test_for_type<TestStruct, int>(TestStruct(1, 1, "a"), 1, TestStruct(2, 2, "b"), 2);

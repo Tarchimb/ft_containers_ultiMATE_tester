@@ -8,7 +8,6 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U>& m);
 int main(void)
 {
     INIT_SIGNAL();
-    INIT_SIGNAL();
 
 	CURRENT_NAMESPACE::map<int, int> m = generate_map<int, int>(20);
 	test_for_type<int, int>(m);

@@ -8,6 +8,7 @@ void testKeyComp(T tab[3]);
 
 int main()
 {
+    INIT_SIGNAL();
 	int tab[3] = {10, 5, 15};
 	testKeyComp<int>(tab);
 
