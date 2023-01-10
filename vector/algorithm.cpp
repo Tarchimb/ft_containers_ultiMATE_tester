@@ -12,6 +12,8 @@ static T op_increase(T i) {return ++i;}
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
+    INIT_SIGNAL();
 
 	CURRENT_NAMESPACE::vector<int>	v_int;
 	for (int i = 0; i < 10; i++)

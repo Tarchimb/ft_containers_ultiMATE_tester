@@ -7,6 +7,7 @@ void test_on_vector(CURRENT_NAMESPACE::vector<T>& vector1);
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	CURRENT_NAMESPACE::vector<int> v1(10, 42);
 	v1[3] = 420;
 	test_on_vector<int>(v1);

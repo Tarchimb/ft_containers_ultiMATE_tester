@@ -7,6 +7,7 @@ void test_for_type();
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	test_for_type<int>();
 	test_for_type<double>();
 	test_for_type<TestStruct>();

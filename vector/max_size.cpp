@@ -4,6 +4,7 @@ std::string testName("max_size");
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	{ // max_size vector<char>
 		TEST_INIT();
 		CURRENT_NAMESPACE::vector<char> v;

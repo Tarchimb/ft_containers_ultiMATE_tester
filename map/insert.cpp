@@ -10,8 +10,9 @@ void test_pair(CURRENT_NAMESPACE::map<T, U> &map, T key, U value);
 template <class T, class U>
 void test_for_type();
 
-int main(void)
+int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	{
 		TEST_INIT();
 		CURRENT_NAMESPACE::map<int, int> m;

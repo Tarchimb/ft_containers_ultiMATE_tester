@@ -13,6 +13,8 @@ void test_assign_range_version(CURRENT_NAMESPACE::vector<T>& v);
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
+    INIT_SIGNAL();
 	test_for_type<int>(10);
 	test_for_type<TestStruct>(TestStruct(42, 10, "crampon"));
 

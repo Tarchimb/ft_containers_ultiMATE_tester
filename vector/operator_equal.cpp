@@ -8,6 +8,7 @@ void test_for_type(const CURRENT_NAMESPACE::vector<T>& vector1, const T& value);
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	CURRENT_NAMESPACE::vector<int> v1(10, 42);
 	v1[3] = 420;
 	test_for_type<int>(v1, 42);

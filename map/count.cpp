@@ -5,8 +5,9 @@ std::string testName = "count";
 template <class T, class U>
 void test_for_type();
 
-int main(void)
+int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	test_for_type<int, int>();
 	test_for_type<TestStruct, int>();
 	test_for_type<TestStruct, TestStruct>();

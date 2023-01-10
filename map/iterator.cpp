@@ -12,7 +12,7 @@ void test_bidirectional_iterator(CURRENT_NAMESPACE::map<T, U>& map);
 template <typename T, typename U>
 void test_iteration_iterator(CURRENT_NAMESPACE::map<T, U>& map);
 
-int main(int argc, char** argv)
+END(testName)
 {
 	CURRENT_NAMESPACE::map<int, int> map_int = generate_map<int, int>(50);
 	CURRENT_NAMESPACE::map<int, TestStruct> map_int_struct = generate_map<int, TestStruct>(50);

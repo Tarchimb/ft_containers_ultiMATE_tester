@@ -16,8 +16,11 @@
         change_ofs_to_next_test(ofs, testName);\
 		ofs << "the following tests are from file: " << __FILE__ << std::endl;\
 		ofs << "test on line: " << __LINE__ << std::endl; \
-        signal(SIGSEGV, handler);     \
-        signal(SIGABRT, handler);              \
+
+#define INIT_SIGNAL() \
+        open_file(ofs, testName + "_" + std::to_string(test)); \
+        signal(SIGSEGV, handler);  \
+        signal(SIGABRT, handler);  \
         signal(SIGBUS, handler)
 
 #ifndef NAMESPACE

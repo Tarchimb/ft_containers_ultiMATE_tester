@@ -9,8 +9,9 @@ std::string testName = "insert_hint";
 template <class T, class U, class C>
 void test_pair(CURRENT_NAMESPACE::map<T, U> &map, T key, U value, C &it);
 
-int main(void)
+int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	CURRENT_NAMESPACE::map<int, int> m;
 	typedef CURRENT_NAMESPACE::map<int, int>::iterator iterator;
 	iterator it = m.end();

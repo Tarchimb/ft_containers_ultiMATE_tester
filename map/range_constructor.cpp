@@ -5,8 +5,10 @@ std::string testName = "range_constructor";
 template <class T, class U, class C = std::less<T> >
 void test_for_type(CURRENT_NAMESPACE::map<T, U, C> &map);
 
-int main(void)
+int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
+    INI
     CURRENT_NAMESPACE::map<int, int> m_int = generate_map<int, int>(50);
     CURRENT_NAMESPACE::map<double, char> m_double = generate_map<double, char>(50);
     CURRENT_NAMESPACE::map<TestStruct, TestStruct> m_struct = generate_map<TestStruct, TestStruct>(50);

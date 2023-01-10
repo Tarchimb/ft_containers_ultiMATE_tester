@@ -17,8 +17,9 @@ void test_pair_operator(const T& valT, const U& valU);
 template <class T, class U>
 void test_make_pair(const T& valT, const U& valU);
 
-int main(void)
+int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	test_pair<int, int>(1, 2);
 	test_pair<double, float>(4.00001, 3.14f);
 	test_pair<TestStruct, char>(TestStruct(1, 2, "3"), 'd');

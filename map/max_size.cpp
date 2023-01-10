@@ -5,7 +5,7 @@ std::string testName("max_size");
 template <class T, class U>
 void test_for_type();
 
-int main(int argc, char** argv)
+END(testName)
 {
 	test_for_type<char, char>();
 	test_for_type<unsigned char, unsigned char>();

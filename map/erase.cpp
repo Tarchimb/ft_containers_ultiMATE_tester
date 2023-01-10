@@ -7,8 +7,9 @@ std::string testName = "erase";
 template <class T, class U>
 void test_for_type(CURRENT_NAMESPACE::map<T, U> &map);
 
-int main(void)
+int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
     CURRENT_NAMESPACE::map<int, int> m_int;
     CURRENT_NAMESPACE::map<double, char> m_double;
     CURRENT_NAMESPACE::map<std::string, int> m_string;

@@ -5,8 +5,9 @@
 
 std::string testName = "insert_range";
 
-int main(void)
+int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	{// Inserting a range of pair<int, int>
 		TEST_INIT();
 

@@ -7,6 +7,7 @@ void test_for_type(std::ofstream& ofs, const int& count, const T value);
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	test_for_type<int>(ofs, 5, 42);
 	test_for_type<TestStruct>(ofs, 5, TestStruct());
 

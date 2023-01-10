@@ -7,6 +7,8 @@ void test_for_type();
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
+    INIT_SIGNAL();
 	test_for_type<char, char>();
 	test_for_type<unsigned char, unsigned char>();
 	test_for_type<int, int>();

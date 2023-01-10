@@ -21,6 +21,7 @@ void test_insert_range_input_iterator();
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
 	test_insert_single_value<int>(1);
 	test_insert_single_value<TestStruct>(TestStruct(42, 10, "test"));
 
