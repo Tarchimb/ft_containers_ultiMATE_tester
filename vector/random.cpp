@@ -6,6 +6,7 @@ std::string testName("random");
 
 int main(int argc, char** argv)
 {
+    INIT_SIGNAL();
     { // Test basic functions
 		TEST_INIT();
 		CURRENT_NAMESPACE::vector<std::string> v;
