@@ -19,8 +19,9 @@ template <typename T>
 void test_insert_range(CURRENT_NAMESPACE::vector<T>& v); // const iterator, inputIt, inputIt
 void test_insert_range_input_iterator();
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 	test_insert_single_value<int>(1);
 	test_insert_single_value<TestStruct>(TestStruct(42, 10, "test"));
 

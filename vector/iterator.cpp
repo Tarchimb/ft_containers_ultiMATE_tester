@@ -17,8 +17,9 @@ void test_random_access_iterator(CURRENT_NAMESPACE::vector<T> array);
 template <typename T>
 void test_iterator_dereferencing_pointer(CURRENT_NAMESPACE::vector<T> array);
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 	CURRENT_NAMESPACE::vector<int> array_int;
 	for (int i = 0; i < 10; i++)
 		array_int.push_back(i);

@@ -5,9 +5,9 @@ std::string testName("clear");
 template <class T, class U>
 void test_for_type(CURRENT_NAMESPACE::map<T, U>& m);
 
-int main(int argc, char** argv)
+int main(void)
 {
-
+    INIT_SIGNAL();
 	CURRENT_NAMESPACE::map<int, int> m = generate_map<int, int>(20);
 	test_for_type<int, int>(m);
 
@@ -37,7 +37,8 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U>& m)
 		write_result(ofs, map);
 	}
 	{
-		CURRENT_NAMESPACE::map<T, U, ft_greater<T> > map = generate_map<T, U, ft_greater<T> >(10);
+        TEST_INIT();
+        CURRENT_NAMESPACE::map<T, U, ft_greater<T> > map = generate_map<T, U, ft_greater<T> >(10);
 		map.clear();
 		write_result(ofs, map);
 	}

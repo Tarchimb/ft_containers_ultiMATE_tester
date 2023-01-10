@@ -5,8 +5,9 @@ std::string testName("operator_brackets");
 template<typename T>
 void test_for_type(const T& val1, const T& val2);
 
-int main()
+int main(void)
 {
+    INIT_SIGNAL();
 	    // Test the function with various data types
     test_for_type<int>(1, 2);
     test_for_type<int>(2, 1);

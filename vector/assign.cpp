@@ -11,8 +11,9 @@ void test_assign_fill_version(const T& value);
 template <typename T>
 void test_assign_range_version(CURRENT_NAMESPACE::vector<T>& v);
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 	test_for_type<int>(10);
 	test_for_type<TestStruct>(TestStruct(42, 10, "crampon"));
 

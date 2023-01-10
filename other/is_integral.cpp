@@ -2,8 +2,9 @@
 
 std::string testName("is_integral");
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 	{
 		TEST_INIT();
 		ofs << "bool: " << CURRENT_NAMESPACE::is_integral<bool>::value << std::endl;

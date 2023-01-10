@@ -24,7 +24,7 @@ init_script ()
 	REDIR="/dev/null"
 	LEAKS=""
 	CONTAINERS=()
-	UNIT_FILE=""
+	UNIT_FILE=()
 
 	LEAKS_ON="0"
 
@@ -52,7 +52,8 @@ init_include()
 	sed 's/\/Users/#include "\/Users/g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/\/\//\//g' tmp > tmp1 && mv tmp1 tmp
 	sed 's/$/"/g' tmp > tmp1 && mv tmp1 tmp
-	ed -s ${TESTER_PATH}/common.cpp <<< $'27r tmp\nw'
+	sed '/#define CURRENT_NAMESPACE ft/r tmp' ${TESTER_PATH}/common.cpp > ${TESTER_PATH}/common1.cpp
+    mv ${TESTER_PATH}/common1.cpp ${TESTER_PATH}/common.cpp
 	rm -f tmp
 
 	echo -e "${YELLOW}Path updated!${END}"
@@ -63,15 +64,15 @@ parse_argument()
 	OPTION=""
 	while [ $1 ]; do
 		case $1 in
-		vector|map|set|stack|other)
+		vector|map|stack|other)
 			CONTAINERS+=($1);
 			shift ;;
-		*.cpp)
-			UNIT_FILE=$1
-			shift ;;
-		*)
+		-b|-c|-d|-l|-h|-z)
 			OPTION="$OPTION $1"
 			shift;;
+		*)
+			UNIT_FILE+=("$1.cpp")
+			shift ;;
 	esac
 	done
 	# Parse option
@@ -101,8 +102,8 @@ main ()
 		echo -e "\t\t	Launching $container tests"
 		echo -e "==================================================================="
 		echo -e "${YELLOW}Start compiling... $END"
-		if [ "$UNIT_FILE" != "" ]; then
-			unit_function "$CONTAINERS" "$UNIT_FILE"
+		if [ -n "$UNIT_FILE" ]; then
+			unit_function "$CONTAINERS"
 		else
 			test_files=$(find "${TESTER_PATH}/${container}" -type f -name '*.cpp' | sort)
 			for file in ${test_files[@]}
@@ -114,7 +115,7 @@ main ()
 		wait
 	done
 	wait
-	find ${TESTER_PATH}/$LOGS_FOLDER/ -empty -type d -delete
+	find ${TESTER_PATH}/$LOGS_FOLDER/ -empty -type d -delete &> $REDIR
 	rm *.txt &>/dev/null
 }
 
@@ -128,11 +129,15 @@ print_title ()
 # $1 = container; $2 = (filename).cpp
 unit_function()
 {
-	filenames=($2)
-	for file in "${filenames[@]}"
+	for file in "${UNIT_FILE[@]}"
 	do
 		filename=$(echo $file | sed 's/.cpp//g')
 		path="${TESTER_PATH}/$1/$file"
+		test -e $path
+		if [ "$?" == "1" ]; then
+		  echo -e "${RED}$file doesn't exists$END"
+		  exit
+		fi
 		run "${filename}" "${path}"
 	done
 }
@@ -213,6 +218,12 @@ diff_outfiles()
 			echo -en "$index"$GREEN" OK" $END
 			rm $std_file  &>/dev/null
 			rm $ft_file  &>/dev/null
+		elif  cat $ft_file | grep -q "SEGMENTATION FAULT"  ; then
+			echo -en "$index"$RED" SEGMENTATION FAULT" $END
+		elif  cat $ft_file | grep -q "ABORT"  ; then
+    	echo -en "$index"$RED" ABORT" $END
+    elif  cat $ft_file | grep -q "BUS ERROR"  ; then
+    	echo -en "$index"$RED" BUS ERROR" $END
 		else # Move failed tests logs into logs folder
 			echo -en "$index"$RED" NOT OK" $END
 			mv $std_file "${TESTER_PATH}/$LOGS_FOLDER/$filename/"
@@ -247,7 +258,7 @@ mutex_unlock ()
 
 check_if_file_exists()
 {
-	file_name="$filename"_"$1""_std.txt";
+	file_name="$filename"_"$1""_ft.txt";
 	`test -e $file_name`;
 }
 

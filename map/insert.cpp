@@ -12,6 +12,7 @@ void test_for_type();
 
 int main(void)
 {
+    INIT_SIGNAL();
 	{
 		TEST_INIT();
 		CURRENT_NAMESPACE::map<int, int> m;

@@ -13,6 +13,7 @@ void const_map(const CURRENT_NAMESPACE::map<T, U>& m);
 
 int main(void)
 {
+    INIT_SIGNAL();
 	test_for_type<int, int>();
 	test_for_type<TestStruct, int>();
 	test_for_type<TestStruct, TestStruct>();

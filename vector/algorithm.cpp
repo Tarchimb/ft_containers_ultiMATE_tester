@@ -10,8 +10,9 @@ void test_std_algorithm(CURRENT_NAMESPACE::vector<T> array);
 template <typename T>
 static T op_increase(T i) {return ++i;}
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 
 	CURRENT_NAMESPACE::vector<int>	v_int;
 	for (int i = 0; i < 10; i++)

@@ -5,8 +5,9 @@ std::string testName("resize");
 template <typename T>
 void test_for_type(std::ofstream& ofs, const T& value);
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 	test_for_type<int>(ofs, 10);
 	test_for_type<float>(ofs, 10.5f);
 	test_for_type<TestStruct>(ofs, TestStruct(5, -42, "test"));

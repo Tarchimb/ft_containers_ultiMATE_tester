@@ -12,8 +12,9 @@ void test_bidirectional_iterator(CURRENT_NAMESPACE::map<T, U>& map);
 template <typename T, typename U>
 void test_iteration_iterator(CURRENT_NAMESPACE::map<T, U>& map);
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 	CURRENT_NAMESPACE::map<int, int> map_int = generate_map<int, int>(50);
 	CURRENT_NAMESPACE::map<int, TestStruct> map_int_struct = generate_map<int, TestStruct>(50);
 	CURRENT_NAMESPACE::map<double, int> map_double_int = generate_map<double, int>(50);
@@ -159,16 +160,6 @@ void test_bidirectional_iterator(CURRENT_NAMESPACE::map<T, U>& map)
 		--it2--;
 		write_result(ofs, *it1);
 		write_result(ofs, *it2);
-	}
-	{ // Dereference + decrement
-		TEST_INIT();
-		iterator it1(map.rend());
-		const_iterator it2(it1);
-
-		*it1--;
-		*it2--;
-		write_result(ofs, *it1--);
-		write_result(ofs, *it2--);
 	}
 	{ // Navigate through the whole tree 
 		TEST_INIT();

@@ -15,8 +15,9 @@ void test_erase_position(const T& value);
 template <typename T>
 void test_erase_range(const T& value);
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 	test_for_type<int>(10);
 	test_for_type<float>(10.5f);
 	test_for_type<double>(10.5f);

@@ -5,8 +5,9 @@ std::string testName("at");
 template <typename T>
 void test_for_type(CURRENT_NAMESPACE::vector<T>& vector1);
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 	CURRENT_NAMESPACE::vector<int> v1(10, 0);
 	for (int i = 0; i < v1.size(); i++)
 		v1[i] = i;

@@ -19,6 +19,7 @@ void test_make_pair(const T& valT, const U& valU);
 
 int main(void)
 {
+    INIT_SIGNAL();
 	test_pair<int, int>(1, 2);
 	test_pair<double, float>(4.00001, 3.14f);
 	test_pair<TestStruct, char>(TestStruct(1, 2, "3"), 'd');

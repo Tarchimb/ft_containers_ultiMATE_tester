@@ -6,6 +6,7 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U, C> &map);
 
 int main(void)
 {
+    INIT_SIGNAL();
     CURRENT_NAMESPACE::map<int, int> m_int;
     CURRENT_NAMESPACE::map<double, char> m_double;
     CURRENT_NAMESPACE::map<std::string, int> m_string;

@@ -14,8 +14,9 @@ void test_less(const T& value);
 template <typename T>
 void test_greater(const T& value);
 
-int main()
+int main(void)
 {
+    INIT_SIGNAL();
 	test_for_type<int>(10);
 	test_for_type<TestStruct>(TestStruct(1, 1, "1"));
 

@@ -5,8 +5,9 @@ std::string testName("begin");
 template <typename T>
 void test_for_type(CURRENT_NAMESPACE::vector<T>& vector1);
 
-int main(int argc, char** argv)
+int main(void)
 {
+    INIT_SIGNAL();
 	CURRENT_NAMESPACE::vector<int> v1(10, 42);
 	v1[3] = 420;
 	test_for_type<int>(v1);
