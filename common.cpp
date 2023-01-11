@@ -88,7 +88,7 @@ struct TestStruct {
 	}
 
 	friend bool operator==(const TestStruct& lhs, const TestStruct& rhs) {
-		return lhs.a == rhs.a && lhs.b == rhs.b && lhs.c == rhs.c;
+		return lhs.a == rhs.a;
 	}
 
 	friend bool operator<(const TestStruct &lhs, const TestStruct &rhs) {
