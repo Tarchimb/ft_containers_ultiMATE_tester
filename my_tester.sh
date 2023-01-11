@@ -33,7 +33,7 @@ init_script ()
 	fi
 	parse_argument "$@"
 	if [ -z "${CONTAINERS[0]}" ]; then
-		CONTAINERS=(vector map other)
+		CONTAINERS=(vector stack map other)
 	fi
 	init_leaks
 }
