@@ -3,8 +3,8 @@
 namespace std {
 	template <typename U, typename T>
 	std::string to_string(const CURRENT_NAMESPACE::pair<U, T>& p) {
-		//return (std::string(std::to_string(p.first) + " " + std::to_string(p.second)));
-		return std::string();
+		return (std::string(std::to_string(p.first) + " " + std::to_string(p.second)));
+//		return std::string();
 	}
 }
 
