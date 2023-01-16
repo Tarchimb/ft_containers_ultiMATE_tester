@@ -23,6 +23,7 @@ init_script ()
 	PRINT_DIFF="false"
 	REDIR="/dev/null"
 	LEAKS=""
+	BENCHMARK="0"
 	CONTAINERS=()
 	UNIT_FILE=()
 
@@ -78,7 +79,7 @@ parse_argument()
 	# Parse option
 	while getopts bdlhzc opt $OPTION; do
 		case $opt in
-			(b) echo -e "Benchmark mode";;
+			(b) echo -e "Benchmark: ON"; BENCHMARK="1";;
 			(c) init_include;;
 			(d) PRINT_DIFF="true";;
 			(l) REDIR="/dev/stdout";;
@@ -87,12 +88,19 @@ parse_argument()
 			(\?) echo -e "Invalid option: -$OPTARG"; exit 1;;
 		esac
 	done
+	if [ "$BENCHMARK" == "1" ] ; then
+  	  LEAKS_ON="1"
+  fi
 }
 
 main ()
 {
 	print_title
 	init_script "$@"
+	if [ "$BENCHMARK" == "1" ] && [ "$REDIR" == "/dev/stdout" ] ; then
+	  echo -e "${RED}Can't run benchmark and logs at the same time$END"
+	  exit 1
+	fi
 	trap end_program SIGINT &>/dev/null
 	rm -rf ${TESTER_PATH}/$LOGS_FOLDER
 
@@ -183,6 +191,11 @@ compile ()
 # $1 = filename
 execute ()
 {
+  if [ "$BENCHMARK" == "1" ]; then
+  		{ time ./ft_$1 &>/dev/null; } 2> "$filename"_ft_benchmark.txt
+  		{ time ./std_$1 &>/dev/null; } 2> "$filename"_std_benchmark.txt
+  	  return
+  fi
 	if [ -n "$LEAKS" ]; then
 		$LEAKS ./ft_$1 &> "$filename"_ft_leaks.txt;
 	else
@@ -233,12 +246,28 @@ diff_outfiles()
 		index=$((index+1));
 		check_if_file_exists $index
 	done
-
 	rm "$filename"_ft_leaks.txt &>/dev/null
-
+	if [ "$BENCHMARK" == "1" ] ; then
+    get_benchmark
+  fi
 	clean_path
 	echo
 	mutex_unlock
+}
+
+get_benchmark ()
+{
+  ft_time=$(grep real "$filename"_ft_benchmark.txt | cut -f2 -d'm' | cut -f1 -d's')
+  std_time=$(grep real "$filename"_std_benchmark.txt | cut -f2 -d'm' | cut -f1 -d's')
+  difference=$(echo "scale=4; $std_time * 20" | bc)
+#  echo -en Difference: $difference
+  if (( $(echo "$ft_time > $difference" | bc -l) )); then
+    echo -en $RED [Execution time: $ft_time, Max accepted: $difference] $END;
+    return "1"
+  else
+    echo -en $GREEN [Execution time: $ft_time, Max accepted: $difference] $END;
+    return "0"
+  fi
 }
 
 mutex_lock ()
