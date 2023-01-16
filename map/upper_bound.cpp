@@ -32,7 +32,6 @@ template <class T, class U>
 void classic_map()
 {
 	typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
-	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 	{ // Find with unitialized map
 		TEST_INIT();
 		CURRENT_NAMESPACE::map<T, U>m;
@@ -75,7 +74,6 @@ void classic_map()
 template <class T, class U>
 void const_map(const CURRENT_NAMESPACE::map<T, U>& m)
 {
-	typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
 	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 	{ // Find with unitialized map
 		TEST_INIT();

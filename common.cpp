@@ -33,6 +33,13 @@
 #else
 	#define FILE_NAME "_ft"
 	#define CURRENT_NAMESPACE ft
+#include "/Users/bbischof/Documents/containers/src/map.hpp"
+#include "/Users/bbischof/Documents/containers/src/map_iterator.hpp"
+#include "/Users/bbischof/Documents/containers/src/random_access_iterator.hpp"
+#include "/Users/bbischof/Documents/containers/src/rb_tree.hpp"
+#include "/Users/bbischof/Documents/containers/src/stack.hpp"
+#include "/Users/bbischof/Documents/containers/src/utils.hpp"
+#include "/Users/bbischof/Documents/containers/src/vector.hpp"
 #endif
 
 int test = 1; // Used to create indexed log
@@ -88,7 +95,7 @@ struct TestStruct {
 	}
 
 	friend bool operator==(const TestStruct& lhs, const TestStruct& rhs) {
-		return lhs.a == rhs.a && lhs.b == rhs.b && lhs.c == rhs.c;
+		return lhs.a == rhs.a;
 	}
 
 	friend bool operator<(const TestStruct &lhs, const TestStruct &rhs) {

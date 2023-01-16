@@ -38,7 +38,6 @@ template <class T, class U>
 void test_for_type(CURRENT_NAMESPACE::map<T, U> &map, typename CURRENT_NAMESPACE::pair<T, U>::first_type key, typename CURRENT_NAMESPACE::pair<T, U>::first_type wrong_key)
 {
 	typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
-	typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 	typedef typename CURRENT_NAMESPACE::map<T, U>::size_type size_type;
 	{ //Erase existing key
 		TEST_INIT();

@@ -4,7 +4,7 @@ namespace std {
 	template <typename T>
 	std::string to_string(const CURRENT_NAMESPACE::vector<T>& v) {
 		std::string str;
-		for (int i = 0; i < v.size(); i++)
+		for (int i = 0; i < (int)v.size(); i++)
 			str += std::to_string(v[i]);
 		return str;
 	}
@@ -16,7 +16,7 @@ void write_result(std::ofstream& ofs, const CURRENT_NAMESPACE::vector<T>& vector
 	ofs << "capacity: " + std::to_string(vector.capacity()) << std::endl;
 	ofs << "empty: " + std::to_string(vector.empty()) << std::endl;
 	if (printContent)
-		for (int i = 0; i < vector.size(); i++)
+		for (int i = 0; i < (int)vector.size(); i++)
 			ofs << std::to_string(vector[i]) << std::endl;
 }
 

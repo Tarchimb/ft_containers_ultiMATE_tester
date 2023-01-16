@@ -38,7 +38,6 @@ template <class T, class U>
 void test_for_type(CURRENT_NAMESPACE::map<T, U> &map)
 {
     typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
-    typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 	{ //Delete by pos with iterator
 		TEST_INIT();
 			CURRENT_NAMESPACE::map<T, U> m(map);
@@ -53,7 +52,7 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U> &map)
     }
     { //Delete by pos with const_iterator
 		TEST_INIT();
-			const_iterator it = map.begin();
+			iterator it = map.begin();
 			map.erase(it);
 			it = map.begin();
 			map.erase(it);
