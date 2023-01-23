@@ -56,7 +56,6 @@ void test_insert_single_value(const T& value)
 	{ // insert value in middle
 		TEST_INIT();
 		CURRENT_NAMESPACE::vector<T> v1(10, T());
-		iterator it = v1.begin();
 		const_iterator cit = v1.end() - 5;
 		v1.insert(cit, value * 2);
 		write_result(ofs, v1);

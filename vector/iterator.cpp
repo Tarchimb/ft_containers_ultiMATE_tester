@@ -146,7 +146,6 @@ template <typename T>
 void test_random_access_iterator(CURRENT_NAMESPACE::vector<T> array)
 {
 	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
-	typedef typename CURRENT_NAMESPACE::vector<T>::const_iterator const_iterator;
 
 	{ // Operator + and -
 		TEST_INIT();
@@ -175,7 +174,6 @@ void test_random_access_iterator(CURRENT_NAMESPACE::vector<T> array)
 	{ // Operator += and -=
 		iterator it(array.begin());
 		TEST_INIT();
-		iterator it2(array.begin() + 4);
 		it += 6;
 		write_result(ofs, *it);
 		it += -1;
@@ -189,7 +187,6 @@ void test_random_access_iterator(CURRENT_NAMESPACE::vector<T> array)
 	{ // Operator []
 		iterator it(array.begin());
 		TEST_INIT();
-		iterator it2(array.begin() + 4);
 		write_result(ofs, it[3]);
 		it += 3;
 		write_result(ofs, it[3]);

@@ -28,7 +28,6 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U> map1)
 		CURRENT_NAMESPACE::map<T, U> map2;
 		CURRENT_NAMESPACE::map<T, U> map3;
 		iterator it1 = map2.begin();
-		iterator it2 = map3.begin();
 
 		map3.swap(map2);
 
@@ -72,7 +71,6 @@ void test_for_type(CURRENT_NAMESPACE::map<T, U> map1)
 		TEST_INIT();
 		CURRENT_NAMESPACE::map<T, U> map2;
 		iterator it1 = map1.begin();
-		iterator it2 = map2.begin();
 
 		map1.swap(map2);
 

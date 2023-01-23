@@ -167,7 +167,7 @@ run ()
 # $1 = filename; $2 = container/file.cpp; $3 = $FT | $STD
 compile ()
 {
-	c++ $VERSION "$FLAGS" -o "ft_$1" "-DNAMESPACE=$FT" "$2" &>$REDIR
+	c++ $VERSION "$FLAGS" -Wall -Wextra -Werror -o "ft_$1" "-DNAMESPACE=$FT" "$2" &>$REDIR
 	if [ $? -eq 1 ]
 	then
 		mutex_lock

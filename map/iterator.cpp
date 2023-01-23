@@ -183,7 +183,6 @@ void test_bidirectional_iterator(CURRENT_NAMESPACE::map<T, U>& map)
     template <typename T, typename U>
     void test_iteration_iterator(CURRENT_NAMESPACE::map<T, U>& map) {
         typedef typename CURRENT_NAMESPACE::map<T, U>::iterator iterator;
-        typedef typename CURRENT_NAMESPACE::map<T, U>::const_iterator const_iterator;
 
         { //Iterate forward from begin
             TEST_INIT();

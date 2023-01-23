@@ -83,6 +83,8 @@ void test_pair_equal(const T& valT, const U& valU)
 template <class T, class U>
 void test_pair_operator(const T& valT, const U& valU)
 {
+	(void)valT;
+	(void)valU;
 	CURRENT_NAMESPACE::pair<T, U> low;
 	CURRENT_NAMESPACE::pair<T, U> mid(low.first * 2, low.second * 2);
 

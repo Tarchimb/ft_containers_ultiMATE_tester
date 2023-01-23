@@ -67,7 +67,6 @@ void test_assign_fill_version(const T& value)
 template <typename T>
 void test_assign_range_version(CURRENT_NAMESPACE::vector<T>& v)
 {
-	typedef typename CURRENT_NAMESPACE::vector<T>::iterator iterator;
 	typedef typename CURRENT_NAMESPACE::vector<T>::const_iterator const_iterator;
 
 	{ // Assign with vector iterators
