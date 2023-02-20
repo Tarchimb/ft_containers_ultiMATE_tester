@@ -16,7 +16,7 @@ int main(void)
 	v2[500] = 0.0f;
 	test_on_vector<double>(v2);
 
-	CURRENT_NAMESPACE::vector<TestStruct> v3(100, TestStruct(10, 42, "test"));
+	CURRENT_NAMESPACE::vector<TestStruct> v3(1000, TestStruct(10, 42, "test"));
 	v3[500] = TestStruct(-5, 213, "nothing");
 	test_on_vector<TestStruct>(v3);
 
